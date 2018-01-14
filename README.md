@@ -71,7 +71,7 @@ crystal src/<app_name>.cr
 amber watch
 
 # For production, compiles app with optimizations and places it in bin/app.
-# Crystal by default compiles using 8 threads (tune with --threads NUM)
+# Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
 crystal build --no-debug --release --verbose -t -s -p -o bin/app src/app.cr
 ```
 
@@ -91,21 +91,30 @@ For faster build speed, development versions are compiled without the --release 
 
 Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds.
 
-Sometimes building the App will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
+Sometimes building the app will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
 
-The best way to see the actual error from there is to copy-paste the command reported and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
+The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
 
 There are some issues with the `libgc` library here and there. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
 
 # REPL
 
-Often times, it is very useful to enter an interactive console (think of IRB shell) with all applications classes initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
+Often times, it is very useful to enter an interactive console (think of IRB shell) with all application classes initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
 
 Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
 
-Another, more professional way to do it is via REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
+Another, more professional way to do it is via standalone REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
 In any case, running a script "in application context" simply means requiring `config/application.cr` (or more generally, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
+
+# Starting the Server
+
+Before going into the details of the project file structure, features, classes, etc., it is important to explain exactly what is happening when you run the application and the Amber server starts serving files:
+
+1. You or a script run `crystal src/<app_name>.cr`
+1. As the first thing, this file does `require "../config/*"`
+  1. The first file to load there is `config/application.cr`. It loads other things:
+	  1. `require "./initializers/**"`. There is only one initializer by default - the one for database stuff
 
 # File Structure
 
