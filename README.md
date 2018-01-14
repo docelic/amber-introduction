@@ -60,13 +60,12 @@ To run the app, you can use a couple different approaches. Some are of course su
 # For development, clean and simple - compiles and runs your app:
 crystal src/<app_name>.cr
 
-# For development, clean and simple - compiles and runs your app,
+# For development, clean and simple - compiles and runs your app, but
 # also watches for changes in files and rebuilds/re-runs automatically.
 amber watch
 
 # For production, compiles app with optimizations and places it in bin/app.
 crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src/app.cr
-
 ```
 
 
