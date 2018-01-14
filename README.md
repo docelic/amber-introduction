@@ -186,6 +186,8 @@ And then try the three database commands from the beginning of this section, but
 
 Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database, and the problem will most likely quickly reveal itself.
 
+Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
+
 # Routes
 
 Routes are very easy to understand. Routes connect HTTP methods (and the paths with which they were invoked) to controllers and methods on the Amber side.
@@ -352,7 +354,7 @@ amberframework/smtp.cr                - SMTP client (to be replaced with arcage/
 ysbaddaden/selenium-webdriver-crystal - Selenium Webdriver client
 ```
 
-And some Crystal's build-in shards such as:
+And basic Crystal's build-in shards:
 
 ```
 http
@@ -366,11 +368,15 @@ Only the parts that are used end up in the compiled project.
 
 # Classes
 
+Here follow notes on some Amber classes and what they are for.
+
 ## Amber::Environment
 
-Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/`.
+Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/` and a default configuration exists as well.
 
-It also adds accessors (relevant excerpts shown):
+The config keys are pre-determined. The best way to check existing keys is to look up `config/environments/*.yml` (or run `amber encrypt` to see the contents of the `production.yml` file).
+
+It adds the following accessors (relevant excerpts shown):
 
 ```
 def self.settings; @@settings ||= Loader.new(env.to_s, path).settings
@@ -391,4 +397,118 @@ end
 
 p My.settings, My.logger
 ```
+
+## Amber::Environment::Settings
+
+This is a more low-level class and it won't make changes to your module/class like Amber::Environment does.
+
+Example of using it:
+
+```crystal
+require "./src/amber/environment/settings.cr"
+
+settings= Amber::Environment::Settings.from_yaml("host: whaddaya")
+
+p settings
+```
+
+Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
+
+# Controllers
+
+Let's take a tour of all the default controllers existing in an Amber application.
+
+## Amber::Controller::Base
+
+Base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
+
+On every request, the appropriate controller is instantiated and its initialize() runs. Since this is the base controller, this code runs on every request so you can understand what is available in the context of every controller.
+
+The content of this controller and the methods it gets from including other modules is intuitive enough that it can be copy pasted here in blocks and then commented if needed:
+
+```crystal
+module Amber::Controller
+  class Base
+    include Helpers::CSRF
+    include Helpers::Redirect
+    include Helpers::Render
+    include Helpers::Responders
+    include Helpers::Route
+    include Callbacks
+
+    protected getter context : HTTP::Server::Context
+    protected getter params : Amber::Validators::Params
+
+    delegate :cookies, :format, :flash, :port, :requested_url, :session, :valve,
+      :request_handler, :route, :websocket?, :get?, :post?, :patch?,
+      :put?, :delete?, :head?, :client_ip, :request, :response, :halt!, to: context
+
+    def initialize(@context : HTTP::Server::Context)
+      @params = Amber::Validators::Params.new(context.params)
+    end
+  end
+end
+```
+
+[Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) provides these methods:
+
+```crystal
+module Amber::Controller::Helpers
+  module CSRF
+    def csrf_token
+      Amber::Pipe::CSRF.token(context).to_s
+    end
+
+    def csrf_tag
+      Amber::Pipe::CSRF.tag(context)
+    end
+
+    def csrf_metatag
+      Amber::Pipe::CSRF.metatag(context)
+    end
+  end
+end
+
+[Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) provides:
+
+```crystal
+module Amber::Controller::Helpers
+  module Redirect
+    def redirect_to(location : String, **args)
+    def redirect_to(action : Symbol, **args)
+    def redirect_to(controller : Symbol | Class, action : Symbol, **args)
+    def redirect_back(**args)
+```
+
+[Helpers::Render](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/render.cr) provides:
+
+```crystal
+module Amber::Controller::Helpers
+  module Render
+    LAYOUT = "application.slang"
+    macro render(template = nil, layout = true, partial = nil, path = "src/views", folder = __FILE__)
+```
+
+[Helpers::Responders](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr) helps control what final status code, body, and content-type will be returned to the client.
+
+[Helpers::Route](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/route.cr) provides:
+
+```crystal
+module Amber::Controller::Helpers
+  module Route
+    def action_name
+    def route_resource
+    def route_scope
+    def controller_name
+```
+
+[Callbacks](https://github.com/amberframework/amber/blob/master/src/amber/dsl/callbacks.cr) provide:
+
+```crystal
+module Amber::DSL
+  module Callbacks
+    macro before_action
+    macro after_action
+```
+
 
