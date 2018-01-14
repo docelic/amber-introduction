@@ -193,7 +193,7 @@ Here's an example of an actual route definition that routes HTTP POST requests t
 post "/registration", RegistrationController, :create
 ```
 
-Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) generally go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods in the controllers.
+Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers.
 
 # Views
 
@@ -201,16 +201,20 @@ Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) generally go to standa
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but do not come from a database nor typically use any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
 
-Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. Then, we will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to controller methods. (Because these pages will not be powered by a database, we won't need a model nor an elaborate set of views.)
+Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. We will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to controller methods. (Because these pages will not be powered by a database, we won't need a model nor an elaborate set of views.)
 
 ```shell
 amber g controller page
 ```
 
-Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController:
+Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController. We do this inside the "routes :web" block:
 
 ```
-get "/about", PageController, :about
+routes :web do 
+  ...
+  get "/about", PageController, :about
+  ...
+end
 ```
 
 Then, we edit the controller and actually add method about(). This method can just directly return some string in response, or it can render a view, and then the expanded view contents will be returned as the response.
@@ -221,8 +225,8 @@ vi src/controllers/page_controller.cr
 # Inside the file, we add:
 
 def about
-	# "return" can be omitted here. It is included only for clarity.
-	return render "about.ecr"
+  # "return" can be omitted here. It is included only for clarity.
+  return render "about.ecr"
 end
 ```
 
@@ -237,7 +241,9 @@ vi src/views/page/about.ecr
 Hello, World!
 ```
 
-And that's it! Visiting /about will go to the router, router will invoke PageController::about(), that method will render template "src/views/page/about.ecr", the result of rendering will be "Hello, World!", that result will be returned to the controller, and from there it will be returned to the client.
+Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
+
+And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with "Hello, World!" in the body, that result will be returned to the controller, and from there it will be returned to the client.
 
 # Pipelines
 
