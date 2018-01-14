@@ -376,7 +376,7 @@ Base controller from which all other controllers inherit. Source file is in [src
 
 On every request, the appropriate controller is instantiated and its initialize() runs. Since this is the base controller, this code runs on every request so you can understand what is available in the context of every controller.
 
-The content of this controller and the methods it gets from including other modules is intuitive enough that it can be copy pasted here in blocks and then commented if needed:
+The content of this controller and the methods it gets from including other modules are intuitive enough to be copied here and commented where necessary:
 
 ```crystal
 module Amber::Controller
@@ -420,6 +420,7 @@ module Amber::Controller::Helpers
     end
   end
 end
+```
 
 [Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) provides:
 
