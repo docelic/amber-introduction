@@ -58,7 +58,8 @@ Supported migrations engines: [micrate](https://github.com/juanedi/micrate). Mic
 
 # Running the App
 
-The app can be started as soon as you have created it.
+The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
+(It is not necessary to run deps if you have invoked `amber new` with argument --deps.)
 
 To run it, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
 
@@ -211,6 +212,8 @@ post "/registration", RegistrationController, :create
 
 Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers.
 
+Websocket routes are supported too.
+
 # Views
 
 Information about views can be summarized in bullet points:
@@ -294,5 +297,36 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-# Pipelines
+# Assets Pipeline
+
+In an Amber project, raw assets are in `src/assets/`:
+
+```shell
+src/assets/
+src/assets/fonts
+src/assets/images
+src/assets/javascripts
+src/assets/javascripts/main.js
+src/assets/stylesheets/main.scss
+```
+
+At build time, all these are processed and placed under `public/dist/`.
+The JS resources are bundled to `main.bundle.js` and CSS resources are bundled to `main.bundle.css`.
+
+Currently, webpack is being used for asset management. It is terrible and I recommend replacing it with at least [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.
+
+This section will be expanded to include a full replacement procedure.
+
+# Default Shards
+
+By default, Amber project depends on just a few shards:
+
+```
+amberframework/amber          - Obviously, must depend on Amber
+amberframework/granite-orm    - Database ORM
+amberframework/quartz-mailer  - Sending and receiving emails
+amberframework/jasper-helpers - Helpers for working with HTML in Amber/Crystal
+will/crystal-pg               - PostgreSQL connector
+amberframework/garnet-spec    - Extended Crystal specs for testing web applications
+```
 
