@@ -109,7 +109,7 @@ In any case, running a script "in application context" simply means requiring `c
 
 # Starting the Server
 
-Before going into the details of the project file structure, features, classes, etc., it is important to explain exactly what is happening from when you run the application til Amber server starts serving the aplication:
+It is important to explain exactly what is happening from when you run the application til Amber server starts serving the aplication:
 
 1. You or a script run `crystal src/<app_name>.cr`
 1. As the first thing, this file does `require "../config/*"`. Inclusion is in alphabetical order.
