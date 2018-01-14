@@ -218,11 +218,18 @@ Websocket routes are supported too.
 
 The DSL language specific to `config/routes.cr` file is defined in [dsl/router.cr](https://github.com/amberframework/amber/blob/master/src/amber/dsl/router.cr) and [dsl/server.cr](https://github.com/amberframework/amber/blob/master/src/amber/dsl/server.cr).
 
-It gives you the following commands/blocks:
+It gives you the following top-level commands/blocks:
 
 ```
-pipeline :NAME do ... end             - Defines a pipeline
-routes :NAME, scope = "" do ... end   - Groups a set of routes
+# Define a pipeline
+pipeline :NAME do
+  ...
+end
+
+# Group a set of routes
+routes :NAME, scope = "" do
+  ...
+end
 ```
 
 Such as:
