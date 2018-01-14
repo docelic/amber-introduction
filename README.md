@@ -197,6 +197,14 @@ Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to st
 
 # Views
 
+- Views in Amber are located in `src/views/`
+- They are rendered using `render()`
+- The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
+- If the layout name isn't given and render is not rendering a partial, the default layout will be `views/layouts/application.slang`
+- There is no unnecessary magic applied to template names &mdash; name given is the name that will be looked up on disk
+- Partials begin with "_" by convention, but that is not required
+- To render a partial, use `render( partial: "name")`
+
 # Static Pages
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but do not come from a database nor typically use any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
@@ -243,7 +251,7 @@ Hello, World!
 
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
-And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with "Hello, World!" in the body, that result will be returned to the controller, and from there it will be returned to the client.
+And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, that result will be returned to the controller, and from there it will be returned to the client.
 
 # Pipelines
 
