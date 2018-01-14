@@ -89,7 +89,7 @@ The application is always built, regardless of whether one is using the Crystal 
 
 For faster build speed, development versions are compiled without the --release flag. With the --release flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
-Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds.
+Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds. This directory is also where temporary binaries are placed when one runs programs with `crystal [run]` rather than `crystal build`.
 
 Sometimes building the app will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
 
@@ -109,12 +109,34 @@ In any case, running a script "in application context" simply means requiring `c
 
 # Starting the Server
 
-Before going into the details of the project file structure, features, classes, etc., it is important to explain exactly what is happening when you run the application and the Amber server starts serving files:
+Before going into the details of the project file structure, features, classes, etc., it is important to explain exactly what is happening from when you run the application til Amber server starts serving the aplication:
 
 1. You or a script run `crystal src/<app_name>.cr`
-1. As the first thing, this file does `require "../config/*"`
-  1. The first file to load there is `config/application.cr`. It loads other things:
-	  1. `require "./initializers/**"`. There is only one initializer by default - the one for database stuff
+1. As the first thing, this file does `require "../config/*"`. Inclusion is in alphabetical order.
+	1. The first file in config is `config/application.cr`. It loads other things:
+		1. `require "./initializers/**"` - there is only one initializer by default, the one for the database connection. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir, then depth
+		1. `require "amber"`
+			1. Loading amber makes `Amber::Server` class available
+			1. Already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
+		1. `require "../src/controllers/application_controller"` - main controller is required
+			1. It defines `ApplicationController`, includes JalperHelpers in it, and sets default layout
+		1. `require "../src/controllers/**"` - loads all other controllers
+		1. Amber::Server.configure block is invoked to override any config settings
+	1. `require "config/routes.cr"` - this again invokes Amber::Server.configure, but specifically for routes
+1. `Amber::Server.start` is invoked
+	1. This implicitly creates a singleton instance of server and saves it to @@instance
+	1. Calls @@instance.run
+	1. Run consults variable `settings.process_count`
+	1. If process count is 1, @@instance.start is called
+	1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
+		1. Forked processes invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning
+	1. @@instance.start starts running for every process
+		1. It saves current time and prints startup info
+		1. `@handler.prepare_pipelines` is called. "Handler" is an instance variable of Amber::Server and contains the code/entry point into Amber which will be called on every request
+		1. server = HTTP::Server.new( host, port @handler)
+		1. server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?
+		1. Signal::INT is trapped (calls server.close when received)
+		1. Server enters main loop in which it calls server.listen(settings.port_reuse)
 
 # File Structure
 
