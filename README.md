@@ -48,7 +48,7 @@ Supported template languages: [slang](https://github.com/jeromegn/slang) (defaul
 Slang is extremely elegant, but very different from the traditional perception of HTML.
 ECR is HTML-like and beyond mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
 
-In any case, regardless of the templating language, have in mind that the templates are compiled along with the application. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
+In any case, you can even combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled along with the application. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
@@ -243,7 +243,7 @@ end
 Then, we edit the controller and actually add method about(). This method can just directly return some string in response, or it can render a view, and then the expanded view contents will be returned as the response.
 
 ```shell
-vi src/controllers/page_controller.cr
+$ vi src/controllers/page_controller.cr
 
 # Inside the file, we add:
 
@@ -256,8 +256,8 @@ end
 Since this is happening in the "page" controller, the view directory for finding the templates defaults to `src/views/page/`. We will create the directory and the file "about.ecr" in it:
 
 ```shell
-mkdir -p src/views/page/
-vi src/views/page/about.ecr
+$ mkdir -p src/views/page/
+$ vi src/views/page/about.ecr
 
 # Inside the file, we add:
 
@@ -267,6 +267,25 @@ Hello, World!
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, that result will be returned to the controller, and from there it will be returned to the client.
+
+# Variables in Views
+
+In Amber, templates are compiled in the same scope as controller methods. This means you do not need to instance variables for passing the information from controllers to views, and any variable you define in the controller method is visible in the template!
+
+For example, let's add the current date and time display to our /about page:
+
+```shell
+$ vi src/controllers/page_controller.cr
+
+def about
+	time = Time.now
+	render "about.ecr"
+end
+
+$ vi src/views/page/about.ecr
+
+Hello, World! The time is now <%= time %>
+```
 
 # Pipelines
 
