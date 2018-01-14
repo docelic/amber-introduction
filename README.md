@@ -48,6 +48,8 @@ Supported template languages: [slang](https://github.com/jeromegn/slang) (defaul
 Slang is extremely elegant, but very different from the traditional perception of HTML.
 ECR is HTML-like and beyond mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
 
+In any case, regardless of the templating language, have in mind that the templates are compiled along with the application. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
+
 Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
@@ -68,14 +70,13 @@ amber watch
 crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src/app.cr
 ```
 
-The watch command currently has some issues in edge cases. For example, it may run a re-build of the application twice concurrently, and is generally non-configurable.
+The watch command currently has some issues in edge cases. For example, it may try to run things even if some steps fail ([#499](https://github.com/amberframework/amber/issues/499)) or start re-building the application twice concurrently ([#507](https://github.com/amberframework/amber/issues/507)), and it is generally non-configurable ([#476](https://github.com/amberframework/amber/issues/476)).
 
-Amber itself also currently has problems in edge cases. For example, if there is an error starting an application, Amber will enter an endless loop trying to start it.
+Amber itself also currently has problems in edge cases. For example, if there is an error starting an application, Amber will enter an endless loop trying to start it ([#520](https://github.com/amberframework/amber/issues/520)).
+
+Also, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error in Granite ([#112](https://github.com/amberframework/granite-orm/issues/112)).
 
 Please ignore these temporary problems until they are solved.
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
-
-
-
 
