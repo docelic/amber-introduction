@@ -330,3 +330,25 @@ will/crystal-pg               - PostgreSQL connector
 amberframework/garnet-spec    - Extended Crystal specs for testing web applications
 ```
 
+In turn, these depend on:
+
+```
+luislavena/radix                       - Radix Tree implementation
+jeromegn/kilt                          - Generic template interface
+jeromegn/slang                         - Slang template language
+stefanwille/crystal-redis              - 
+amberframework/cli                     - Building cmdline apps (based on mosop)
+mosop/optarg                           - Parsing cmdline args
+mosop/callback                         - Defining and invoking callbacks
+mosop/string_inflection                - Word plurals, counts, etc.
+amberframework/teeplate                - Rendering multiple template files
+juanedi/micrate                        - Database migration tool
+crystal-lang/crystal-db                - Common DB API
+jwaldrip/shell-table.cr                - Creates textual tables in shell
+askn/spinner                           - Spinner for the shell
+crystal-lang/crystal-mysql             - 
+crystal-lang/crystal-sqlite3           - 
+amberframework/smtp.cr                 - SMTP client (to be replaced with arcage/crystal-email)
+ysbaddaden/selenium-webdriver-crystal  - Selenium Webdriver client
+```
+
