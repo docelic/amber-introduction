@@ -71,7 +71,7 @@ crystal src/<app_name>.cr
 amber watch
 
 # For production, compiles app with optimizations and places it in bin/app.
-# Crystal by default compiles using all CPU threads.
+# Crystal by default compiles using 8 threads (tune with --threads NUM)
 crystal build --no-debug --release --verbose -t -s -p -o bin/app src/app.cr
 ```
 
@@ -83,13 +83,19 @@ Please ignore these temporary problems until they are solved.
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
-# Building the App
+# Building the App and Troubleshooting
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
 
-Sometimes building the App will fail on the C level because of missing header files or libraries. Crystal won't print the actual C error, but will report that the compilation has failed and will print the line that caused it.
+For faster build speed, development versions are compiled without the --release flag. With the --release flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
+
+Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds.
+
+Sometimes building the App will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least report print the compiler line that caused it.
 
 The best way to see the actual error from there is to copy-paste the command reported and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
+
+There are some issues with the `libgc` library. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
 
 # REPL
 
@@ -270,7 +276,7 @@ And that's it! Visiting `/about` will go to the router, router will invoke `Page
 
 # Variables in Views
 
-In Amber, templates are compiled in the same scope as controller methods. This means you do not need to instance variables for passing the information from controllers to views, and any variable you define in the controller method is visible in the template!
+In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views. Any variable you define in the controller method is automagically visible in the template.
 
 For example, let's add the current date and time display to our /about page:
 
@@ -284,12 +290,39 @@ end
 
 $ vi src/views/page/about.ecr
 
-Hello, World! The time is now <%= time %>
+Hello, World! The time is now <%= time %>.
 ```
 
 # Pipelines
 
 # Database Access with User Privileges
+
+Typical web applications make all database accesses using the same credentials (i.e. they use the given username and once they are connected to the database, that's it).
+
+However, with a real database like [PostgreSQL](https://www.postgresql.org/) and thanks to crystal-db which by default creates connection pools, it is trivial to be accessing the database with the privileges of the logged-in user.
+
+Postgres allows users to switch roles on the existing connection, assuming they have the necessary privileges. To make this work, we are going to do the following:
+
+- Create controller UserApplicationController, which will inherit from the default ApplicationController
+- In both controllers we will add a `before_all` filter to switch Postgres role. The default ApplicationController will always switch role to the default user. The UserApplicationController will switch role to the user logged in
+- All other application controllers which require database access will simply inherit from ApplicationController (which they are already doing) or UserApplicationController
+
+```shell
+$ amber g controller UserApplication
+
+$ vi src/controllers/user_application_controller.cr
+
+class UserApplicationController < ApplicationController
+
+	before_all {
+	}
+
+end
+```
+
+
+This approach of course requires that users are created in the database, that the row level permissions are correct, etc. This section will be expanded over time to show a fully working system.
+
 
 
 
