@@ -173,14 +173,7 @@ Enter it again:
 
 Then, edit `config/environments/development.yml` and configure "database_url:" to match your settings. If nothing else, the part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
 
-Then, please note that none of the database commands will work until you generate something that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, just run:
-
-```shell
-echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> \
-  config/initializers/granite.cr
-```
-
-Then, to avoid seeing another minor unnecessary error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
+Then, to avoid seeing a minor/harmless error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
 
 And then try the three database commands from the beginning of this section, but have in mind that `amber db create` *must* be the first command.
 
