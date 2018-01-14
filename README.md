@@ -52,7 +52,18 @@ Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (
 
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
-```
+# Running the App
+
+To run the app, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
+
+```shell
+crystal src/<app_name>.cr # Compiles and runs your app, clean and simple
+
+amber watch # Compiles and runs your app, watches for changes and automatically rebuilds
+
+# Compiles app and places it in bin/app. Suitable for production.
+crystal build --no-debug --release --verbose --threads 2 -t -s -p -o bin/app src/app.cr
+
 ```
 
 
