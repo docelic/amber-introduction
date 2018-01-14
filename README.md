@@ -76,11 +76,84 @@ crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src
 
 The watch command currently has some issues in edge cases. For example, it may try to run things even if some steps fail ([#499](https://github.com/amberframework/amber/issues/499)) or start re-building the application twice concurrently ([#507](https://github.com/amberframework/amber/issues/507)), and it is generally non-configurable ([#476](https://github.com/amberframework/amber/issues/476)).
 
-Amber itself also currently has problems in edge cases. For example, if there is an error starting an application, Amber will enter an endless loop trying to start it ([#520](https://github.com/amberframework/amber/issues/520)).
-
-Also, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error in Granite ([#112](https://github.com/amberframework/granite-orm/issues/112)).
+Amber itself also currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error in Granite ([#112](https://github.com/amberframework/granite-orm/issues/112)).
 
 Please ignore these temporary problems until they are solved.
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
+
+# REPL
+
+Often times, it is very useful to enter an interactive console (think of IRB shell) with all applications lasses initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
+
+As you might know, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and will then execute the script.
+
+Another, more professional way to do it is via REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
+
+In any case, running a script "in application context" simply means requiring `config/application.cr` (or more generally, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything would work as expected.
+
+# File Structure
+
+So, at this point you might be wanting to know what's placed where in an Amber application. The default structure looks like this:
+
+```
+./spec                     - Tests (named *_spec.cr)
+./config                   - All configuration, with config/application.cr being the main file
+./config/environments      - Environment-specific YAML configurations
+./config/webpack           - Webpack (asset bundler) configuration
+./config/initializers      - Initializers
+./src                      - Main source directory, with <app_name>.cr being the main/entry file
+./src/controllers          - All controllers
+./src/models               - All models
+./src/views                - All views
+./src/views/layouts        - All layouts
+./src/views/home           - Views for HomeController (path "/")
+./src/assets               - Static assets which will be bundled and placed into ./public/dist/
+./src/assets/stylesheets
+./src/assets/fonts
+./src/assets/images
+./src/assets/javascripts
+./public                   - The "public" directory for static files
+./public/dist              - Directory inside "public" for generated files and bundles
+./public/dist/images
+```
+
+I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory named `etc`, so I run:
+
+```
+ln -sf config etc
+ln -sf src/assets
+ln -sf src/controllers
+ln -sf src/models
+ln -sf src/views
+ln -sf src/views/layouts
+```
+
+# Database Commands
+
+Amber provides a group of commands under the 'db' group to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
+
+```shell
+amber db create
+amber db status
+amber db version
+```
+
+However, please note that none of the database commands will work until you create anything that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, please run:
+
+```shell
+echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> config/initializers/granite.cr
+```
+
+And then try the above commands.
+
+# Routes
+
+# Static Pages
+
+# Pipelines
+
+# Database Access with User Privileges
+
+
 
