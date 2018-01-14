@@ -2,14 +2,6 @@
   <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/amber.png">
   <h3 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
   And its Out-of-the-Box Features</h3>
-  <p align="center">
-    <sup>
-      <i>
-        Amber is Rails-like to an extent, but simpler, reasonable, and easy to understand and use.
-      </i>
-    </sup>
-  </p>
-  <p align="center">
   </p>
 </p>
 
