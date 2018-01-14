@@ -505,12 +505,10 @@ Example of using it:
 ```crystal
 require "./src/amber/environment/settings.cr"
 
-settings= Amber::Environment::Settings.from_yaml("host: whaddaya")
+settings= Amber::Environment::Settings.from_yaml("host: my.host.com")
 
 p settings
 ```
 
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
-
-
 
