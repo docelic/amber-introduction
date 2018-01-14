@@ -141,14 +141,31 @@ amber db status
 amber db version
 ```
 
-However, please note that none of the database commands will work until you generate something that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, just run:
+However, beware:
+
+Before these commands would work, you need to configure access to the database. For PostgreSQL, this is done by doing something like this:
+
+```shell
+$ sudo su - postgres
+$ createuser -dElPRS myuser
+Enter password for new role: 
+Enter it again: 
+```
+
+Then, edit `config/environments/development.yml` to configure "database_url:" to match your username and password. The part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
+
+Then, please note that none of the database commands will work until you generate something that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, just run:
 
 ```shell
 echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> \
   config/initializers/granite.cr
 ```
 
-And then try the above commands.
+Then, to avoid seeing an unnecessary error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
+
+And then try the three database commands from the beginning of this section, but have in mind that `amber db create` *must* be the first command.
+
+Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of an error in any of the steps involved in connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>".
 
 # Routes
 
