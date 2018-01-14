@@ -85,6 +85,8 @@ Amber by default uses a feature called "port reuse" available in newer Linux ker
 
 # Building the App
 
+The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
+
 Sometimes building the App will fail on the C level because of missing header files or libraries. Crystal won't print the actual C error, but will report that the compilation has failed and will print the line that caused it.
 
 The best way to see the actual error from there is to copy-paste the command reported and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
@@ -204,14 +206,17 @@ Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to st
 
 # Views
 
+Information about views can be summarized in bullet points:
+
 - Views in Amber are located in `src/views/`
 - They are rendered using `render()`
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
-- If we are in the context of a controller, `render("index.slang")` will look for file `src/views/<controller_name>/index.slang`
-- If the layout name isn't given and render is not rendering a partial, the default layout is `views/layouts/application.slang`
+- If we are in the context of a controller, `render("index.slang")` will look for view using the path `src/views/<controller_name>/index.slang`
+- If we are not rendering a partial, by default the template will be wrapped in a layout
+- If the layout name isn't given, the default layout will be `views/layouts/application.slang`
 - There is no unnecessary magic applied to template names &mdash; name given is the name that is looked up on disk
 - Partials begin with "_" by convention, but that is not required
-- To render a partial, use `render( partial: "name.ext")`
+- To render a partial, use `render( partial: "_name.ext")`
 
 # Static Pages
 
