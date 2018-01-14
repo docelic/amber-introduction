@@ -2,6 +2,14 @@
   <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/amber.png">
   <h3 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
   And its Out-of-the-Box Features</h3>
+  <p align="center">
+    <sup>
+      <i>
+				Amber makes building web applications easy, fast, and enjoyable.
+      </i>
+    </sup>
+  </p>
+  <p align="center">
   </p>
 </p>
 
