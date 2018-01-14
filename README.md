@@ -167,7 +167,7 @@ Then, to avoid seeing another minor unnecessary error, please run `mkdir -p db/m
 
 And then try the three database commands from the beginning of this section, but have in mind that `amber db create` *must* be the first command.
 
-Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>".
+Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database, and the problem will most likely quickly reveal itself.
 
 # Routes
 
