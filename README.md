@@ -405,8 +405,6 @@ end
 [Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) provides these methods:
 
 ```crystal
-module Amber::Controller::Helpers
-  module CSRF
     def csrf_token
     def csrf_tag
     def csrf_metatag
@@ -415,8 +413,6 @@ module Amber::Controller::Helpers
 [Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) provides:
 
 ```crystal
-module Amber::Controller::Helpers
-  module Redirect
     def redirect_to(location : String, **args)
     def redirect_to(action : Symbol, **args)
     def redirect_to(controller : Symbol | Class, action : Symbol, **args)
@@ -426,8 +422,6 @@ module Amber::Controller::Helpers
 [Helpers::Render](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/render.cr) provides:
 
 ```crystal
-module Amber::Controller::Helpers
-  module Render
     LAYOUT = "application.slang"
     macro render(template = nil, layout = true, partial = nil, path = "src/views", folder = __FILE__)
 ```
@@ -437,8 +431,6 @@ module Amber::Controller::Helpers
 [Helpers::Route](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/route.cr) provides:
 
 ```crystal
-module Amber::Controller::Helpers
-  module Route
     def action_name
     def route_resource
     def route_scope
@@ -448,8 +440,6 @@ module Amber::Controller::Helpers
 [Callbacks](https://github.com/amberframework/amber/blob/master/src/amber/dsl/callbacks.cr) provide:
 
 ```crystal
-module Amber::DSL
-  module Callbacks
     macro before_action
     macro after_action
 ```
