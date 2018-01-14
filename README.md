@@ -315,7 +315,7 @@ The JS resources are bundled to `main.bundle.js` and CSS resources are bundled t
 
 Currently, webpack is being used for asset management. It is terrible and I recommend replacing it with at least [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.
 
-This section will be expanded to include a full replacement procedure.
+This section will be expanded to include a full replacement procedure. (In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
 
 # Default Shards
 
@@ -333,22 +333,62 @@ amberframework/garnet-spec    - Extended Crystal specs for testing web applicati
 In turn, these depend on:
 
 ```
-luislavena/radix                       - Radix Tree implementation
-jeromegn/kilt                          - Generic template interface
-jeromegn/slang                         - Slang template language
-stefanwille/crystal-redis              - 
-amberframework/cli                     - Building cmdline apps (based on mosop)
-mosop/optarg                           - Parsing cmdline args
-mosop/callback                         - Defining and invoking callbacks
-mosop/string_inflection                - Word plurals, counts, etc.
-amberframework/teeplate                - Rendering multiple template files
-juanedi/micrate                        - Database migration tool
-crystal-lang/crystal-db                - Common DB API
-jwaldrip/shell-table.cr                - Creates textual tables in shell
-askn/spinner                           - Spinner for the shell
-crystal-lang/crystal-mysql             - 
-crystal-lang/crystal-sqlite3           - 
-amberframework/smtp.cr                 - SMTP client (to be replaced with arcage/crystal-email)
-ysbaddaden/selenium-webdriver-crystal  - Selenium Webdriver client
+luislavena/radix                      - Radix Tree implementation
+jeromegn/kilt                         - Generic template interface
+jeromegn/slang                        - Slang template language
+stefanwille/crystal-redis             - 
+amberframework/cli                    - Building cmdline apps (based on mosop)
+mosop/optarg                          - Parsing cmdline args
+mosop/callback                        - Defining and invoking callbacks
+mosop/string_inflection               - Word plurals, counts, etc.
+amberframework/teeplate               - Rendering multiple template files
+juanedi/micrate                       - Database migration tool
+crystal-lang/crystal-db               - Common DB API
+jwaldrip/shell-table.cr               - Creates textual tables in shell
+askn/spinner                          - Spinner for the shell
+crystal-lang/crystal-mysql            - 
+crystal-lang/crystal-sqlite3          - 
+amberframework/smtp.cr                - SMTP client (to be replaced with arcage/crystal-email)
+ysbaddaden/selenium-webdriver-crystal - Selenium Webdriver client
+```
+
+And some Crystal's build-in shards such as:
+
+```
+http
+logger
+json
+colorize
+random/secure
+```
+
+Only the parts that are used end up in the compiled project.
+
+# Classes
+
+## Amber::Environment
+
+Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/`.
+
+It also adds accessors (relevant excerpts shown):
+
+```
+def self.settings; @@settings ||= Loader.new(env.to_s, path).settings
+def self.logger; settings.logger
+def self.env=(env : EnvType) @@env = Env.new(env.to_s); @@settings = Loader.new(...)
+def self.env; @@env ||= Env.new
+```
+
+Example of using it:
+
+```crystal
+require "./src/amber/exceptions/exceptions.cr"
+require "./src/amber/environment.cr"
+
+class My
+  include Amber::Environment
+end
+
+p My.settings, My.logger
 ```
 
