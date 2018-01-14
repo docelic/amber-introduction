@@ -27,12 +27,32 @@ This document is here to describe everything that Amber offers out of the box, s
 git clone https://github.com/amberframework/amber
 cd amber
 make
-
 # The result of 'make' is just one file -- bin/amber
 
-# To install it, or to symlink the system-wide executable to current directory:
+# To install it, or to symlink the system-wide executable to current directory, run one of:
 make install # default PREFIX is /usr/local
 make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
+
+# Creating new application
+
+```shell
+amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
+```
+
+Supported databases: PostgreSQL (pg, default), MySQL (mysql), and SQLite (sqlite).
+
+Supported template languages: slang (default) and ecr. (ecr is very similar to Ruby's erb)
+
+Slang is extremely elegant, but very different from the traditional perception of HTML.
+ECR is HTML/ERB like and beyond mediocre when compared to slang, but may be the only choice for your application if you intend to use some HTML site template whose sources are HTML + CSS or SCSS.
+
+Supported ORM models: granite (default) and crecto.
+
+Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). (If you have by chance known and loved Class::DBI for Perl, it might remind you of it in some ways.)
+
+```
+```
+
 
