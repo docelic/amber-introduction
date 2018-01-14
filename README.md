@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/amberframework/site-assets/raw/master/images/amber.png" width="200">
+  <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/amber.png" width="200">
   <p align="center"><strong>Introduction to the Amber Web Framework</strong><br>
   And its Out-of-the-Box Features<p>
   <p align="center">
