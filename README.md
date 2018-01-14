@@ -57,12 +57,15 @@ Granite is a very nice and simple, effective ORM model, where you mostly write y
 To run the app, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
 
 ```shell
-crystal src/<app_name>.cr # Compiles and runs your app, clean and simple
+# For development, clean and simple - compiles and runs your app:
+crystal src/<app_name>.cr
 
-amber watch # Compiles and runs your app, watches for changes and automatically rebuilds
+# For development, clean and simple - compiles and runs your app,
+# also watches for changes in files and rebuilds/re-runs automatically.
+amber watch
 
-# Compiles app and places it in bin/app. Suitable for production.
-crystal build --no-debug --release --verbose --threads 2 -t -s -p -o bin/app src/app.cr
+# For production, compiles app with optimizations and places it in bin/app.
+crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src/app.cr
 
 ```
 
