@@ -1,11 +1,11 @@
 <p align="center">
   <img src="https://github.com/amberframework/site-assets/raw/master/images/amber.png" width="200">
-  <p align="center"><strong>Introduction to the Amber Web Framework</strong>.<p>
-  <p align="center">And its Out-of-the-Box Features<p>
+  <p align="center"><strong>Introduction to the Amber Web Framework</strong><br>
+  And its Out-of-the-Box Features<p>
   <p align="center">
     <sup>
       <i>
-        Amber is Rails-like to an extent, but *much* simpler, more reasonable, and easy to understand and use.
+        Amber is Rails-like to an extent, but simpler, reasonable, and easy to understand and use.
       </i>
     </sup>
   </p>
