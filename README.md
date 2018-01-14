@@ -138,6 +138,10 @@ It is important to explain exactly what is happening from when you run the appli
 		1. Signal::INT is trapped (calls `server.close` when received)
 		1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
 
+# Serving Requests
+
+Coming soon.
+
 # File Structure
 
 So, at this point you might be wanting to know what's placed where in an Amber application. The default structure looks like this:
