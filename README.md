@@ -216,6 +216,58 @@ Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to st
 
 Websocket routes are supported too.
 
+The DSL language specific to `config/routes.cr` file is defined in [dsl/router.cr](https://github.com/amberframework/amber/blob/master/src/amber/dsl/router.cr) and [dsl/server.cr](https://github.com/amberframework/amber/blob/master/src/amber/dsl/server.cr).
+
+It gives you the following commands/blocks:
+
+```
+pipeline :NAME do ... end             - Defines a pipeline
+routes :NAME, scope = "" do ... end   - Groups a set of routes
+```
+
+Such as:
+
+```crystal
+Amber::Server.configure do |app|
+  pipeline :web do
+    # Plug is the method to use connect a pipe (middleware)
+    # A plug accepts an instance of HTTP::Handler
+    plug Amber::Pipe::Error.new
+    plug Amber::Pipe::Logger.new
+    plug Amber::Pipe::Session.new
+    plug Amber::Pipe::Flash.new
+    plug Amber::Pipe::CSRF.new
+    # Reload clients browsers (development only)
+    plug Amber::Pipe::Reload.new
+  end
+
+	routes :web do
+		get "/", HomeController, :index
+		get "/test", PageController, :test
+	end
+end
+```
+
+Within 'routes', the following commands are available:
+
+```crystal
+get, post, put, patch, delete, options, head, trace, connect, websocket, resources
+```
+
+`resources` is a macro defined as:
+
+```crystal
+    macro resources(resource, controller, only = nil, except = nil)
+```
+
+And unless it is confined with arguments `only` or `except`, it will automatically define get, post, put, patch, and delete routes for your resource and route them to the following methods in the controller:
+
+```crystal
+index, new, create, show, edit, update, destroy
+```
+
+Please note that it is not currently possible to define a different behavior for HEAD and GET methods ont he same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
+
 # Views
 
 Information about views can be summarized in bullet points:
@@ -493,3 +545,4 @@ p settings
 
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
 
+[//]: # (controller/filters, 
