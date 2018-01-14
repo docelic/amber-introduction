@@ -163,7 +163,7 @@ echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> \
   config/initializers/granite.cr
 ```
 
-Then, to avoid seeing an unnecessary error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
+Then, to avoid seeing another minor unnecessary error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
 
 And then try the three database commands from the beginning of this section, but have in mind that `amber db create` *must* be the first command.
 
