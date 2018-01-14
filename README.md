@@ -141,9 +141,11 @@ amber db status
 amber db version
 ```
 
-However, beware:
+But, beware:
 
-Before these commands would work, you need to configure access to the database. For PostgreSQL, this is done by doing something like this:
+Before these commands will work, you will need to take care of a couple things.
+
+First, configure access to the database. For PostgreSQL, this is done by doing something like this:
 
 ```shell
 $ sudo su - postgres
