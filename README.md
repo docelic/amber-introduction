@@ -204,7 +204,7 @@ Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to st
 - If the layout name isn't given and render is not rendering a partial, the default layout is `views/layouts/application.slang`
 - There is no unnecessary magic applied to template names &mdash; name given is the name that is looked up on disk
 - Partials begin with "_" by convention, but that is not required
-- To render a partial, use `render( partial: "name")`
+- To render a partial, use `render( partial: "name.ext")`
 
 # Static Pages
 
