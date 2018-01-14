@@ -243,8 +243,8 @@ Amber::Server.configure do |app|
   end
 
   routes :web do
-    get "/", HomeController, :index
-    get "/test", PageController, :test
+    get "/", HomeController, :index    # Calls HomeController::index()
+    get "/test", PageController, :test # Calls PageController::index()
   end
 end
 ```
