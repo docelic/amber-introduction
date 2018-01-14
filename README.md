@@ -366,54 +366,6 @@ random/secure
 
 Only the parts that are used end up in the compiled project.
 
-# Classes
-
-Here follow notes on some Amber classes and what they are for.
-
-## Amber::Environment
-
-Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/` and a default configuration exists as well.
-
-The config keys are pre-determined. The best way to check existing keys is to look up `config/environments/*.yml` (or run `amber encrypt` to see the contents of the `production.yml` file).
-
-It adds the following accessors (relevant excerpts shown):
-
-```
-def self.settings; @@settings ||= Loader.new(env.to_s, path).settings
-def self.logger; settings.logger
-def self.env=(env : EnvType) @@env = Env.new(env.to_s); @@settings = Loader.new(...)
-def self.env; @@env ||= Env.new
-```
-
-Example of using it:
-
-```crystal
-require "./src/amber/exceptions/exceptions.cr"
-require "./src/amber/environment.cr"
-
-class My
-  include Amber::Environment
-end
-
-p My.settings, My.logger
-```
-
-## Amber::Environment::Settings
-
-This is a more low-level class and it won't make changes to your module/class like Amber::Environment does.
-
-Example of using it:
-
-```crystal
-require "./src/amber/environment/settings.cr"
-
-settings= Amber::Environment::Settings.from_yaml("host: whaddaya")
-
-p settings
-```
-
-Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
-
 # Controllers
 
 Let's take a tour of all the default controllers existing in an Amber application.
@@ -510,5 +462,55 @@ module Amber::DSL
     macro before_action
     macro after_action
 ```
+# Classes
+
+Here follow notes on some other/remaining Amber classes and what they are for.
+
+The classes mentioned here are mostly supporting elements, and while they do help understand the big picture, they are not particularly crucial.
+
+## Amber::Environment
+
+Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/` and a default configuration exists as well.
+
+The config keys are pre-determined. The best way to check existing keys is to look up `config/environments/*.yml` (or run `amber encrypt` to see the contents of the `production.yml` file).
+
+It adds the following accessors (relevant excerpts shown):
+
+```
+def self.settings; @@settings ||= Loader.new(env.to_s, path).settings
+def self.logger; settings.logger
+def self.env=(env : EnvType) @@env = Env.new(env.to_s); @@settings = Loader.new(...)
+def self.env; @@env ||= Env.new
+```
+
+Example of using it:
+
+```crystal
+require "./src/amber/exceptions/exceptions.cr"
+require "./src/amber/environment.cr"
+
+class My
+  include Amber::Environment
+end
+
+p My.settings, My.logger
+```
+
+## Amber::Environment::Settings
+
+This is a more low-level class and it won't make changes to your module/class like Amber::Environment does.
+
+Example of using it:
+
+```crystal
+require "./src/amber/environment/settings.cr"
+
+settings= Amber::Environment::Settings.from_yaml("host: whaddaya")
+
+p settings
+```
+
+Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
+
 
 
