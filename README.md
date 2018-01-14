@@ -145,7 +145,7 @@ But, beware:
 
 Before these commands will work, you will need to take care of a couple things.
 
-First, configure access to the database. For PostgreSQL, this is done by doing something like this:
+First, create a user to access the database. For PostgreSQL, this is done by invoking something like:
 
 ```shell
 $ sudo su - postgres
@@ -154,7 +154,7 @@ Enter password for new role:
 Enter it again: 
 ```
 
-Then, edit `config/environments/development.yml` to configure "database_url:" to match your username and password. The part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
+Then, edit `config/environments/development.yml` and configure "database_url:" to match your settings. If nothing else, the part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
 
 Then, please note that none of the database commands will work until you generate something that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, just run:
 
