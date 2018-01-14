@@ -222,12 +222,12 @@ It gives you the following top-level commands/blocks:
 
 ```
 # Define a pipeline
-pipeline :NAME do
+pipeline :name do
   ...
 end
 
 # Group a set of routes
-routes :NAME, scope = "" do
+routes :name, "path" do
   ...
 end
 ```
@@ -239,13 +239,7 @@ Amber::Server.configure do |app|
   pipeline :web do
     # Plug is the method to use connect a pipe (middleware)
     # A plug accepts an instance of HTTP::Handler
-    plug Amber::Pipe::Error.new
     plug Amber::Pipe::Logger.new
-    plug Amber::Pipe::Session.new
-    plug Amber::Pipe::Flash.new
-    plug Amber::Pipe::CSRF.new
-    # Reload clients browsers (development only)
-    plug Amber::Pipe::Reload.new
   end
 
   routes :web do
