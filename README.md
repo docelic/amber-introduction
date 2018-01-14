@@ -54,9 +54,13 @@ Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (
 
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
+Supported migrations engines: [micrate](https://github.com/juanedi/micrate). Micrate is very, very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+
 # Running the App
 
-To run the app, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
+The app can be started as soon as you have created it.
+
+To run it, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
 
 ```shell
 # For development, clean and simple - compiles and runs your app:
