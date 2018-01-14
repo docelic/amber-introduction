@@ -17,7 +17,7 @@
 
 **Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on FreeNode IRC (channel #amber) or on [Gitter](https://gitter.im/amberframework/amber).
 
-Amber is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit the concepts from Rails that are good.)
+It is inspired by Kemal, Rails, Phoenix and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit some concepts from Rails that are good.)
 
 This document is here to describe everything that Amber offers out of the box, sorted in a logical order and easy to consult repeatedly over time. The Crystal level is not described; it is expected that the readers coming here have a formed understanding of Crystal and its features.
 
@@ -26,10 +26,9 @@ This document is here to describe everything that Amber offers out of the box, s
 ```shell
 git clone https://github.com/amberframework/amber
 cd amber
-make
-# The result of 'make' is just one file -- bin/amber
+make # The result of 'make' is one file -- command line tool bin/amber
 
-# To install it, or to symlink the system-wide executable to current directory, run one of:
+# To install the file, or to symlink the system-wide executable to current directory, run one of:
 make install # default PREFIX is /usr/local
 make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
@@ -46,9 +45,9 @@ Supported databases: [PostgreSQL](https://www.postgresql.org/) (pg, default), [M
 Supported template languages: [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (ecr is very similar to Ruby's erb.)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like and beyond mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
+ECR is HTML-like and more then mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
 
-In any case, you can even combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled along with the application. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
+In any case, you can even combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application (there is no lookup on disk or choosing between available templates during runtime). This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
@@ -612,4 +611,4 @@ p settings
 
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
 
-[//]: # (controller/filters, 
+[//]: # (controller/filters, process/thread_count in server/server.cr, file upload)
