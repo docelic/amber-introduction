@@ -171,7 +171,73 @@ Please note that for the database connection to succeed, all parameters must be 
 
 # Routes
 
+Routes are very easy to understand. Routes connect HTTP methods (and the paths with which they were invoked) to controllers and methods on the Amber side.
+
+Amber includes a wonderful command `amber routes` to display current routes. By default, the routes table looks like the following:
+
+```shell
+$ amber routes
+
+╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
+║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | HomeController            | index  | web      |       | /           ║
+╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
+```
+
+Here's an example of an actual route definition that routes the HTTP POST request to the URL "/registration" to method create() in class RegistrationController:
+
+```
+post "/registration", RegistrationController, :create
+```
+
+Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) generally go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods in the controllers.
+
+# Views
+
 # Static Pages
+
+It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but do not come from a database nor typically use any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
+
+Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. Then, we will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to controller methods. (Because these pages will not be powered by a database, we won't need a model nor an elaborate set of views.)
+
+```shell
+amber g controller page
+```
+
+Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController:
+
+```
+get "/about", PageController, :about
+```
+
+Then, we edit the controller and actually add method about(). This method can just directly return some string in response, or it can render a view, and then the expanded view contents will be returned as the response.
+
+```shell
+vi src/controllers/page_controller.cr
+
+# Inside the file, we add:
+
+def about
+	# "return" can be omitted here. It is included only for clarity.
+	return render "about.ecr"
+end
+```
+
+Since this is happening in the "page" controller, the view directory for finding the templates defaults to `src/views/page/`. We will create the directory and the file "about.ecr" in it:
+
+```shell
+mkdir -p src/views/page/
+vi src/views/page/about.ecr
+
+# Inside the file, we add:
+
+Hello, World!
+```
+
+And that's it! Visiting /about will go to the router, router will invoke PageController::about(), that method will render template "src/views/page/about.ecr", the result of rendering will be "Hello, World!", that result will be returned to the controller, and from there it will be returned to the client.
 
 # Pipelines
 
