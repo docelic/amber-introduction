@@ -98,7 +98,9 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 
 ```
 ./spec                     - Tests (named *_spec.cr)
-./config                   - All configuration, with config/application.cr being the main file
+./config                   - All configuration
+./config/application.cr    - Main configuration file
+./config/routes.cr         - All routes
 ./config/environments      - Environment-specific YAML configurations
 ./config/webpack           - Webpack (asset bundler) configuration
 ./config/initializers      - Initializers
@@ -139,10 +141,11 @@ amber db status
 amber db version
 ```
 
-However, please note that none of the database commands will work until you create anything that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, please run:
+However, please note that none of the database commands will work until you generate something that involves a migration ([#519](https://github.com/amberframework/amber/issues/519)). If you want to fix this manually, assuming that you are using Granite ORM, just run:
 
 ```shell
-echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> config/initializers/granite.cr
+echo "Granite::ORM.settings.database_url = Amber.settings.database_url" >> \
+  config/initializers/granite.cr
 ```
 
 And then try the above commands.
