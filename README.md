@@ -275,9 +275,9 @@ Information about views can be summarized in bullet points:
 
 # Variables in Views
 
-In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views. Any variable you define in the controller method is automagically visible in the template.
+In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views.
 
-For example, let's add the current date and time display to our /about page:
+Any variable you define in the controller method is automagically visible in the template. For example, let's add the current date and time display to our /about page:
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -291,6 +291,8 @@ $ vi src/views/page/about.ecr
 
 Hello, World! The time is now <%= time %>.
 ```
+
+Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
 
 # Starting the Server
 
