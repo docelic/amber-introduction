@@ -224,6 +224,8 @@ It can be pretty much expected that a website will need a set of simple, "static
 
 Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. We will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to controller methods. (Because these pages will not be powered by a database or have any methods really, we won't need a model nor more than a single view file per page.)
 
+Let's start by creating a controller:
+
 ```shell
 amber g controller page
 ```
