@@ -207,9 +207,7 @@ Enter it again:
 
 Then, edit `config/environments/development.yml` and configure "database_url:" to match your settings. If nothing else, the part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
 
-Then, to avoid seeing a minor/harmless error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
-
-And then try the three database commands from the beginning of this section.
+And then try the database commands from the beginning of this section.
 
 Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database, and the problem will most likely quickly reveal itself.
 
