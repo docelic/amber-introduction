@@ -187,7 +187,7 @@ $ amber routes
 ╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 ```
 
-Here's an example of an actual route definition that routes the HTTP POST request to the URL "/registration" to method create() in class RegistrationController:
+Here's an example of an actual route definition that routes HTTP POST requests to "/registration" to the method create() in class RegistrationController:
 
 ```
 post "/registration", RegistrationController, :create
