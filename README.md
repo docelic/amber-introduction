@@ -1,7 +1,7 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/amber.png">
-  <h4 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
-  And its Out-of-the-Box Features</h4>
+  <h3 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
+  And its Out-of-the-Box Features</h3>
   <p align="center">
     <sup>
       <i>
