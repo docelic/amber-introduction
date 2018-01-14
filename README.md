@@ -408,18 +408,8 @@ end
 module Amber::Controller::Helpers
   module CSRF
     def csrf_token
-      Amber::Pipe::CSRF.token(context).to_s
-    end
-
     def csrf_tag
-      Amber::Pipe::CSRF.tag(context)
-    end
-
     def csrf_metatag
-      Amber::Pipe::CSRF.metatag(context)
-    end
-  end
-end
 ```
 
 [Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) provides:
