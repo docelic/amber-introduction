@@ -70,11 +70,11 @@ crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src
 
 The watch command currently has some issues in edge cases. For example, it may run a re-build of the application twice concurrently, and is generally non-configurable.
 
-Amber itself also currently has problems in edge cases, for example if there is an error starting an application, amber will enter an endless loop trying to start it.
+Amber itself also currently has problems in edge cases. For example, if there is an error starting an application, Amber will enter an endless loop trying to start it.
 
 Please ignore these temporary problems until they are solved.
 
-Amber uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", please edit `config/environments/development.yml` and set "port_reuse" to false.
+Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
 
 
