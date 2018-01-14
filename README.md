@@ -276,6 +276,25 @@ Information about views can be summarized in bullet points:
 - Partials begin with "_" by convention, but that is not required
 - To render a partial, use `render( partial: "_name.ext")`
 
+# Variables in Views
+
+In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views. Any variable you define in the controller method is automagically visible in the template.
+
+For example, let's add the current date and time display to our /about page:
+
+```shell
+$ vi src/controllers/page_controller.cr
+
+def about
+	time = Time.now
+	render "about.ecr"
+end
+
+$ vi src/views/page/about.ecr
+
+Hello, World! The time is now <%= time %>.
+```
+
 # Static Pages
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but do not come from a database nor typically use any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
@@ -325,25 +344,6 @@ Hello, World!
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, that result will be returned to the controller, and from there it will be returned to the client.
-
-# Variables in Views
-
-In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views. Any variable you define in the controller method is automagically visible in the template.
-
-For example, let's add the current date and time display to our /about page:
-
-```shell
-$ vi src/controllers/page_controller.cr
-
-def about
-	time = Time.now
-	render "about.ecr"
-end
-
-$ vi src/views/page/about.ecr
-
-Hello, World! The time is now <%= time %>.
-```
 
 # Assets Pipeline
 
@@ -412,11 +412,9 @@ random/secure
 
 Only the parts that are used end up in the compiled project.
 
-# Classes
-
 Let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
-## Extensions
+# Extensions
 
 Amber adds some very convenient extensions to existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory, but here's a listing of the current ones:
 
@@ -462,7 +460,30 @@ For Number:
       def gteq?(num)
 ```
 
-## Amber::Controller::Base
+# Support Routines
+
+In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support} directory there is a number of various support files that provide additional, ready made routines.
+
+Currently, the following can be found there:
+
+```
+client_reload.cr      - Support for reloading developer's browser
+
+file_encryptor.cr     - Support for storing/reading encrypted versions of files
+message_encryptor.cr
+message_verifier.cr
+
+locale_formats.cr     - Very basic locate data for various, manually-added locales
+
+mime_types.cr         - List of MIME types and helper methods for working with them:
+      def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
+      def self.zip_types(path)
+      def self.format(accepts)
+      def self.default
+      def self.get_request_format(request)
+```
+
+# Amber::Controller::Base
 
 This is the base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
