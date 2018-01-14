@@ -241,10 +241,10 @@ Amber::Server.configure do |app|
     plug Amber::Pipe::Reload.new
   end
 
-	routes :web do
-		get "/", HomeController, :index
-		get "/test", PageController, :test
-	end
+  routes :web do
+    get "/", HomeController, :index
+    get "/test", PageController, :test
+  end
 end
 ```
 
