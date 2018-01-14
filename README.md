@@ -47,18 +47,18 @@ Supported template languages are [slang](https://github.com/jeromegn/slang) (def
 Slang is extremely elegant, but very different from the traditional perception of HTML.
 ECR is HTML-like and more then mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
 
-In any case, you can even combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
+In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
-Supported migrations engines are [micrate](https://github.com/juanedi/micrate). Micrate is very, very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+Supported migrations engines are [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
 # Running the App
 
 The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
-(It is not necessary to run deps if you have invoked `amber new` with argument --deps.)
+(It is not necessary to run deps if you have invoked `amber new` with the argument --deps; in that case Amber did it for you.)
 
 To run it, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
 
