@@ -175,7 +175,7 @@ Then, edit `config/environments/development.yml` and configure "database_url:" t
 
 Then, to avoid seeing a minor/harmless error, please run `mkdir -p db/migrations` ([#522](https://github.com/amberframework/amber/issues/522)).
 
-And then try the three database commands from the beginning of this section, but have in mind that `amber db create` *must* be the first command.
+And then try the three database commands from the beginning of this section.
 
 Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database, and the problem will most likely quickly reveal itself.
 
@@ -412,13 +412,13 @@ random/secure
 
 Only the parts that are used end up in the compiled project.
 
-# Controllers
+# Classes
 
-Let's take a tour of all the default controllers existing in an Amber application.
+Let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
 ## Amber::Controller::Base
 
-Base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
+This is the base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
 On every request, the appropriate controller is instantiated and its initialize() runs. Since this is the base controller, this code runs on every request so you can understand what is available in the context of every controller.
 
@@ -489,11 +489,17 @@ end
     macro before_action
     macro after_action
 ```
-# Classes
+# Other Classes
 
 Here follow notes on some other/remaining Amber classes and what they are for.
 
 The classes mentioned here are mostly supporting elements, and while they do help understand the big picture, they are not particularly crucial.
+
+## Amber::Exceptions
+
+Defines error conditions that Amber may encounter, such as DuplicateRouteError, RouteNotFound, ForbiddenCookieOverflow, ValidationFailed, InvalidParam etc.
+
+Source file is in [exceptions.cr](https://github.com/amberframework/amber/blob/master/src/amber/exceptions/exceptions.cr).
 
 ## Amber::Environment
 
