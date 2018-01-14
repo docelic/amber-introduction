@@ -91,21 +91,21 @@ For faster build speed, development versions are compiled without the --release 
 
 Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds.
 
-Sometimes building the App will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least report print the compiler line that caused it.
+Sometimes building the App will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
 
 The best way to see the actual error from there is to copy-paste the command reported and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
 
-There are some issues with the `libgc` library. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
+There are some issues with the `libgc` library here and there. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
 
 # REPL
 
-Often times, it is very useful to enter an interactive console (think of IRB shell) with all applications lasses initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
+Often times, it is very useful to enter an interactive console (think of IRB shell) with all applications classes initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
 
-As you might know, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and will then execute the script.
+Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
 
 Another, more professional way to do it is via REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (or more generally, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything would work as expected.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (or more generally, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
 
 # File Structure
 
@@ -119,6 +119,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./config/environments      - Environment-specific YAML configurations
 ./config/webpack           - Webpack (asset bundler) configuration
 ./config/initializers      - Initializers
+./db/migrations            - All DB migration files (created with 'amber g migration ...')
 ./src                      - Main source directory, with <app_name>.cr being the main/entry file
 ./src/controllers          - All controllers
 ./src/models               - All models
@@ -294,35 +295,4 @@ Hello, World! The time is now <%= time %>.
 ```
 
 # Pipelines
-
-# Database Access with User Privileges
-
-Typical web applications make all database accesses using the same credentials (i.e. they use the given username and once they are connected to the database, that's it).
-
-However, with a real database like [PostgreSQL](https://www.postgresql.org/) and thanks to crystal-db which by default creates connection pools, it is trivial to be accessing the database with the privileges of the logged-in user.
-
-Postgres allows users to switch roles on the existing connection, assuming they have the necessary privileges. To make this work, we are going to do the following:
-
-- Create controller UserApplicationController, which will inherit from the default ApplicationController
-- In both controllers we will add a `before_all` filter to switch Postgres role. The default ApplicationController will always switch role to the default user. The UserApplicationController will switch role to the user logged in
-- All other application controllers which require database access will simply inherit from ApplicationController (which they are already doing) or UserApplicationController
-
-```shell
-$ amber g controller UserApplication
-
-$ vi src/controllers/user_application_controller.cr
-
-class UserApplicationController < ApplicationController
-
-	before_all {
-	}
-
-end
-```
-
-
-This approach of course requires that users are created in the database, that the row level permissions are correct, etc. This section will be expanded over time to show a fully working system.
-
-
-
 
