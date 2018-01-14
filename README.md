@@ -35,22 +35,22 @@ make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
 
-# Creating new application
+# Creating New Amber App
 
 ```shell
 amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
 ```
 
-Supported databases: PostgreSQL (pg, default), MySQL (mysql), and SQLite (sqlite).
+Supported databases: [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
 
-Supported template languages: slang (default) and ecr. (ecr is very similar to Ruby's erb)
+Supported template languages: [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (ecr is very similar to Ruby's erb.)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML/ERB like and beyond mediocre when compared to slang, but may be the only choice for your application if you intend to use some HTML site template whose sources are HTML + CSS or SCSS.
+ECR is HTML-like and beyond mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
 
-Supported ORM models: granite (default) and crecto.
+Supported ORM models: [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
-Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). (If you have by chance known and loved Class::DBI for Perl, it might remind you of it in some ways.)
+Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
 ```
 ```
