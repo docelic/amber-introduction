@@ -15,7 +15,7 @@
 
 # Introduction
 
-**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org). Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on FreeNode IRC (channel #amber) or on [Gitter](https://gitter.im/amberframework/amber).
+**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on FreeNode IRC (channel #amber) or on [Gitter](https://gitter.im/amberframework/amber).
 
 Amber is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit the concepts from Rails that are good.)
 
@@ -71,7 +71,8 @@ crystal src/<app_name>.cr
 amber watch
 
 # For production, compiles app with optimizations and places it in bin/app.
-crystal build --no-debug --release --verbose --threads 4 -t -s -p -o bin/app src/app.cr
+# Crystal by default compiles using all CPU threads.
+crystal build --no-debug --release --verbose -t -s -p -o bin/app src/app.cr
 ```
 
 The watch command currently has some issues in edge cases. For example, it may try to run things even if some steps fail ([#499](https://github.com/amberframework/amber/issues/499)) or start re-building the application twice concurrently ([#507](https://github.com/amberframework/amber/issues/507)), and it is generally non-configurable ([#476](https://github.com/amberframework/amber/issues/476)).
@@ -81,6 +82,12 @@ Amber itself also currently has problems in edge cases. For example, if you crea
 Please ignore these temporary problems until they are solved.
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
+
+# Building the App
+
+Sometimes building the App will fail on the C level because of missing header files or libraries. Crystal won't print the actual C error, but will report that the compilation has failed and will print the line that caused it.
+
+The best way to see the actual error from there is to copy-paste the command reported and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
 
 # REPL
 
