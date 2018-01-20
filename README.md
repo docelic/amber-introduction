@@ -300,15 +300,11 @@ Templates are actually executing in the controller class. If you do "<%= self.cl
 
 # Starting the Server
 
-| File or Method | Description |
-| -------------- | ----------- |
-
-
 It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
 
-1. You or a script run `crystal src/<app_name>.cr`
-1. As the first thing, this file does `require "../config/*"`. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in the current dir are included.
-	1. The first file in config/ is `config/application.cr`. It does:
+1. `crystal src/<app_name>.cr` - you or a script starts Amber
+1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in the current dir are included
+	1. `config/application.cr` - this is usually the first file in `config/`
 		1. `require "./initializers/**"` - loads all initializers. There is only one initializer by default, `initializer/database.cr`. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth.
 		1. `require "amber"` - Amber itself is loaded
 			1. Loading amber makes `Amber::Server` class available
