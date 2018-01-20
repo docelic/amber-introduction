@@ -115,10 +115,10 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ```
 ./config/                  - All configuration
 ./config/application.cr    - Main configuration file
-./config/routes.cr         - All routes
+./config/initializers/     - Initializers (files loaded at very beginning)
 ./config/environments/     - Environment-specific YAML configurations
+./config/routes.cr         - All routes
 ./config/webpack/          - Webpack (asset bundler) configuration
-./config/initializers/     - Initializers
 ./db/migrations/           - All DB migration files (created with 'amber g migration ...')
 ./public/                  - The "public" directory for static files
 ./public/dist/             - Directory inside "public" for generated files and bundles
@@ -126,8 +126,8 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./src/                     - Main source directory, with <app_name>.cr being the main/entry file
 ./src/controllers/         - All controllers
 ./src/models/              - All models
-./src/views/               - All views
 ./src/views/layouts/       - All layouts
+./src/views/               - All views
 ./src/views/home/          - Views for HomeController (path "/")
 ./src/assets/              - Static assets which will be bundled and placed into ./public/dist/
 ./src/assets/stylesheets/
@@ -158,9 +158,8 @@ amber db status
 amber db version
 ```
 
-But, beware:
-
-Before these commands will work, you will need to take care of a couple things.
+Before these commands will work, you will need to configure database
+credentials:
 
 First, create a user to access the database. For PostgreSQL, this is done by invoking something like:
 
@@ -175,7 +174,7 @@ Then, edit `config/environments/development.yml` and configure "database_url:" t
 
 And then try the database commands from the beginning of this section.
 
-Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
+Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), the database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
 
@@ -197,7 +196,11 @@ $ amber routes
 ╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 ```
 
-Here's an example of an actual route definition that routes HTTP POST requests to "/registration" to the method create() in class RegistrationController:
+From this example, we see that a "GET /" request will instantiate
+HomeController and then call method index() in it. The return value of
+the method will be returned to the client.
+
+Similarly, here's an example of a route that would route HTTP POST requests to "/registration" to the method create() in class RegistrationController:
 
 ```
 post "/registration", RegistrationController, :create
