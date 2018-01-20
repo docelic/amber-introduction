@@ -40,7 +40,7 @@ for creating or managing Amber apps.
 # Creating New Amber App
 
 ```shell
-amber new <app_name> [--deps] [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
+amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL] [--deps]
 ```
 
 Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
@@ -57,6 +57,9 @@ Supported ORM models are [granite](https://github.com/amberframework/granite-orm
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
 Supported migrations engines are [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+
+If argument --deps is provided, Amber will automatically run `crystal
+deps` in the new directory to install shards.
 
 # Running the App
 
