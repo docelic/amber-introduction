@@ -331,8 +331,9 @@ It is important to explain exactly what is happening from when you run the appli
 
 # Serving Requests
 
-Amber's request serving model is based on Crystal's built-in
-functionality:
+Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
+
+In lower-level stages, Amber's request serving model is based on Crystal's built-in functionality:
 
 1. The server that is running is an instance of Crystal's
 	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
@@ -340,10 +341,12 @@ functionality:
 3. HTTP::Handler invokes every Pipe (Amber::Pipe::*, ultimately subclasses of Handler) with one argument. That argument is
 	 an instance of `HTTP::Server::Context` which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds `router`, `flash`, `cookies`, `session`, `content`, `route` and other methods as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 
-So, in detail:
+After that, Amber-specific parts come into play.
+
+So, in detail from the beginning:
 
 1. `loop do server.listen(settings.port_reuse) end` - main loop is running
-	1. `spawn handle_client(server.accept?)`
+	1. `spawn handle_client(server.accept?)` - handle_client() is called in a new fiber after connection is accepted
 		1. `io = OpenSSL::SSL::Socket::Server.new(io, tls, sync_close: true) if @tls`
 		1. `@processor.process(io, io)`
 			1. `if request.is_a?(HTTP::Request::BadRequest); response.respond_with_error("Bad Request", 400)`
@@ -352,8 +355,8 @@ So, in detail:
 			1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
 				1. `raise ...error... if context.invalid_route?` - route validity is checked early
-				1. `if context.websocket?; context.process_websocket_request`
-				1. `elsif ...; ...pipeline.first...call(context)` - call the first handler in the appropriate pipeline
+				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
+				1. `elsif ...; ...pipeline.first...call(context)` - if reqular HTTP request, call the first handler in the appropriate pipeline
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After the last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
