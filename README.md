@@ -331,15 +331,14 @@ It is important to explain exactly what is happening from when you run the appli
 
 # Serving Requests
 
-Amber's request serving model is based on Crystal's built in
+Amber's request serving model is based on Crystal's built-in
 functionality:
 
-1. The server that is running is an instance of
+1. The server that is running is an instance of Crystal's
 	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
-2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler (HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row). In Amber, the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, although named Pipeline, is aware of all pipes and can identify and trigger the appropriate one and its whole pipe (handler) chain
-3. Every Pipe (Handler) is invoked with one argument. That argument is
-	 an instance of `HTTP::Server::Context` which, at a minimum, has two
-	 methods &mdash; `request` and `response`
+2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler. HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, although named Pipeline, is aware of all pipelines and can identify and trigger the appropriate one and its whole pipe (handler) chain
+3. HTTP::Handler invokes every Pipe (Handler) with one argument. That argument is
+	 an instance of `HTTP::Server::Context` which has two methods &mdash; `request` and `response`, to access the request and response parts respectively
 
 As mentioned, Crystal's HTTP::Server is called with three arguments: host, port, and handler.
 
