@@ -337,16 +337,16 @@ functionality:
 1. The server that is running is an instance of Crystal's
 	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
 2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler. HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, although named Pipeline, is aware of all pipelines and can identify and trigger the appropriate one and its whole pipe (handler) chain
-3. HTTP::Handler invokes every Pipe (Handler) with one argument. That argument is
-	 an instance of `HTTP::Server::Context` which has two methods &mdash; `request` and `response`, to access the request and response parts respectively
+3. HTTP::Handler invokes every Pipe (Amber::Pipe::*, ultimately subclasses of Handler) with one argument. That argument is
+	 an instance of `HTTP::Server::Context` which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds `router`, `flash`, `cookies`, `session`, `content`, `route` and other methods as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 
-As mentioned, Crystal's HTTP::Server is called with three arguments: host, port, and handler.
+So, in detail:
 
-As per Crystal's implementation, handler can simple be a block to invoke, or HTTP::Handler object. Unlike a block,
-HTTP::Handler object also has 'next' to support chains of handlers.
-
-In Amber, handler is then HTTP::Handler. (Well, strictly speaking it is Amber::Pipe::Pipeline, which inherits from Amber::Pipe::Base,
-which includes HTTP::Handler.)
+1. `loop do server.listen(settings.port_reuse) end` - main loop is running
+	1. `Amber::Pipe::Pipeline.call(context)` - HTTP::Server calls Amber's handler
+		1. `raise ...error... if context.invalid_route?` - route validity is checked early
+		1. `if context.websocket?; context.process_websocket_request`
+		1. `elsif ...; ...pipeline.first.call(context)` - call the first handler in the appropriate pipeline
 
 Server goes to create context ... (src/amber/router/context.cr)
 
