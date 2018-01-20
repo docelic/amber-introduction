@@ -308,7 +308,7 @@ It is important to explain exactly what is happening from when you run the appli
 			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth
 			1. `require "amber"` - Amber itself is loaded
 				1. Loading Amber makes `Amber::Server` class available
-				1. Already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
+				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
 			1. `require "../src/controllers/application_controller"` - main controller is required
 				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang")
 			1. `require "../src/controllers/**"` - all other controllers are loaded
