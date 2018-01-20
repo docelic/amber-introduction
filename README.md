@@ -303,32 +303,32 @@ Templates are actually executing in the controller class. If you do "<%= self.cl
 It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
 
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
-  1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
-    1. `config/application.cr` - this is usually the first file in `config/`
-      1. `require "./initializers/**"` - loads all initializers. There is only one initializer by default, named `initializer/database.cr`. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth.
-      1. `require "amber"` - Amber itself is loaded
-        1. Loading amber makes `Amber::Server` class available
-        1. Already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
-      1. `require "../src/controllers/application_controller"` - main controller is required
-        1. It defines `ApplicationController`, includes JalperHelpers in it, and sets default layout
-      1. `require "../src/controllers/**"` - all other controllers are loaded
-      1. `Amber::Server.configure` block is invoked to override any config settings
-    1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but works on routes and feeds all the routes in
-  1. `Amber::Server.start` is invoked
-    1. This implicitly creates a singleton instance of server and saves it to `@@instance`
-    1. `@@instance.run` is called
-    1. Run consults variable `settings.process_count`
-    1. If process count is 1, @@instance.start is called
-    1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
-      1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
-    1. `@@instance.start` is called for every process
-      1. It saves current time and prints startup info
-      1. `@handler.prepare_pipelines` is called. @handler in this sense is
-         the pipeline itself (Amber::Pipeline). `prepare_pipelines` is called to connect the pipes so the processing can work. Also, this process adds Amber::Pipe::Last to the end of the pipeline. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
-      1. `server = HTTP::Server.new( host, port @handler)`- Crystal's HTTP server is created
-      1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?` 
-      1. Signal::INT is trapped (calls `server.close` when received)
-      1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
+	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
+		1. `config/application.cr` - this is usually the first file in `config/`
+			1. `require "./initializers/**"` - loads all initializers. There is only one initializer by default, named `initializer/database.cr`. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth.
+			1. `require "amber"` - Amber itself is loaded
+				1. Loading amber makes `Amber::Server` class available
+				1. Already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
+			1. `require "../src/controllers/application_controller"` - main controller is required
+				1. It defines `ApplicationController`, includes JalperHelpers in it, and sets default layout
+			1. `require "../src/controllers/**"` - all other controllers are loaded
+			1. `Amber::Server.configure` block is invoked to override any config settings
+		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but works on routes and feeds all the routes in
+	1. `Amber::Server.start` is invoked
+		1. This implicitly creates a singleton instance of server and saves it to `@@instance`
+		1. `@@instance.run` is called
+		1. Run consults variable `settings.process_count`
+		1. If process count is 1, @@instance.start is called
+		1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
+			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
+		1. `@@instance.start` is called for every process
+			1. It saves current time and prints startup info
+			1. `@handler.prepare_pipelines` is called. @handler in this sense is
+				 the pipeline itself (Amber::Pipeline). `prepare_pipelines` is called to connect the pipes so the processing can work. Also, this process adds Amber::Pipe::Last to the end of the pipeline. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
+			1. `server = HTTP::Server.new( host, port @handler)`- Crystal's HTTP server is created
+			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?` 
+			1. Signal::INT is trapped (calls `server.close` when received)
+			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
 
 # Serving Requests
 
