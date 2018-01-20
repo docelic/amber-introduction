@@ -56,7 +56,7 @@ Supported ORM models are [granite](https://github.com/amberframework/granite-orm
 
 Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
-Supported migrations engines are [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
 If argument --deps is provided, Amber will automatically run `crystal
 deps` in the new directory to install shards.
@@ -81,9 +81,7 @@ amber watch
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
-Granite also currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error ([#112](https://github.com/amberframework/granite-orm/issues/112)).
-
-Please ignore these temporary problems until they are solved.
+Please note that Granite currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error ([#112](https://github.com/amberframework/granite-orm/issues/112)).
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
@@ -308,7 +306,7 @@ It is important to explain exactly what is happening from when you run the appli
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
 	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
 		1. `require "../config/application.cr"` - this is usually the first file in `config/`
-			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth
+			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including in subdirectories. Inclusion is always current-dir first, then depth
 			1. `require "amber"` - Amber itself is loaded
 				1. Loading Amber makes `Amber::Server` class available
 				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
@@ -325,14 +323,23 @@ It is important to explain exactly what is happening from when you run the appli
 			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
 		1. `instance.start` is called for every process
 			1. It saves current time and prints startup info
-			1. `@handler.prepare_pipelines` is called. @handler in this sense is
-				 the pipeline itself (Amber::Pipeline). `prepare_pipelines` is called to connect the pipes so the processing can work. Also, this process adds Amber::Pipe::Last to the end of the pipeline. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
-			1. `server = HTTP::Server.new( host, port @handler)`- Crystal's HTTP server is created
-			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?` 
+			1. `@handler.prepare_pipelines` is called. @handler is Amber::Pipe::Pipeline, a subclass of Crystal's HTTP::Handler. `prepare_pipelines` is called to connect the pipes so the processing can work, and implicitly adds Amber::Pipe::Controller (the pipe in which app's controller is invoked) as the last pipe. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
+			1. `server = HTTP::Server.new(host, port @handler)`- Crystal's HTTP server is created
+			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?`
 			1. Signal::INT is trapped (calls `server.close` when received)
 			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
 
 # Serving Requests
+
+Amber's request serving model is based on Crystal's built in
+functionality:
+
+1. The server that is running is an instance of
+	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
+2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler (HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row). In Amber, the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, although named Pipeline, is aware of all pipes and can identify and trigger the appropriate one and its whole pipe (handler) chain
+3. Every Pipe (Handler) is invoked with one argument. That argument is
+	 an instance of `HTTP::Server::Context` which, at a minimum, has two
+	 methods &mdash; `request` and `response`
 
 As mentioned, Crystal's HTTP::Server is called with three arguments: host, port, and handler.
 
