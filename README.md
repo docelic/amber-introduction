@@ -40,7 +40,7 @@ for working with Amber apps.
 # Creating New Amber App
 
 ```shell
-amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
+amber new <app_name> [--deps] [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
 ```
 
 Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
@@ -48,9 +48,9 @@ Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default),
 Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (But you could also try [html2slang](https://github.com/docelic/html2slang/) which converts such template HTML pages into slang.)
+ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts HTML pages into slang.)
 
-In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
+In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes templates extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
@@ -75,12 +75,10 @@ amber watch
 
 # For production, compiles app with optimizations and places it in bin/app.
 # Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
-crystal build --no-debug --release --verbose -t -s -p -o bin/app src/app.cr
+crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
-The watch command currently has some issues in edge cases. For example, it may try to run things even if some steps fail ([#499](https://github.com/amberframework/amber/issues/499)) or start re-building the application twice concurrently ([#507](https://github.com/amberframework/amber/issues/507)), and it is generally non-configurable ([#476](https://github.com/amberframework/amber/issues/476)).
-
-Amber itself also currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error in Granite ([#112](https://github.com/amberframework/granite-orm/issues/112)).
+Granite also currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error ([#112](https://github.com/amberframework/granite-orm/issues/112)).
 
 Please ignore these temporary problems until they are solved.
 
@@ -108,35 +106,35 @@ Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia
 
 Another, more professional way to do it is via standalone REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (or more generally, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
 
 # File Structure
 
 So, at this point you might be wanting to know what's placed where in an Amber application. The default structure looks like this:
 
 ```
-./spec                     - Tests (named *_spec.cr)
-./config                   - All configuration
+./config/                  - All configuration
 ./config/application.cr    - Main configuration file
 ./config/routes.cr         - All routes
-./config/environments      - Environment-specific YAML configurations
-./config/webpack           - Webpack (asset bundler) configuration
-./config/initializers      - Initializers
-./db/migrations            - All DB migration files (created with 'amber g migration ...')
-./src                      - Main source directory, with <app_name>.cr being the main/entry file
-./src/controllers          - All controllers
-./src/models               - All models
-./src/views                - All views
-./src/views/layouts        - All layouts
-./src/views/home           - Views for HomeController (path "/")
-./src/assets               - Static assets which will be bundled and placed into ./public/dist/
-./src/assets/stylesheets
-./src/assets/fonts
-./src/assets/images
-./src/assets/javascripts
-./public                   - The "public" directory for static files
-./public/dist              - Directory inside "public" for generated files and bundles
-./public/dist/images
+./config/environments/     - Environment-specific YAML configurations
+./config/webpack/          - Webpack (asset bundler) configuration
+./config/initializers/     - Initializers
+./db/migrations/           - All DB migration files (created with 'amber g migration ...')
+./public/                  - The "public" directory for static files
+./public/dist/             - Directory inside "public" for generated files and bundles
+./public/dist/images/
+./src/                     - Main source directory, with <app_name>.cr being the main/entry file
+./src/controllers/         - All controllers
+./src/models/              - All models
+./src/views/               - All views
+./src/views/layouts/       - All layouts
+./src/views/home/          - Views for HomeController (path "/")
+./src/assets/              - Static assets which will be bundled and placed into ./public/dist/
+./src/assets/stylesheets/
+./src/assets/fonts/
+./src/assets/images/
+./src/assets/javascripts/
+./spec/                    - Tests (named *_spec.cr)
 ```
 
 I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory named `etc`, so I run:
