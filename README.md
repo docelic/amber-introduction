@@ -206,7 +206,7 @@ Similarly, here's an example of a route that would route HTTP POST requests to "
 post "/registration", RegistrationController, :create
 ```
 
-Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers.
+Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've done with "index" above.
 
 Websocket routes are supported too.
 
@@ -231,7 +231,7 @@ Such as:
 ```crystal
 Amber::Server.configure do |app|
   pipeline :web do
-    # Plug is the method to use connect a pipe (middleware)
+    # Plug is the method used to connect a pipe (middleware)
     # A plug accepts an instance of HTTP::Handler
     plug Amber::Pipe::Logger.new
   end
@@ -299,6 +299,10 @@ Hello, World! The time is now <%= time %>.
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
 
 # Starting the Server
+
+| File or Method | Description |
+| -------------- | ----------- |
+
 
 It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
 
