@@ -309,11 +309,11 @@ It is important to explain exactly what is happening from when you run the appli
 			1. `require "amber"` - Amber itself is loaded
 				1. Loading Amber makes `Amber::Server` class available
 				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
-			1. `require "../src/controllers/application_controller"` - main controller is required
-				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang")
+			1. `require "../src/controllers/application_controller"` - main controller is required. This is the base class for all other controllers
+				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang"). Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines
 			1. `require "../src/controllers/**"` - all other controllers are loaded
 			1. `Amber::Server.configure` block is invoked to override any config settings
-		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but works on routes and feeds all the routes in
+		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but concerns itself with routes and feeds all the routes in
 	1. `Amber::Server.start` is invoked
 		1. This implicitly creates a singleton instance of server and saves it to `@@instance`
 		1. `@@instance.run` is called
@@ -666,4 +666,4 @@ p settings
 
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
 
-[//]: # (controller/filters, process/thread_count in server/server.cr, file upload)
+[//]: # (controller/filters, process/thread_count in server/server.cr, file upload), methods/helpers from external shards
