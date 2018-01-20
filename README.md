@@ -317,10 +317,10 @@ It is important to explain exactly what is happening from when you run the appli
 	1. `Amber::Server.start` is invoked
 		1. `instance.run` - implicitly creates a singleton instance of server, saves it to `@@instance`, and calls `run` on it
 		1. Consults variable `settings.process_count`
-		1. If process count is 1, @@instance.start is called
+		1. If process count is 1, `instance.start` is called
 		1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
 			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
-		1. `@@instance.start` is called for every process
+		1. `instance.start` is called for every process
 			1. It saves current time and prints startup info
 			1. `@handler.prepare_pipelines` is called. @handler in this sense is
 				 the pipeline itself (Amber::Pipeline). `prepare_pipelines` is called to connect the pipes so the processing can work. Also, this process adds Amber::Pipe::Last to the end of the pipeline. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
