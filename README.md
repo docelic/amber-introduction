@@ -333,17 +333,17 @@ It is important to explain exactly what is happening from when you run the appli
 
 Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
 
-In lower-level stages, Amber's request serving model is based on Crystal's built-in functionality:
+Amber's app serving model is based on Crystal's built-in, underlying functionality:
 
 1. The server that is running is an instance of Crystal's
 	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
-2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler. HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, although named Pipeline, is aware of all pipelines and can identify and trigger the appropriate one and its whole pipe (handler) chain
-3. HTTP::Handler invokes every Pipe (Amber::Pipe::*, ultimately subclasses of Handler) with one argument. That argument is
-	 an instance of `HTTP::Server::Context` which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds `router`, `flash`, `cookies`, `session`, `content`, `route` and other methods as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+2. On every incoming request, handler is invoked. As supported by Crystal, handler can be simple Proc or an instance of HTTP::Handler. HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, these individual handlers are called "pipes", and the handler is Amber::Pipe::Pipeline, a subclass of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). This handler, even though named Pipeline and implying a specific pipeline, is actually aware of all pipelines and can identify and trigger the appropriate one
+3. In the pipeline, every Pipe (Amber::Pipe::*, ultimately subclasses of Handler) is invoked, with one argument. That argument is
+	 an instance of `HTTP::Server::Context` which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route` and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 
-After that, Amber-specific parts come into play.
+After that, pipelines, pipes, routes and otherAmber-specific parts come into play.
 
-So, in detail from the beginning:
+So, in detail, from the beginning:
 
 1. `loop do server.listen(settings.port_reuse) end` - main loop is running
 	1. `spawn handle_client(server.accept?)` - handle_client() is called in a new fiber after connection is accepted
