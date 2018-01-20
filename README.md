@@ -343,19 +343,20 @@ functionality:
 So, in detail:
 
 1. `loop do server.listen(settings.port_reuse) end` - main loop is running
-	1. `Amber::Pipe::Pipeline.call(context)` - HTTP::Server calls Amber's handler
-		1. `raise ...error... if context.invalid_route?` - route validity is checked early
-		1. `if context.websocket?; context.process_websocket_request`
-		1. `elsif ...; ...pipeline.first.call(context)` - call the first handler in the appropriate pipeline
-
-Server goes to create context ... (src/amber/router/context.cr)
-
-Pipeline (or any HTTP::Handler) is invoked by HTTP::Server with one argument &mdash; HTTP::Server::Context. This object contains
-`request` (HTTP::Request) with details, and expects handlers to write to `response` (HTTP::Server::Response). Context also contains
-`params` and `session`.
-
-The handler (Amber::Pipe::Pipeline) is aware of all pipelines, determines the 
-
+	1. `spawn handle_client(server.accept?)`
+			1. `io = OpenSSL::SSL::Socket::Server.new(io, tls, sync_close: true) if @tls`
+			1. `@processor.process(io, io)`
+				1. `if request.is_a?(HTTP::Request::BadRequest); response.respond_with_error("Bad Request", 400)`
+				1. `response.version = request.version`
+				1. `response.headers["Connection"] = "keep-alive" if request.keep_alive?`
+				1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+				1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
+					1. `raise ...error... if context.invalid_route?` - route validity is checked early
+					1. `if context.websocket?; context.process_websocket_request`
+					1. `elsif ...; ...pipeline.first...call(context)` - call the first handler in the appropriate pipeline
+						1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
+							1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After the last pipe, the stack of call_next()s is "unwound" back to the starting position
+						1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
 # Static Pages
 
