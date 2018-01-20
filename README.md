@@ -117,8 +117,8 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./config/application.cr    - Main configuration file
 ./config/initializers/     - Initializers (files loaded at very beginning)
 ./config/environments/     - Environment-specific YAML configurations
-./config/routes.cr         - All routes
 ./config/webpack/          - Webpack (asset bundler) configuration
+./config/routes.cr         - All routes
 ./db/migrations/           - All DB migration files (created with 'amber g migration ...')
 ./public/                  - The "public" directory for static files
 ./public/dist/             - Directory inside "public" for generated files and bundles
@@ -310,14 +310,13 @@ It is important to explain exactly what is happening from when you run the appli
 				1. Loading Amber makes `Amber::Server` class available
 				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
 			1. `require "../src/controllers/application_controller"` - main controller is required. This is the base class for all other controllers
-				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang"). Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines
+				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang").
 			1. `require "../src/controllers/**"` - all other controllers are loaded
 			1. `Amber::Server.configure` block is invoked to override any config settings
 		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but concerns itself with routes and feeds all the routes in
 	1. `Amber::Server.start` is invoked
-		1. This implicitly creates a singleton instance of server and saves it to `@@instance`
-		1. `@@instance.run` is called
-		1. Run consults variable `settings.process_count`
+		1. `instance.run` - implicitly creates a singleton instance of server, saves it to `@@instance`, and calls `run` on it
+		1. Consults variable `settings.process_count`
 		1. If process count is 1, @@instance.start is called
 		1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
 			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
@@ -667,3 +666,4 @@ p settings
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
 
 [//]: # (controller/filters, process/thread_count in server/server.cr, file upload), methods/helpers from external shards
+[//]: # (Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines)
