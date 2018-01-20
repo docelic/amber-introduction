@@ -35,7 +35,7 @@ make force_link # can also specify PREFIX=...
 ```
 
 After installation or linking, `amber` is the command you will be using
-for working with Amber apps.
+for creating or managing Amber apps.
 
 # Creating New Amber App
 
