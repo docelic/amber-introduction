@@ -305,7 +305,7 @@ It is important to explain exactly what is happening from when you run the appli
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
   1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
     1. `config/application.cr` - this is usually the first file in `config/`
-      1. `require "./initializers/**"` - loads all initializers. There is only one initializer by default, `initializer/database.cr`. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth.
+      1. `require "./initializers/**"` - loads all initializers. There is only one initializer by default, named `initializer/database.cr`. Here we have a double star ("**") and that means inclusion of all files including subdirectories. Inclusion is always current-dir first, then depth.
       1. `require "amber"` - Amber itself is loaded
         1. Loading amber makes `Amber::Server` class available
         1. Already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
