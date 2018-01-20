@@ -15,11 +15,11 @@
 
 # Introduction
 
-**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on FreeNode IRC (channel #amber) or on [Gitter](https://gitter.im/amberframework/amber).
+**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on [Gitter](https://gitter.im/amberframework/amber) or FreeNode IRC channel #amber.
 
-It is inspired by Kemal, Rails, Phoenix and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit some concepts from Rails that are good.)
+Amber is inspired by Kemal, Rails, Phoenix and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit some concepts from Rails that are good.)
 
-This document is here to describe everything that Amber offers out of the box, sorted in a logical order and easy to consult repeatedly over time. The Crystal level is not described; it is expected that the readers coming here have a formed understanding of Crystal and its features.
+This document is here to describe everything that Amber offers out of the box, sorted in a logical order and easy to consult repeatedly over time. The Crystal level is not described; it is expected that the readers coming here have a [formed understanding](https://crystal-lang.org/docs/overview/) of Crystal and its features.
 
 # Installation
 
@@ -34,6 +34,9 @@ make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
 
+After installation or linking, `amber` is the command you will be using
+for working with Amber apps.
+
 # Creating New Amber App
 
 ```shell
@@ -42,10 +45,10 @@ amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL]
 
 Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
 
-Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (ecr is very similar to Ruby's erb.)
+Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like and more then mediocre when compared to slang, but may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS.
+ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (But you could also try [html2slang](https://github.com/docelic/html2slang/) which converts such template HTML pages into slang.)
 
 In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes them extremely fast, as well as read-only which is a very welcome side-benefit!
 
@@ -319,7 +322,8 @@ It is important to explain exactly what is happening from when you run the appli
 		1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
 	1. `@@instance.start` is called for every process
 		1. It saves current time and prints startup info
-		1. `@handler.prepare_pipelines` is called. @handler is an instance variable of Amber::Server and contains the code/entry point into Amber which will be called on every request. `prepare_pipelines` connects the pipes so that data can flow.
+		1. `@handler.prepare_pipelines` is called. @handler in this sense is
+       the pipeline itself (Amber::Pipeline). `prepare_pipelines` is called to connect the pipes so the processing can work. Also, this process adds Amber::Pipe::Last to the end of the pipeline. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
 		1. `server = HTTP::Server.new( host, port @handler)`- Crystal's HTTP server is created
 		1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?` 
 		1. Signal::INT is trapped (calls `server.close` when received)
@@ -327,7 +331,22 @@ It is important to explain exactly what is happening from when you run the appli
 
 # Serving Requests
 
-Coming soon.
+As mentioned, Crystal's HTTP::Server is called with three arguments: host, port, and handler.
+
+As per Crystal's implementation, handler can simple be a block to invoke, or HTTP::Handler object. Unlike a block,
+HTTP::Handler object also has 'next' to support chains of handlers.
+
+In Amber, handler is then HTTP::Handler. (Well, strictly speaking it is Amber::Pipe::Pipeline, which inherits from Amber::Pipe::Base,
+which includes HTTP::Handler.)
+
+Server goes to create context ... (src/amber/router/context.cr)
+
+Pipeline (or any HTTP::Handler) is invoked by HTTP::Server with one argument &mdash; HTTP::Server::Context. This object contains
+`request` (HTTP::Request) with details, and expects handlers to write to `response` (HTTP::Server::Response). Context also contains
+`params` and `session`.
+
+The handler (Amber::Pipe::Pipeline) is aware of all pipelines, determines the 
+
 
 # Static Pages
 
