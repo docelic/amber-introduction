@@ -622,6 +622,7 @@ end
 ```crystal
     macro before_action
     macro after_action
+```
 
 # Conclusion
 
