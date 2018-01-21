@@ -543,11 +543,11 @@ message_verifier.cr
 locale_formats.cr     - Very basic locate data for various, manually-added locales
 
 mime_types.cr         - List of MIME types and helper methods for working with them:
-      def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
-      def self.zip_types(path)
-      def self.format(accepts)
-      def self.default
-      def self.get_request_format(request)
+                        def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
+                        def self.zip_types(path)
+                        def self.format(accepts)
+                        def self.default
+                        def self.get_request_format(request)
 ```
 
 # Amber::Controller::Base
