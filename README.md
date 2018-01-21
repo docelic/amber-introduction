@@ -528,7 +528,7 @@ For Number:
 
 # Support Routines
 
-In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support} directory there is a number of various support files that provide additional, ready made routines.
+In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready made routines.
 
 Currently, the following can be found there:
 
