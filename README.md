@@ -428,7 +428,7 @@ src/assets/stylesheets/main.scss
 At build time, all these are processed and placed under `public/dist/`.
 The JS resources are bundled to `main.bundle.js` and CSS resources are bundled to `main.bundle.css`.
 
-Currently, webpack is being used for asset management. It is terrible and I recommend replacing it with at least [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.
+Currently, webpack is being used for asset management. I recommend replacing it with at least [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.
 
 This section will be expanded to include a full replacement procedure. (In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
 
