@@ -366,7 +366,7 @@ So, in detail, from the beginning:
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
 
-Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. We will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. (Because these pages won't be objects, we won't need a model or anything else other than a single controller method and a view file per each page.)
+Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. We will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. (Because these pages won't be objects, we won't need a model or anything else other than one controller method and one view per each page.)
 
 Let's start by creating a controller:
 
