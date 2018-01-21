@@ -359,7 +359,7 @@ So, in detail, from the beginning:
 				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
 				1. `elsif ...; ...pipeline.first...call(context)` - if reqular HTTP request, call the first handler in the appropriate pipeline
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
-						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After the last pipe, the stack of call_next()s is "unwound" back to the starting position
+						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
 # Static Pages
