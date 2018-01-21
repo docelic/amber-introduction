@@ -622,61 +622,10 @@ end
 ```crystal
     macro before_action
     macro after_action
-```
-# Other Classes
 
-Here follow notes on some other/remaining Amber classes and what they are for.
+# Conclusion
 
-The classes mentioned here are mostly supporting elements, and while they do help understand the big picture, they are not particularly crucial.
+We hope you have enjoyed this hands-on introduction to Amber!
 
-## Amber::Exceptions
-
-Defines error conditions that Amber may encounter, such as DuplicateRouteError, RouteNotFound, ForbiddenCookieOverflow, ValidationFailed, InvalidParam etc.
-
-Source file is in [exceptions.cr](https://github.com/amberframework/amber/blob/master/src/amber/exceptions/exceptions.cr).
-
-## Amber::Environment
-
-Once this module is included into your app, it creates variable `@@settings : Settings?`. The settings are loaded from `config/environments/` and a default configuration exists as well.
-
-The config keys are pre-determined. The best way to check existing keys is to look up `config/environments/*.yml` (or run `amber encrypt` to see the contents of the `production.yml` file).
-
-It adds the following accessors (relevant excerpts shown):
-
-```
-def self.settings; @@settings ||= Loader.new(env.to_s, path).settings
-def self.logger; settings.logger
-def self.env=(env : EnvType) @@env = Env.new(env.to_s); @@settings = Loader.new(...)
-def self.env; @@env ||= Env.new
-```
-
-Example of using it:
-
-```crystal
-require "./src/amber/exceptions/exceptions.cr"
-require "./src/amber/environment.cr"
-
-class My
-  include Amber::Environment
-end
-
-p My.settings, My.logger
-```
-
-## Amber::Environment::Settings
-
-This is a more low-level class and it won't make changes to your module/class like Amber::Environment does.
-
-Example of using it:
-
-```crystal
-require "./src/amber/environment/settings.cr"
-
-settings= Amber::Environment::Settings.from_yaml("host: my.host.com")
-
-p settings
-```
-
-Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
-
-[//]: # (controller/filters, process/thread_count in server/server.cr, file upload), methods/helpers from external shards (Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines)
+Feel free to provide any feedback on content or additional areas you
+would like to see covered in this guide. Thanks!
