@@ -678,5 +678,4 @@ p settings
 
 Note that this always returns standard Amber settings, and you can use YAML content only to re-define default values, not to create your own keys.
 
-[//]: # (controller/filters, process/thread_count in server/server.cr, file upload), methods/helpers from external shards
-[//]: # (Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines)
+[//]: # (controller/filters, process/thread_count in server/server.cr, file upload), methods/helpers from external shards (Jasper helpers provide form element methods (form, label, select_field, ...), link elements (link_to, button_to), and some helper/sanitization routines)
