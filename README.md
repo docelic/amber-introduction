@@ -324,7 +324,7 @@ It is important to explain exactly what is happening from when you run the appli
 		1. `instance.start` is called for every process
 			1. It saves current time and prints startup info
 			1. `@handler.prepare_pipelines` is called. @handler is Amber::Pipe::Pipeline, a subclass of Crystal's HTTP::Handler. `prepare_pipelines` is called to connect the pipes so the processing can work, and implicitly adds Amber::Pipe::Controller (the pipe in which app's controller is invoked) as the last pipe. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
-			1. `server = HTTP::Server.new(host, port @handler)`- Crystal's HTTP server is created
+			1. `server = HTTP::Server.new(host, port, @handler)`- Crystal's HTTP server is created
 			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?`
 			1. Signal::INT is trapped (calls `server.close` when received)
 			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
