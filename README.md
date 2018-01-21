@@ -410,7 +410,7 @@ Hello, World!
 
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
-And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, that result will be returned to the controller, and from there it will be returned to the client.
+And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
 # Assets Pipeline
 
