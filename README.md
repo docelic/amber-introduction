@@ -479,7 +479,7 @@ random/secure
 
 Only the parts that are used end up in the compiled project.
 
-Let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
+Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
 # Extensions
 
