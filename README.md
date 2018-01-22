@@ -364,20 +364,6 @@ So, in detail, from the beginning:
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
-# Amber behind a Proxy
-
-By default, in development environment Amber listens on port 3000, and in production environment it listens on port 8080. This makes it very easy to run a load balancer on ports 80 (HTTP) and 443 (HTTPS) and proxy user requests to Amber.
-
-There are three groups of benefits of running Amber behind a proxy:
-
-On a basic level, a proxy should provide TCP and HTTP normalization &mdash; it should filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It should only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it should perform SSL and compression offloading for your application so that these are done on the load balancers rather than on the application servers.
-
-Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip`.
-
-On an intermediate level, a proxy should provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
-
-On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
-
 # Static Pages
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
@@ -656,6 +642,20 @@ end
     macro before_action
     macro after_action
 ```
+
+# Amber behind a Proxy
+
+By default, in development environment Amber listens on port 3000, and in production environment it listens on port 8080. This makes it very easy to run a load balancer on ports 80 (HTTP) and 443 (HTTPS) and proxy user requests to Amber.
+
+There are three groups of benefits of running Amber behind a proxy:
+
+On a basic level, a proxy should provide TCP and HTTP normalization &mdash; it should filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It should only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it should perform SSL and compression offloading for your application so that these are done on the load balancers rather than on the application servers.
+
+Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip`.
+
+On an intermediate level, a proxy should provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
+
+On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
 
 # Conclusion
 
