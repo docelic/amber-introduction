@@ -374,7 +374,7 @@ On a basic level, a proxy should provide TCP and HTTP normalization &mdash; it s
 
 Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip`.
 
-On an intermediate level, a proxy should provide caching and scaling and serve as a versatile TCP and HTTP load balancer; it should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
+On an intermediate level, a proxy should provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer; it should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
 
 On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
 
