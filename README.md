@@ -15,28 +15,6 @@
 
 # Table of Contents
 
-1. Introduction
-1. Installation
-1. Creating New Amber App
-1. Running the App
-1. Building the App and Troubleshooting
-1. REPL
-1. File Structure
-1. Database Commands
-1. Routes
-1. Views
-1. Variables in Views
-1. Starting the Server
-1. Serving Requests
-1. Static Pages
-1. Responses with Different Content-Type
-1. Assets Pipeline
-1. Default Shards
-1. Extensions
-1. Support Routines
-1. Amber::Controller::Base
-1. Amber behind a Proxy
-1. Conclusion
 
 
 # Introduction
