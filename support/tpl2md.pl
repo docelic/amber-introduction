@@ -11,6 +11,7 @@ my $tpl= slurp 'README.md.tpl';
 
 $tpl=~ s{^(#+)\s+(.*)}{
   (my $anchor_name= lc $2)=~ s/\W/_/;
+  warn "$2 $anchor_name\n";
   push @toc, ("\t" x (length($1)-1)). '1. ['. $2. "](#$anchor_name)\n";
   "$1 [$2](#$anchor_name)"
 }gem;
