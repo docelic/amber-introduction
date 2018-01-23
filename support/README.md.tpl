@@ -200,7 +200,7 @@ Similarly, here's an example of a route that would route HTTP POST requests to "
 post "/registration", RegistrationController, :create
 ```
 
-Standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) by convention go to standard methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've done with "index" above.
+By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) should be routed to standard-named methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've done with "index" above.
 
 Websocket routes are supported too.
 
