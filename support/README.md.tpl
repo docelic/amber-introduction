@@ -534,27 +534,7 @@ On every request, the appropriate controller is instantiated and its initialize(
 The content of this controller and the methods it gets from including other modules are intuitive enough to be copied here and commented where necessary:
 
 ```crystal
-module Amber::Controller
-  class Base
-    include Helpers::CSRF
-    include Helpers::Redirect
-    include Helpers::Render
-    include Helpers::Responders
-    include Helpers::Route
-    include Callbacks
-
-    protected getter context : HTTP::Server::Context
-    protected getter params : Amber::Validators::Params
-
-    delegate :cookies, :format, :flash, :port, :requested_url, :session, :valve,
-      :request_handler, :route, :websocket?, :get?, :post?, :patch?,
-      :put?, :delete?, :head?, :client_ip, :request, :response, :halt!, to: context
-
-    def initialize(@context : HTTP::Server::Context)
-      @params = Amber::Validators::Params.new(context.params)
-    end
-  end
-end
+[[[cat amber/src/amber/controller/base.cr]]]
 ```
 
 [Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) provides these methods:

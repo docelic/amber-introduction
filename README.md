@@ -613,6 +613,11 @@ On every request, the appropriate controller is instantiated and its initialize(
 The content of this controller and the methods it gets from including other modules are intuitive enough to be copied here and commented where necessary:
 
 ```crystal
+require "http"
+
+require "./filters"
+require "./helpers/*"
+
 module Amber::Controller
   class Base
     include Helpers::CSRF
@@ -634,6 +639,7 @@ module Amber::Controller
     end
   end
 end
+
 ```
 
 [Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) provides these methods:
