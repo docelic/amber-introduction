@@ -427,12 +427,7 @@ Supported format types are `html`, `json`, `xml`, and `text`. For all the availa
 In an Amber project, raw assets are in `src/assets/`:
 
 ```shell
-src/assets/
-src/assets/fonts
-src/assets/images
-src/assets/javascripts
-src/assets/javascripts/main.js
-src/assets/stylesheets/main.scss
+[[[find app/src/assets/|grep -v gitkeep|sort]]]
 ```
 
 At build time, all these are processed and placed under `public/dist/`.
