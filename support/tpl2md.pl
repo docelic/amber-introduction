@@ -15,7 +15,7 @@ while( $tpl=~ /^(#+)\s+(.*)/gm) {
 
 $tpl=~ s/\{\{\{TOC\}\}\}/"# Table of Contents\n\n". join( '', @toc)/ge;
 $tpl=~ s/\[\[\[(.*?)\]\]\]/`$1`/ge;
-$tpl=~ s/^#: /# /g;
+$tpl=~ s/^#: /# /gm;
 
 open my $out, "> ../README.md";
 print $out $tpl
