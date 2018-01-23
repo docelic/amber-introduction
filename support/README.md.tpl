@@ -187,7 +187,7 @@ Amber includes a wonderful command `amber routes` to display current routes. By 
 ```shell
 $ amber routes
 
-[[[cd app && amber routes]]]
+[[[cd app && amber routes | col -b]]]
 ```
 
 From this example, we see that a "GET /" request will instantiate
