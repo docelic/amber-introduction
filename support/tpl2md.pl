@@ -10,10 +10,10 @@ my @toc;
 my $tpl= slurp 'README.md.tpl';
 
 $tpl=~ s{^(#+)\s+(.*)}{
-	(my $anchor_name= lc $2)=~ s/\W/_/;
+  (my $anchor_name= lc $2)=~ s/\W/_/;
   push @toc, ("\t" x (length($1)-1)). '1. ['. $2. "](#$anchor_name)\n";
-	"$1 [$2](#$anchor_name)"
-}ge;
+  "$1 [$2](#$anchor_name)"
+}gem;
 $tpl=~ s/^#: /# /gm;
 
 $tpl=~ s/\[\[\[(.*?)\]\]\]/`$1`/ge;
