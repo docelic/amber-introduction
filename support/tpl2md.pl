@@ -13,7 +13,7 @@ $tpl=~ s{^(#+)\s+(.*)}{
   my( $one, $two) = ($1,$2);
   (my $anchor_name= lc $two)=~ s/\W/_/g;
   push @toc, ("\t" x (length($one)-1)). '1. ['. $two. "](#$anchor_name)\n";
-  "$one [$two](#$anchor_name)"
+  qq{$one $two<a name="$anchor_name"></a>}
 }gem;
 $tpl=~ s/^#: /# /gm;
 
