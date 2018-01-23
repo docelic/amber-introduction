@@ -13,7 +13,7 @@ while( $tpl=~ /^(#+)\s+(.*)/gm) {
   push @toc, ("\t" x (length($1)-1)). '1. '. $2. "\n";
 }
 
-$tpl=~ s/\{\{\{TOC\}\}\}/join '', @toc/ge;
+$tpl=~ s/\{\{\{TOC\}\}\}/"# Table of Contents\n\n". join( '', @toc)/ge;
 $tpl=~ s/\[\[\[(.*?)\]\]\]/`$1`/ge;
 $tpl=~ s/^#: /# /g;
 

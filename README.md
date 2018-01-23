@@ -13,6 +13,8 @@
   </p>
 </p>
 
+# Table of Contents
+
 1. Introduction
 1. Installation
 1. Creating New Amber App
