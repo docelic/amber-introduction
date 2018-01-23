@@ -507,45 +507,13 @@ Amber adds some very convenient extensions to existing String and Number classes
 For String:
 
 ```crystal
-      def str?
-      def email?
-      def domain?
-      def url?
-      def ipv4?
-      def ipv6?
-      def mac_address?
-      def hex_color?
-      def hex?
-      def alpha?(locale = "en-US")
-      def numeric?
-      def alphanum?(locale = "en-US")
-      def md5?
-      def base64?
-      def slug?
-      def lower?
-      def upper?
-      def credit_card?
-      def phone?(locale = "en-US")
-      def excludes?(value)
-      def time_string?
-
+[[[grep 'def ' amber/src/amber/extensions/string_extension.cr]]]
 ```
 
 For Number:
 
 ```crystal
-      def positive?
-      def negative?
-      def zero?
-      def div?(n)
-      def above?(n)
-      def below?(n)
-      def lt?(num)
-      def self?(num)
-      def lteq?(num)
-      def between?(range)
-      def gteq?(num)
-
+[[[grep 'def ' amber/src/amber/extensions/number_extension.cr]]]
 ```
 
 # Support Routines
