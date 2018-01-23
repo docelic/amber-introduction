@@ -13,6 +13,8 @@
   </p>
 </p>
 
+{{{TOC}}}
+
 # Introduction
 
 **Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on [Gitter](https://gitter.im/amberframework/amber) or FreeNode IRC channel #amber.
@@ -28,7 +30,7 @@ git clone https://github.com/amberframework/amber
 cd amber
 make # The result of 'make' is one file -- command line tool bin/amber
 
-# To install the file, or to symlink the system-wide executable to current directory, run one of:
+#: To install the file, or to symlink the system-wide executable to current directory, run one of:
 make install # default PREFIX is /usr/local
 make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
@@ -69,15 +71,15 @@ The app can be started as soon as you have created it and ran `crystal deps` in 
 To run it, you can use a couple different approaches. Some are of course suitable for development, some for production, etc.:
 
 ```shell
-# For development, clean and simple - compiles and runs your app:
+#: For development, clean and simple - compiles and runs your app:
 crystal src/<app_name>.cr
 
-# For development, clean and simple - compiles and runs your app, but
-# also watches for changes in files and rebuilds/re-runs automatically.
+#: For development, clean and simple - compiles and runs your app, but
+#: also watches for changes in files and rebuilds/re-runs automatically.
 amber watch
 
-# For production, compiles app with optimizations and places it in bin/app.
-# Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
+#: For production, compiles app with optimizations and places it in bin/app.
+#: Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
@@ -218,12 +220,12 @@ The DSL language specific to `config/routes.cr` file is defined in [dsl/router.c
 It gives you the following top-level commands/blocks:
 
 ```
-# Define a pipeline
+#: Define a pipeline
 pipeline :name do
   ...
 end
 
-# Group a set of routes
+#: Group a set of routes
 routes :name, "path" do
   ...
 end
@@ -391,7 +393,7 @@ Then, we edit the controller and actually add method about(). This method can ju
 ```shell
 $ vi src/controllers/page_controller.cr
 
-# Inside the file, we add:
+#: Inside the file, we add:
 
 def about
   # "return" can be omitted here. It is included only for clarity.
@@ -405,7 +407,7 @@ Since this is happening in the "page" controller, the view directory for finding
 $ mkdir -p src/views/page/
 $ vi src/views/page/about.ecr
 
-# Inside the file, we add:
+#: Inside the file, we add:
 
 Hello, World!
 ```
