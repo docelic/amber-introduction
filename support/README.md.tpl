@@ -145,12 +145,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory named `etc`, so I run:
 
 ```
-ln -sf config etc
-ln -sf src/assets
-ln -sf src/controllers
-ln -sf src/models
-ln -sf src/views
-ln -sf src/views/layouts
+[[[cat ln-sfs]]]
 ```
 
 # Database Commands
@@ -192,13 +187,7 @@ Amber includes a wonderful command `amber routes` to display current routes. By 
 ```shell
 $ amber routes
 
-╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
-║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | HomeController            | index  | web      |       | /           ║
-╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
+[[[cd app && amber routes]]]
 ```
 
 From this example, we see that a "GET /" request will instantiate

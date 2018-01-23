@@ -1,0 +1,6 @@
+ln -sf config etc
+ln -sf src/assets
+ln -sf src/controllers
+ln -sf src/models
+ln -sf src/views
+ln -sf src/views/layouts
