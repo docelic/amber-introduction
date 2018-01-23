@@ -13,7 +13,7 @@ $tpl=~ s{^(#+)\s+(.*)}{
 	(my $anchor_name= lc $2)=~ s/\W/_/;
   push @toc, ("\t" x (length($1)-1)). '1. ['. $2. "](#$anchor_name)\n";
 	"$1 [$2](#$anchor_name)"
-}ge;
+}gee;
 
 $tpl=~ s/\{\{\{TOC\}\}\}/"# Table of Contents\n\n". join( '', @toc)/ge;
 $tpl=~ s/\[\[\[(.*?)\]\]\]/`$1`/ge;
