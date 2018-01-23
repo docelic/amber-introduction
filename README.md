@@ -17,29 +17,29 @@
 
 1. [Introduction](#introduction)
 1. [Installation](#installation)
-1. [](#creating_new amber app)
-1. [](#running_the app)
-1. [](#building_the app and troubleshooting)
+1. [Creating New Amber App](#creating_new_amber_app)
+1. [Running the App](#running_the_app)
+1. [Building the App and Troubleshooting](#building_the_app_and_troubleshooting)
 1. [REPL](#repl)
-1. [](#file_structure)
-1. [](#database_commands)
+1. [File Structure](#file_structure)
+1. [Database Commands](#database_commands)
 1. [Routes](#routes)
 1. [Views](#views)
-1. [](#variables_in views)
-1. [](#starting_the server)
-1. [](#serving_requests)
-1. [](#static_pages)
-1. [](#responses_with different content-type)
-1. [](#assets_pipeline)
-1. [](#default_shards)
+1. [Variables in Views](#variables_in_views)
+1. [Starting the Server](#starting_the_server)
+1. [Serving Requests](#serving_requests)
+1. [Static Pages](#static_pages)
+1. [Responses with Different Content-Type](#responses_with_different_content_type)
+1. [Assets Pipeline](#assets_pipeline)
+1. [Default Shards](#default_shards)
 1. [Extensions](#extensions)
-1. [](#support_routines)
-1. [](#amber_:controller::base)
-1. [](#amber_behind a proxy)
+1. [Support Routines](#support_routines)
+1. [Amber::Controller::Base](#amber__controller__base)
+1. [Amber behind a Proxy](#amber_behind_a_proxy)
 1. [Conclusion](#conclusion)
 
 
-1
+# [Introduction](#introduction)
 
 **Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), Github repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on [Gitter](https://gitter.im/amberframework/amber) or FreeNode IRC channel #amber.
 
@@ -47,7 +47,7 @@ Amber is inspired by Kemal, Rails, Phoenix and other frameworks. It is simple to
 
 This document is here to describe everything that Amber offers out of the box, sorted in a logical order and easy to consult repeatedly over time. The Crystal level is not described; it is expected that the readers coming here have a formed understanding of [Crystal and its features](https://crystal-lang.org/docs/overview/).
 
-2
+# [Installation](#installation)
 
 ```shell
 git clone https://github.com/amberframework/amber
@@ -63,7 +63,7 @@ make force_link # can also specify PREFIX=...
 After installation or linking, `amber` is the command you will be using
 for creating and managing Amber apps.
 
-3
+# [Creating New Amber App](#creating_new_amber_app)
 
 ```shell
 amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL] [--deps]
@@ -87,7 +87,7 @@ Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Mi
 If argument --deps is provided, Amber will automatically run `crystal
 deps` in the new directory to install shards.
 
-4
+# [Running the App](#running_the_app)
 
 The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
 (It is not necessary to run deps if you have invoked `amber new` with the argument --deps; in that case Amber did it for you.)
@@ -111,7 +111,7 @@ Please note that Granite currently has problems in edge cases. For example, if y
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
-5
+# [Building the App and Troubleshooting](#building_the_app_and_troubleshooting)
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
 
@@ -125,7 +125,7 @@ The best way to see the actual error from there is to copy-paste the command pri
 
 There are some issues with the `libgc` library here and there. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
 
-6
+# [REPL](#repl)
 
 Often times, it is very useful to enter an interactive console (think of IRB shell) with all application classes initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
 
@@ -135,7 +135,7 @@ Another, more professional way to do it is via standalone REPL-like script tools
 
 In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
 
-7
+# [File Structure](#file_structure)
 
 So, at this point you might be wanting to know what's placed where in an Amber application. The default structure looks like this:
 
@@ -178,7 +178,7 @@ ln -sf src/views/layouts
 
 ```
 
-8
+# [Database Commands](#database_commands)
 
 Amber provides a group of commands under the 'db' group to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
@@ -208,7 +208,7 @@ Please note that for the database connection to succeed, all parameters must be 
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
 
-9
+# [Routes](#routes)
 
 Routes are very easy to understand. Routes connect HTTP methods (and the paths with which they were invoked) to controllers and methods on the Amber side.
 
@@ -296,7 +296,7 @@ index, new, create, show, edit, update, destroy
 
 Please note that it is not currently possible to define a different behavior for HEAD and GET methods ont he same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
 
-10
+# [Views](#views)
 
 Information about views can be summarized in bullet points:
 
@@ -310,7 +310,7 @@ Information about views can be summarized in bullet points:
 - Partials begin with "_" by convention, but that is not required
 - To render a partial, use `render( partial: "_name.ext")`
 
-11
+# [Variables in Views](#variables_in_views)
 
 In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views.
 
@@ -331,7 +331,7 @@ Hello, World! The time is now <%= time %>.
 
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
 
-12
+# [Starting the Server](#starting_the_server)
 
 It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
 
@@ -361,7 +361,7 @@ It is important to explain exactly what is happening from when you run the appli
 			1. Signal::INT is trapped (calls `server.close` when received)
 			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
 
-13
+# [Serving Requests](#serving_requests)
 
 Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
 
@@ -394,7 +394,7 @@ So, in detail, from the beginning:
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
-14
+# [Static Pages](#static_pages)
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
 
@@ -444,7 +444,7 @@ Because we have called render() without additional arguments, the template will 
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
-15
+# [Responses with Different Content-Type](#responses_with_different_content_type)
 
 If you want to provide a different format (or different response altogether) from the controller methods based on accepted content types, you can use `respond_with` from `Amber::Helpers::Responders`.
 
@@ -461,7 +461,7 @@ end
 
 Supported format types are `html`, `json`, `xml`, and `text`. For all the available methods and arguments, please see [src/amber/controller/helpers/responders.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr).
 
-16
+# [Assets Pipeline](#assets_pipeline)
 
 In an Amber project, raw assets are in `src/assets/`:
 
@@ -484,7 +484,7 @@ Currently, webpack is being used for asset management. I recommend replacing it 
 
 This section will be expanded to include a full replacement procedure. (In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
 
-17
+# [Default Shards](#default_shards)
 
 By default, Amber project depends on just a few shards:
 
@@ -533,7 +533,7 @@ Only the parts that are used end up in the compiled project.
 
 Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
-18
+# [Extensions](#extensions)
 
 Amber adds some very convenient extensions to existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory, but here's a listing of the current ones:
 
@@ -581,7 +581,7 @@ For Number:
 
 ```
 
-19
+# [Support Routines](#support_routines)
 
 In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready made routines.
 
@@ -604,7 +604,7 @@ mime_types.cr         - List of MIME types and helper methods for working with t
                         def self.get_request_format(request)
 ```
 
-20
+# [Amber::Controller::Base](#amber__controller__base)
 
 This is the base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
@@ -684,7 +684,7 @@ end
     macro after_action
 ```
 
-21
+# [Amber behind a Proxy](#amber_behind_a_proxy)
 
 By default, in development environment Amber listens on port 3000, and in production environment it listens on port 8080. This makes it very easy to run a load balancer on ports 80 (HTTP) and 443 (HTTPS) and proxy user requests to Amber.
 
@@ -698,7 +698,7 @@ On an intermediate level, a proxy should provide you with caching and scaling an
 
 On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
 
-22
+# [Conclusion](#conclusion)
 
 We hope you have enjoyed this hands-on introduction to Amber!
 
