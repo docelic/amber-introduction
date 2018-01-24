@@ -35,7 +35,7 @@
 1. [Extensions](#extensions)
 1. [Support Routines](#support_routines)
 1. [Amber::Controller::Base](#amber__controller__base)
-1. [Amber behind a Proxy](#amber_behind_a_proxy)
+1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
 1. [Conclusion](#conclusion)
 
 
@@ -500,23 +500,24 @@ amberframework/garnet-spec    - Extended Crystal specs for testing web applicati
 In turn, these depend on:
 
 ```
-luislavena/radix                      - Radix Tree implementation
-jeromegn/kilt                         - Generic template interface
-jeromegn/slang                        - Slang template language
-stefanwille/crystal-redis             - 
-amberframework/cli                    - Building cmdline apps (based on mosop)
-mosop/optarg                          - Parsing cmdline args
+veelenga/ameba                        - Static code analysis (development)
 mosop/callback                        - Defining and invoking callbacks
+amberframework/cli                    - Building cmdline apps (based on mosop)
+crystal-lang/crystal-db               - Common DB API
+jeromegn/kilt                         - Generic template interface
+juanedi/micrate                       - Database migration tool
+crystal-lang/crystal-mysql            - 
+mosop/optarg                          - Parsing cmdline args
+will/crystal-pg                       - PostgreSQL driver
+luislavena/radix                      - Radix Tree implementation
+stefanwille/crystal-redis             - 
+jwaldrip/shell-table.cr               - Creates textual tables in shell
+jeromegn/slang                        - Slang template language
+askn/spinner                          - Spinner for the shell
+crystal-lang/crystal-sqlite3          - 
 mosop/string_inflection               - Word plurals, counts, etc.
 amberframework/teeplate               - Rendering multiple template files
-juanedi/micrate                       - Database migration tool
-crystal-lang/crystal-db               - Common DB API
-jwaldrip/shell-table.cr               - Creates textual tables in shell
-askn/spinner                          - Spinner for the shell
-crystal-lang/crystal-mysql            - 
-crystal-lang/crystal-sqlite3          - 
-amberframework/smtp.cr                - SMTP client (to be replaced with arcage/crystal-email)
-ysbaddaden/selenium-webdriver-crystal - Selenium Webdriver client
+
 ```
 
 And basic Crystal's build-in shards:
@@ -684,19 +685,21 @@ end
     macro after_action
 ```
 
-# Amber behind a Proxy<a name="amber_behind_a_proxy"></a>
+# Amber behind a Load Balancer | Reverse Proxy | ADC<a name="amber_behind_a_load_balancer___reverse_proxy___adc"></a>
+
+(In this section, the terms "Load Balancer", "Reverse Proxy", "Proxy", and "Application Delivery Controller" (ADC) are used interchangeably.)
 
 By default, in development environment Amber listens on port 3000, and in production environment it listens on port 8080. This makes it very easy to run a load balancer on ports 80 (HTTP) and 443 (HTTPS) and proxy user requests to Amber.
 
 There are three groups of benefits of running Amber behind a proxy:
 
-On a basic level, a proxy should provide TCP and HTTP normalization &mdash; it should filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It should only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it should perform SSL and compression offloading for your application so that these are done on the load balancers rather than on the application servers.
+On a basic level, a proxy will perform TCP and HTTP normalization &mdash; it will filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It will only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it will provide HTTP/2 support for your application and perform SSL and compression offloading so that these functions are done on the load balancers rather than on the application servers.
 
 Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip`.
 
-On an intermediate level, a proxy should provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
+On an intermediate level, a proxy will provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It will cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
 
-On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
+On an advanced level, a proxy will allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
 
 # Conclusion<a name="conclusion"></a>
 
