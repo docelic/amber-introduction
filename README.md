@@ -405,11 +405,6 @@ After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)
 Amber.settings         # Singleton object, contains current settings
 Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Environment (development, production, test)
-    def self.settings
-    def self.logger
-    def self.env=(env : EnvType)
-    def self.env
-
 ```
 
 [Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current enviroment:
