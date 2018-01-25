@@ -417,7 +417,7 @@ Amber.env, Amber.env=  # Environment (development, production, test)
 
 ```
 
-The list of all available application settings is in [src/amber/environment/settings.cr](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s "Amber::Server.configure" block.
+The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s "Amber::Server.configure" block.
 
 # Static Pages<a name="static_pages"></a>
 
