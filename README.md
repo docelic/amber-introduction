@@ -28,6 +28,7 @@
 1. [Variables in Views](#variables_in_views)
 1. [Starting the Server](#starting_the_server)
 1. [Serving Requests](#serving_requests)
+1. [Useful Classes and Methods](#useful_classes_and_methods)
 1. [Static Pages](#static_pages)
 1. [Responses with Different Content-Type](#responses_with_different_content_type)
 1. [Assets Pipeline](#assets_pipeline)
@@ -393,6 +394,18 @@ So, in detail, from the beginning:
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
+
+# Useful Classes and Methods<a name="useful_classes_and_methods"></a>
+
+This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
+
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) is added to it and extends `Amber` module with methods:
+
+```
+Amber.settings         # Singleton object 
+Amber.logger           # Alias for Amber.settings.logger)
+Amber.env, Amber.env=  # "[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr)" as in development or production environment, not shell env
+```
 
 # Static Pages<a name="static_pages"></a>
 
