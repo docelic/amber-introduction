@@ -402,9 +402,14 @@ This section provides an overview of various contexts where classes and modules 
 After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
 ```
-Amber.settings         # Singleton object 
-Amber.logger           # Alias for Amber.settings.logger)
+Amber.settings         # Singleton object, contains current settings
+Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Environment (development, production, test)
+    def self.settings
+    def self.logger
+    def self.env=(env : EnvType)
+    def self.env
+
 ```
 
 [Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current enviroment:
@@ -416,6 +421,8 @@ Amber.env, Amber.env=  # Environment (development, production, test)
     def ==(env2 : EnvType)
 
 ```
+
+The list of 
 
 # Static Pages<a name="static_pages"></a>
 
