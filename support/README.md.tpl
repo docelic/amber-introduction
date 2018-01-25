@@ -359,12 +359,17 @@ So, in detail, from the beginning:
 
 This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
 
-After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) is added to it and extends `Amber` module with methods:
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
 ```
 Amber.settings         # Singleton object 
 Amber.logger           # Alias for Amber.settings.logger)
-Amber.env, Amber.env=  # "[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr)" as in development or production environment, not shell env
+Amber.env, Amber.env=  # Environment (development, production, test)
+```
+
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current enviroment:
+```crystal
+[[[grep 'def ' amber/src/amber/environment/env.cr]]]
 ```
 
 # Static Pages
