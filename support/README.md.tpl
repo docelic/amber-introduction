@@ -355,6 +355,18 @@ So, in detail, from the beginning:
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
+# Useful Classes and Methods
+
+This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
+
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) is added to it and extends `Amber` module with methods:
+
+```
+Amber.settings         # Singleton object 
+Amber.logger           # Alias for Amber.settings.logger)
+Amber.env, Amber.env=  # "[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr)" as in development or production environment, not shell env
+```
+
 # Static Pages
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
