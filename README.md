@@ -25,7 +25,8 @@
 1. [Database Commands](#database_commands)
 1. [Routes](#routes)
 1. [Views](#views)
-1. [Variables in Views](#variables_in_views)
+	1. [Variables in Views](#variables_in_views)
+	1. [Logging](#logging)
 1. [Starting the Server](#starting_the_server)
 1. [Serving Requests](#serving_requests)
 1. [Useful Classes and Methods](#useful_classes_and_methods)
@@ -311,7 +312,7 @@ Information about views can be summarized in bullet points:
 - Partials begin with "_" by convention, but that is not required
 - To render a partial, use `render( partial: "_name.ext")`
 
-# Variables in Views<a name="variables_in_views"></a>
+## Variables in Views<a name="variables_in_views"></a>
 
 In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views.
 
@@ -331,6 +332,24 @@ Hello, World! The time is now <%= time %>.
 ```
 
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
+
+## Logging<a name="logging"></a>
+
+Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
+
+The variable containing the logger is `Amber.settings.logger` and, for convenience, it is aliased to `Amber.logger`.
+
+Controllers and views execute in the same class (the class of the controller), so calling e.g. `Amber.logger.info "Informational Message"` will produce the expected log line.
+
+If you want the logger to be avilable simply as `logger`, you can do it by adding the following anywhere on the controller:
+
+```crystal
+delegate :logger, to: Amber.settings
+```
+
+There is an [issue](https://github.com/amberframework/amber/pull/589) open to add this to Amber's base controller, so that it is available by default in all controllers.
+
+In case you want to use your customized logger for special cases or purposes, then simply create `Logger.new` yourself.
 
 # Starting the Server<a name="starting_the_server"></a>
 
