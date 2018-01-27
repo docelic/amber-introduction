@@ -62,7 +62,7 @@ make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
 
-("stow" seen above is referring to [GNU Stow](https://www.gnu.org/software/stow/).)
+("stow" mentioned above is referring to [GNU Stow](https://www.gnu.org/software/stow/).)
 
 After installation or linking, `amber` is the command you will be using
 for creating and managing Amber apps.
@@ -110,8 +110,6 @@ amber watch
 # Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
-
-Please note that Granite currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error ([#112](https://github.com/amberframework/granite-orm/issues/112)).
 
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
