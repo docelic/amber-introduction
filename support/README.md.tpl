@@ -192,7 +192,7 @@ $ amber routes
 
 From this example, we see that a "GET /" request will instantiate
 HomeController and then call method index() in it. The return value of
-the method will be returned to the client.
+the method will be returned as response body to the client.
 
 Similarly, here's an example of a route that would route HTTP POST requests to "/registration" to the method create() in class RegistrationController:
 
