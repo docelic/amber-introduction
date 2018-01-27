@@ -26,7 +26,7 @@
 1. [Routes](#routes)
 1. [Views](#views)
 	1. [Variables in Views](#variables_in_views)
-	1. [Logging](#logging)
+1. [Logging](#logging)
 1. [Starting the Server](#starting_the_server)
 1. [Serving Requests](#serving_requests)
 1. [Useful Classes and Methods](#useful_classes_and_methods)
@@ -333,7 +333,7 @@ Hello, World! The time is now <%= time %>.
 
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
 
-## Logging<a name="logging"></a>
+# Logging<a name="logging"></a>
 
 Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
 
