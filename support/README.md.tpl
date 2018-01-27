@@ -109,7 +109,7 @@ Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia
 
 Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "config/application.cr"` as the first command.
 
 # File Structure
 
