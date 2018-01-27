@@ -345,7 +345,7 @@ Controllers and views execute in the same class (the class of the controller), s
 Amber.logger.info "Informational Message"
 ```
 
-Logger levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
+Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
 
 If you want the logger to be avilable simply as `logger`, you can do it by adding the following anywhere on the controller:
 
