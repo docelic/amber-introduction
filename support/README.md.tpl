@@ -306,7 +306,7 @@ Amber.logger.info "Informational Message"
 
 Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
 
-If you want the logger to be avilable simply as `logger`, you can do it by adding the following anywhere on the controller:
+If you want the logger to be available simply as `logger`, you can do it by adding the following anywhere on the controller:
 
 ```crystal
 delegate :logger, to: Amber.settings
