@@ -194,7 +194,7 @@ From this example, we see that a "GET /" request will instantiate
 HomeController and then call method index() in it. The return value of
 the method will be returned as response body to the client.
 
-Similarly, here's an example of a route that would route POST "/registration" to RegistrationController::create():
+Similarly, here's an example of a route that would route POST "/registration" to RegistrationController.new.create():
 
 ```
 post "/registration", RegistrationController, :create
