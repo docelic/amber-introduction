@@ -306,9 +306,9 @@ If you want the logger to be avilable simply as `logger`, you can do it by addin
 delegate :logger, to: Amber.settings
 ```
 
-There is an [issue](https://github.com/amberframework/amber/pull/589) open to add this to Amber's base controller, so that it is available by default in all controllers.
+There is an [issue](https://github.com/amberframework/amber/pull/589) open to add this to Amber's base controller, so that it becomes available by default in all controllers.
 
-In case you want to use your customized logger for special cases or purposes, then simply create `Logger.new` yourself.
+In case you need to use your customized logger for special cases or purposes, then simply create `Logger.new` yourself.
 
 # Starting the Server
 
