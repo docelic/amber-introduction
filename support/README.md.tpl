@@ -36,6 +36,8 @@ make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
 
+("stow" seen above is referring to [GNU Stow](https://www.gnu.org/software/stow/).)
+
 After installation or linking, `amber` is the command you will be using
 for creating and managing Amber apps.
 
