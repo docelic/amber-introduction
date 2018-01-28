@@ -296,7 +296,7 @@ And unless it is confined with arguments `only` or `except`, it will automatical
 index, new, create, show, edit, update, destroy
 ```
 
-Please note that it is not currently possible to define a different behavior for HEAD and GET methods ont he same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
+Please note that it is not currently possible to define a different behavior for HEAD and GET methods on the same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
 
 # Views<a name="views"></a>
 
@@ -359,7 +359,7 @@ In case you need to use your customized logger for special cases or purposes, th
 
 # Starting the Server<a name="starting_the_server"></a>
 
-It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
+It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
 
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
 	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
@@ -400,7 +400,7 @@ Amber's app serving model is based on Crystal's built-in, underlying functionali
 	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 4. Please note that calling the chain of pipes is not automatic; every pipe needs to call `call_next(context)` at the appropriate point in its execution to call the next pipe in a row. It is not necessary to check whether the next pipe exists, because currently `Amber::Pipe::Controller` is always implicitly added as the last pipe, so at least one does exist. State between pipes is not passed via variables but via modifying `context` and the data contained in it
 
-After that, pipelines, pipes, routes, and otherAmber-specific parts come into play.
+After that, pipelines, pipes, routes, and other Amber-specific parts come into play.
 
 So, in detail, from the beginning:
 
@@ -415,7 +415,7 @@ So, in detail, from the beginning:
 			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
 				1. `raise ...error... if context.invalid_route?` - route validity is checked early
 				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
-				1. `elsif ...; ...pipeline.first...call(context)` - if reqular HTTP request, call the first handler in the appropriate pipeline
+				1. `elsif ...; ...pipeline.first...call(context)` - if regular HTTP request, call the first handler in the appropriate pipeline
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
@@ -432,7 +432,7 @@ Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Environment (development, production, test)
 ```
 
-[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current enviroment:
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
 ```crystal
     def initialize(@env : String = ENV[AMBER_ENV]? || "development")
     def in?(env_list : Array(EnvType))
