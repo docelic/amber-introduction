@@ -398,6 +398,28 @@ Amber.env, Amber.env=  # Environment (development, production, test)
 
 The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s "Amber::Server.configure" block.
 
+# Parameter Validation
+
+On each request, an appropriate Controller is instantiated to handle it. Raw request parameters are available in `context.params`. Parameters parsed in the context of routes are in `params.raw_params`. And params which have passed validation (after calling `valid?` or `validate!`) are in `params`.
+
+There are three important methods available &mdash; `params.validation {...}` defines validation rules, `valid?` returns whether all parameters pass the validation, and `validate!` forces the parameters to be valid or raises an error.
+
+The values in `params` are only present after validation is performed, and only the parameters listed in validation rules are copied over from raw params.
+
+A complete validation process in a controller looks like this (showing the whole Controller class for completeness):
+
+```crystal
+class HomeController < ApplicationController
+  def index
+    params.validation do
+      required( :name) { |n| n.size > 6 }
+      optional( :surname) { |n| n.size > 6 }
+    end
+    "Params valid: " + params.valid?.to_s
+  end
+end
+```
+
 # Static Pages
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
