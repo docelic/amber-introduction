@@ -449,7 +449,7 @@ The list of all available application settings is in [Amber::Environment::Settin
 
 On each request, an appropriate Controller is instantiated to handle it. Raw request parameters are available in `context.params`. Parameters parsed in the context of routes are in `params.raw_params`. And params which have passed validation (after calling `valid?` or `validate!`) are in `params`.
 
-There are three important methods available &mdash; `params.validation {...}` defines validation rules, `valid?` returns whether all parameters pass the validation, and `validate!` forces the parameters to be valid or raises an error.
+There are three important methods &mdash; `params.validation {...}` defines validation rules, `valid?` returns whether all parameters pass the validation, and `validate!` forces the parameters to be valid or raises an error.
 
 The values in `params` are only present after validation is performed, and only the parameters listed in validation rules are copied over from raw params.
 
