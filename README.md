@@ -459,8 +459,8 @@ A complete validation process in a controller looks like this (showing the whole
 class HomeController < ApplicationController
   def index
     params.validation do
-      required( :name) { |n| n.size > 6 }
-      optional( :surname) { |n| n.size > 6 }
+      required(:name) { |n| n.size > 6 }
+      optional(:surname) { |n| n.size > 6 }
     end
     "Params valid: " + params.valid?.to_s
   end
