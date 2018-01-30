@@ -421,7 +421,7 @@ class HomeController < ApplicationController
 end
 ```
 
-Please note that the extensions to the String class (such as `phone?` above) come especially handy for writing validations.
+Please note that the extensions to the String class (such as `phone?` seen above) come especially handy for writing validations. Please search for "phone?" in this guide to find the complete list.
 
 # Static Pages
 
@@ -438,7 +438,7 @@ amber g controller page
 Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController. We do this inside the "routes :web" block:
 
 ```
-routes :web do 
+routes :web do
   ...
   get "/about", PageController, :about
   ...
