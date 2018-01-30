@@ -296,23 +296,15 @@ Templates are actually executing in the controller class. If you do "<%= self.cl
 
 Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
 
-The variable containing the logger is `Amber.settings.logger` and, for convenience, it is aliased to `Amber.logger`.
+The variable containing the logger is `Amber.settings.logger` and, for convenience, it is aliased to `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
 
 Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in a controller or views will produce the expected log line:
 
 ```crystal
-Amber.logger.info "Informational Message"
+logger.info "Informational Message"
 ```
 
 Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
-
-If you want the logger to be available simply as `logger`, you can do it by adding the following anywhere on the controller:
-
-```crystal
-delegate :logger, to: Amber.settings
-```
-
-There is an [issue](https://github.com/amberframework/amber/pull/589) open to add this to Amber's base controller, so that it becomes available by default in all controllers.
 
 In case you need to use your customized logger for special cases or purposes, then simply create `Logger.new` yourself.
 
@@ -429,7 +421,7 @@ class HomeController < ApplicationController
 end
 ```
 
-Please note that the extensions to the String class (such as `phone?` above, and covered as part of this guide) come especially handy for writing validations.
+Please note that the extensions to the String class (such as `phone?` above) come especially handy for writing validations.
 
 # Static Pages
 
