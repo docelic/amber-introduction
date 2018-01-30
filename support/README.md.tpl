@@ -400,11 +400,19 @@ The list of all available application settings is in [Amber::Environment::Settin
 
 # Parameter Validation
 
-On each request, an appropriate Controller is instantiated to handle it. Raw request parameters are available in `context.params`. Parameters parsed in the context of routes are in `params.raw_params`. And params which have passed validation (after calling `valid?` or `validate!`) are in `params`.
+On each request, an appropriate Controller is instantiated to handle it. The params are kept in a number of places, going from lowest to highest level:
+
+```
+request.params     - raw params
+context.params     - parsed request params
+route.params       - parameters parsed from route/URL
+@raw_params        - pointer to context.params
+@params            - copy of parameters that passed validation
+```
+
+This will be simplified/streamlined in Amber in the future, but for now:
 
 There are three important methods &mdash; `params.validation {...}` defines validation rules, `valid?` returns whether parameters pass validation, and `validate!` requires the parameters to be valid or raises an error.
-
-The values in `params` are only present after validation is performed, and only the parameters listed in validation rules are copied over from raw params.
 
 A complete validation process in a controller looks like this (showing the whole Controller class for completeness):
 
@@ -413,12 +421,15 @@ class HomeController < ApplicationController
   def index
     params.validation do
       required(:name) { |n| n.size > 6 }
-      optional(:surname) { |n| n.size > 6 }
+      optional(:phone) { |n| n.phone? }
     end
-    "Params valid: " + params.valid?.to_s
+    "Params valid: #{params.valid?.to_s}<br>
+    Name is: #{params[:name]}"
   end
 end
 ```
+
+Please note that the extensions to the String class (such as `phone?` above, and covered as part of this guide) come especially handy for writing validations.
 
 # Static Pages
 

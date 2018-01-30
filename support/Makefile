@@ -8,7 +8,7 @@ amber:
 
 app: amber
 	amber/bin/amber new app
-	cd app && crystal deps
+	#cd app && crystal deps
 
 ../README.md: $(readme_SOURCES)
 	perl tpl2md.pl
