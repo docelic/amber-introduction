@@ -531,6 +531,12 @@ To do so you need an entry under "devDependencies" in the file `package.json`:
     "optimize-css-assets-webpack-plugin": "^1.3.0",
 ```
 
+And an entry at the top of `config/webpack/common.js`:
+
+```
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+```
+
 And you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
 
 ## File Copying
@@ -541,7 +547,13 @@ You might also want to copy some of the files from their original location to `p
     "copy-webpack-plugin": "^4.1.1",
 ```
 
-And adding the following under "plugins" section in `config/webpack/common.js`:
+The following at the top of `config/webpack/common.js`:
+
+```
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+```
+
+And the following under "plugins" section down below in the file:
 
 ```
   new CopyWebPackPlugin([
@@ -553,7 +565,7 @@ And adding the following under "plugins" section in `config/webpack/common.js`:
   ]),
 ```
 
-And running `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
+And as usual, you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
 
 ## Asset Management Alternatives
 

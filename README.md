@@ -549,6 +549,7 @@ In an Amber project, raw assets are in `src/assets/`:
 app/src/assets/
 app/src/assets/fonts
 app/src/assets/images
+app/src/assets/images/divi.png
 app/src/assets/images/logo.png
 app/src/assets/javascripts
 app/src/assets/javascripts/main.js
@@ -590,6 +591,12 @@ To do so you need an entry under "devDependencies" in the file `package.json`:
     "optimize-css-assets-webpack-plugin": "^1.3.0",
 ```
 
+And an entry at the top of `config/webpack/common.js`:
+
+```
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+```
+
 And you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
 
 ## File Copying<a name="file_copying"></a>
@@ -600,7 +607,13 @@ You might also want to copy some of the files from their original location to `p
     "copy-webpack-plugin": "^4.1.1",
 ```
 
-And adding the following under "plugins" section in `config/webpack/common.js`:
+The following at the top of `config/webpack/common.js`:
+
+```
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+```
+
+And the following under "plugins" section down below in the file:
 
 ```
   new CopyWebPackPlugin([
@@ -612,7 +625,7 @@ And adding the following under "plugins" section in `config/webpack/common.js`:
   ]),
 ```
 
-And running `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
+And as usual, you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
 
 ## Asset Management Alternatives<a name="asset_management_alternatives"></a>
 
@@ -677,44 +690,12 @@ Amber adds some very convenient extensions to existing String and Number classes
 For String:
 
 ```crystal
-      def str?
-      def email?
-      def domain?
-      def url?
-      def ipv4?
-      def ipv6?
-      def mac_address?
-      def hex_color?
-      def hex?
-      def alpha?(locale = "en-US")
-      def numeric?
-      def alphanum?(locale = "en-US")
-      def md5?
-      def base64?
-      def slug?
-      def lower?
-      def upper?
-      def credit_card?
-      def phone?(locale = "en-US")
-      def excludes?(value)
-      def time_string?
 
 ```
 
 For Number:
 
 ```crystal
-      def positive?
-      def negative?
-      def zero?
-      def div?(n)
-      def above?(n)
-      def below?(n)
-      def lt?(num)
-      def self?(num)
-      def lteq?(num)
-      def between?(range)
-      def gteq?(num)
 
 ```
 
@@ -766,8 +747,6 @@ module Amber::Controller
 
     protected getter context : HTTP::Server::Context
     protected getter params : Amber::Validators::Params
-
-    delegate :logger, to: Amber.settings
 
     delegate :client_ip,
       :cookies,
