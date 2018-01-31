@@ -594,7 +594,7 @@ And you need to run `npm install` for the plugin to be installed (saved to "node
 
 ## File Copying<a name="file_copying"></a>
 
-You might also want to copy some files from their original location to `public/dist/` without any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
+You might also want to copy some of the files from their original location to `public/dist/` without any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
 
 ```
     "copy-webpack-plugin": "^4.1.1",
