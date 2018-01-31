@@ -501,7 +501,7 @@ In an Amber project, raw assets are in `src/assets/`:
 At build time, all these are processed and placed under `public/dist/`.
 The JS resources are bundled to `main.bundle.js` and CSS resources are bundled to `main.bundle.css`.
 
-Currently, webpack is being used for asset management. I am thinking of coming up with a way to replace it with e.g. [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one. (In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
+(Currently, webpack is being used for asset management. I am thinking of coming up with a way to replace it with e.g. [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one. In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
 
 To include additional .js or .css files you would generally add `@import "file/path"` to `main.bundle.js`. Since the packer is webpack, it understands @import statements in .js, but not in .css files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's ExtractTextPlugin is used to extract CSS parts into their own bundle.
 
