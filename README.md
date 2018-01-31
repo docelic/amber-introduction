@@ -830,11 +830,44 @@ There are three groups of benefits of running Amber behind a proxy:
 
 On a basic level, a proxy will perform TCP and HTTP normalization &mdash; it will filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It will only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it will provide HTTP/2 support for your application and perform SSL and compression offloading so that these functions are done on the load balancers rather than on the application servers.
 
-Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip.address`.
+Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs that are making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip.address`.
 
 On an intermediate level, a proxy will provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It will cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
 
 On an advanced level, a proxy will allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
+
+[HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but for now it should be good enough to get you started with practical results.
+
+So, after installing HAProxy, to obtain the config file and set up the basic directory structure, please run the following commands:
+
+```sh
+cd my_amber_project/config
+wget https://raw.githubusercontent.com/docelic/amber-introduction/master/support/haproxy.conf
+cd ..
+mkdir -p var/{run,empty}
+```
+
+Then, to run HAProxy in development/foreground mode, please run:
+
+```sh
+sudo haproxy -f config/haproxy.conf -d
+```
+
+And then point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
+
+Please also note that this HAProxy configuration enables the built-in HAProxy status page at [http://localhost/server-status](http://localhost/server-status) and restricts access to it to localhost.
+
+Finally, now that we are behind a proxy, you can enable the following line in `config/routes.cr`:
+
+```
+    plug Amber::Pipe::ClientIp.new(["X-Forwarded-For"])
+```
+
+And modify one of the views to display the user IP address. Assuming you are using slang, you could edit the file `src/views/home/index.slang` and add the following to the bottom:
+
+```
+    span = context.client_ip.not_nil!.address
+```
 
 # Conclusion<a name="conclusion"></a>
 
