@@ -909,7 +909,7 @@ Finally, now that we are behind a proxy, to get access to client IPs we can enab
     plug Amber::Pipe::ClientIp.new(["X-Forwarded-For"])
 ```
 
-And modify one of the views to display the user IP address. Assuming you are using slang, you could edit the default view file `src/views/home/index.slang` and add the following to the bottom:
+And we can modify one of the views to display the user IP address. Assuming you are using slang, you could edit the default view file `src/views/home/index.slang` and add the following to the bottom:
 
 ```
     a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
