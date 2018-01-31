@@ -507,7 +507,7 @@ To include additional .js or .css files you would generally add `@import "file/p
 
 The base/common configuration for all this is in `config/webpack/common.js`.
 
-## Common Modifications
+## Resource Aliases
 
 Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those to the "resolve" section. E.g.:
 
@@ -521,14 +521,27 @@ Sometimes, the code or libraries you include will in turn require libraries by g
 ...
 ```
 
-Then, you might want to also minimize CSS and to copy some files to `public/dist` verbatim. This is done by adding the following under "devDependencies" in `package.json`:
+## CSS Optimization / Minification
+
+You might want to minimize the CSS placed in the final bundle.
+
+To do so you need an entry under "devDependencies" in the file `package.json`:
 
 ```
     "optimize-css-assets-webpack-plugin": "^1.3.0",
+```
+
+And you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
+
+## File Copying
+
+You might also want to copy some files from their original location to `public/dist/` without any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
+
+```
     "copy-webpack-plugin": "^4.1.1",
 ```
 
-And adding the following under "plugins" section in `config/webpack/common.js`:
+Adding the following under "plugins" section in `config/webpack/common.js`:
 
 ```
   new CopyWebPackPlugin([
@@ -540,9 +553,13 @@ And adding the following under "plugins" section in `config/webpack/common.js`:
   ]),
 ```
 
-And running `npm install` for the dependencies to be installed to "node_modules/" directory.
+And running `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
 
-(Maybe it would be useful to replace it with e.g. [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one. In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
+## Asset Management Alternatives
+
+Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
+
+In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
 # Default Shards
 
