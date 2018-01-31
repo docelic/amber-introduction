@@ -736,7 +736,7 @@ And then start `amber watch` and point your browser to [http://localhost/](http:
 
 Please also note that this HAProxy configuration enables the built-in HAProxy status page at [http://localhost/server-status](http://localhost/server-status) and restricts access to it to localhost.
 
-Finally, now that we are behind a proxy, you can enable the following line in `config/routes.cr`:
+Finally, now that we are behind a proxy, to get access to client IPs we can enable the following line in `config/routes.cr`:
 
 ```
     plug Amber::Pipe::ClientIp.new(["X-Forwarded-For"])
