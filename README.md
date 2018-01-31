@@ -562,7 +562,7 @@ The JS resources are bundled to `main.bundle.js` and CSS resources are bundled t
 
 [Webpack](https://webpack.js.org/) is used for asset management.
 
-To include additional .js or .css files you would generally add `@import "file/path";` to `src/assets/javascripts/main.js`. The packer being webpack, it handles import statements in .js, but not in .css/.scss files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
+To include additional .js or .css/.scss files you would generally add `import "file/path";` statements to `src/assets/javascripts/main.js`. The packer being webpack, it handles import statements in .js, but not in .css/.scss files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
 
 The base/common configuration for all this is in `config/webpack/common.js`.
 
