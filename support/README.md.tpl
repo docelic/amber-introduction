@@ -601,13 +601,13 @@ Amber adds some very convenient extensions to existing String and Number classes
 For String:
 
 ```crystal
-[[[grep 'def ' amber/src/amber/extensions/string_extension.cr]]]
+[[[grep 'def ' amber/src/amber/extensions/string.cr]]]
 ```
 
 For Number:
 
 ```crystal
-[[[grep 'def ' amber/src/amber/extensions/number_extension.cr]]]
+[[[grep 'def ' amber/src/amber/extensions/number.cr]]]
 ```
 
 # Support Routines
