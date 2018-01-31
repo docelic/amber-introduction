@@ -34,6 +34,7 @@
 1. [Static Pages](#static_pages)
 1. [Responses with Different Content-Type](#responses_with_different_content_type)
 1. [Assets Pipeline](#assets_pipeline)
+	1. [Common Modifications](#common_modifications)
 1. [Default Shards](#default_shards)
 1. [Extensions](#extensions)
 1. [Support Routines](#support_routines)
@@ -556,11 +557,48 @@ app/src/assets/stylesheets/main.scss
 At build time, all these are processed and placed under `public/dist/`.
 The JS resources are bundled to `main.bundle.js` and CSS resources are bundled to `main.bundle.css`.
 
-(Currently, webpack is being used for asset management. I am thinking of coming up with a way to replace it with e.g. [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one. In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
+[Webpack](https://webpack.js.org/) is used for asset management.
 
-To include additional .js or .css files you would generally add `@import "file/path";` to `main.bundle.js`. Since the packer is webpack, it handles @import statements in .js, but not in .css/.scss files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's ExtractTextPlugin is used to extract CSS parts into their own bundle.
+To include additional .js or .css files you would generally add `@import "file/path";` to `src/assets/javascripts/main.js`. The packer being webpack, it handles import statements in .js, but not in .css/.scss files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
 
-This base/common configuration is in `config/webpack/common.js`.
+The base/common configuration for all this is in `config/webpack/common.js`.
+
+## Common Modifications<a name="common_modifications"></a>
+
+Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those to the "resolve" section. E.g.:
+
+```
+...
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, '../../vendor/mylibs/jquery-3.2.1.min.js'),
+    }
+  }
+...
+```
+
+Then, you might want to also minimize CSS and to copy some files to `public/dist` verbatim. This is done by adding the following under "devDependencies" in `package.json`:
+
+```
+    "optimize-css-assets-webpack-plugin": "^1.3.0",
+    "copy-webpack-plugin": "^4.1.1",
+```
+
+And adding the following under "plugins" section in `config/webpack/common.js`:
+
+```
+  new CopyWebPackPlugin([
+    {
+      from: path.resolve(__dirname, '../../vendor/images/'),
+      to: path.resolve(__dirname, '../../public/dist/images/'),
+      ignore: ['.*'],
+    }
+  ]),
+```
+
+And running `npm install` for the dependencies to be installed to "node_modules/" directory.
+
+(Maybe it would be useful to replace it with e.g. [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one. In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
 
 # Default Shards<a name="default_shards"></a>
 
