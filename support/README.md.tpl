@@ -523,7 +523,7 @@ Sometimes, the code or libraries you include will in turn require libraries by g
 
 ## CSS Optimization / Minification
 
-You might want to minimize the CSS placed in the final bundle.
+You might want to minimize the CSS that is output to the final CSS bundle.
 
 To do so you need an entry under "devDependencies" in the file `package.json`:
 
