@@ -836,7 +836,7 @@ On an intermediate level, a proxy will provide you with caching and scaling and 
 
 On an advanced level, a proxy will allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
 
-[HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but for now it should be good enough to get you started with practical results.
+[HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but even by default the configuration does many of the simple things listed and should be good enough to get you started with practical results.
 
 So, after installing HAProxy, to obtain the config file and set up the basic directory structure, please run the following commands:
 
