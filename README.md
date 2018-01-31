@@ -838,7 +838,19 @@ On an advanced level, a proxy will allow you to keep track of arbitrary statisti
 
 [HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but even by default the configuration should be good enough to get you started with practical results.
 
-So, after installing HAProxy, to obtain the config file and set up the basic directory structure, please run the following in your Amber app directory:
+HAProxy comes pre-packaged for most Linux distributions and MacOS. The example config file will work with any version, but some Linux distribution package old HAProxy versions and for any production use it is suggested to manually install the latest stable version (1.8.x).
+
+To compile the latest stable HAProxy from source, you could use the following procedure:
+
+```
+git clone http://git.haproxy.org/git/haproxy-1.8.git/
+cd haproxy-1.8
+make -j4 TARGET=linux2628 USE_OPENSSL=1
+```
+
+The compilation will be trouble free and you will end up having the `haproxy` binary in the current directory.
+
+To obtain the config file and set up the basic directory structure, please run the following in your Amber app directory:
 
 ```sh
 cd config
@@ -847,7 +859,7 @@ cd ..
 mkdir -p var/{run,empty}
 ```
 
-Then, to run HAProxy in development/foreground mode, please run:
+And finally, to start HAProxy in development/foreground mode, please run:
 
 ```sh
 sudo haproxy -f config/haproxy.conf -d
