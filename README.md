@@ -853,7 +853,7 @@ Then, to run HAProxy in development/foreground mode, please run:
 sudo haproxy -f config/haproxy.conf -d
 ```
 
-And then point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
+And then start `amber watch` and point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
 
 Please also note that this HAProxy configuration enables the built-in HAProxy status page at [http://localhost/server-status](http://localhost/server-status) and restricts access to it to localhost.
 
