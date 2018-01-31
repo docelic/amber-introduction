@@ -509,7 +509,7 @@ The base/common configuration for all this is in `config/webpack/common.js`.
 
 ## Resource Aliases
 
-Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those to the "resolve" section. E.g.:
+Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. You would add the following to the "resolve" section in `config/webpack/common.js`:
 
 ```
 ...
@@ -541,7 +541,7 @@ You might also want to copy some files from their original location to `public/d
     "copy-webpack-plugin": "^4.1.1",
 ```
 
-Adding the following under "plugins" section in `config/webpack/common.js`:
+And adding the following under "plugins" section in `config/webpack/common.js`:
 
 ```
   new CopyWebPackPlugin([
