@@ -727,7 +727,7 @@ cd haproxy-1.8
 make -j4 TARGET=linux2628 USE_OPENSSL=1
 ```
 
-The compilation will be trouble free and you will end up having the `haproxy` binary in the current directory.
+The compilation will be trouble free and you will end up with the binary `haproxy` in the current directory.
 
 To obtain the config file and set up the basic directory structure, please run the following in your Amber app directory:
 
