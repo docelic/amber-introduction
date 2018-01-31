@@ -866,7 +866,7 @@ Finally, now that we are behind a proxy, you can enable the following line in `c
 And modify one of the views to display the user IP address. Assuming you are using slang, you could edit the file `src/views/home/index.slang` and add the following to the bottom:
 
 ```
-    span = context.client_ip.not_nil!.address
+    a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
 ```
 
 # Conclusion<a name="conclusion"></a>
