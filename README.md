@@ -873,7 +873,7 @@ On an advanced level, a proxy will allow you to keep track of arbitrary statisti
 
 HAProxy comes pre-packaged for most GNU/Linux distributions and MacOS, but if you do not see version 1.8.x available, it is recommended to manually install the latest stable version.
 
-To compile the latest stable HAProxy from source, you could use the following procedure:
+<a name="install-haproxy"></a>To compile the latest stable HAProxy from source, you could use the following procedure:
 
 ```
 git clone http://git.haproxy.org/git/haproxy-1.8.git/
