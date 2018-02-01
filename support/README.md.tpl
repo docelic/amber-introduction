@@ -741,7 +741,7 @@ mkdir -p var/{run,empty}
 And finally, to start HAProxy in development/foreground mode, please run:
 
 ```sh
-sudo haproxy -f config/haproxy.conf -d
+sudo ../haproxy-1.8/haproxy -f config/haproxy.conf -d
 ```
 
 And then start `amber watch` and point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
