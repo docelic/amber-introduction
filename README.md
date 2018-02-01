@@ -549,7 +549,6 @@ In an Amber project, raw assets are in `src/assets/`:
 app/src/assets/
 app/src/assets/fonts
 app/src/assets/images
-app/src/assets/images/divi.png
 app/src/assets/images/logo.png
 app/src/assets/javascripts
 app/src/assets/javascripts/main.js
@@ -872,7 +871,7 @@ On an advanced level, a proxy will allow you to keep track of arbitrary statisti
 
 [HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but even by default the configuration should be good enough to get you started with practical results.
 
-HAProxy comes pre-packaged for most GNU/Linux distributions and MacOS. The example config file will work with any HAProxy version, but many GNU/Linux distributions ship old versions. For any production use it is suggested to manually install the latest stable version (1.8.x).
+HAProxy comes pre-packaged for most GNU/Linux distributions and MacOS, but if you do not see version 1.8.x available, it is recommended to manually install the latest stable version.
 
 To compile the latest stable HAProxy from source, you could use the following procedure:
 
@@ -902,6 +901,8 @@ sudo haproxy -f config/haproxy.conf -d
 And then start `amber watch` and point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
 
 Please also note that this HAProxy configuration enables the built-in HAProxy status page at [http://localhost/server-status](http://localhost/server-status) and restricts access to it to localhost.
+
+When you confirm everything is working, you can omit the `-d` flag and it will start HAProxy in background, returning the shell back to you. You can then forget about HAProxy until you modify its configuration and want to reload it. Then simply call `kill -USR2 var/run/haproxy.pid`.
 
 Finally, now that we are behind a proxy, to get access to client IPs we can enable the following line in `config/routes.cr`:
 
