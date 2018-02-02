@@ -354,7 +354,7 @@ The original Kilt repository does not have support for the Liquid template langu
 
 Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not support using arbitrary functions, objects, object methods, and data types in its templates.
 
-As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is a separate object and local variables are not there.
+As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is separate and local variables are not there.
 
 Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context, but then the user can't pre-populate it with desired values. Also, Liquid's implementation copies all instance variables (@ivars) on the current object into the created context, which is problematic. First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable within Liquid). Second, because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` will not work in Amber even if the template was empty.
 
