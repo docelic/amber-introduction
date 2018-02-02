@@ -35,7 +35,9 @@
 1. [Useful Classes and Methods](#useful_classes_and_methods)
 1. [Parameter Validation](#parameter_validation)
 1. [Static Pages](#static_pages)
-1. [Responses with Different Content-Type](#responses_with_different_content_type)
+1. [Responses](#responses)
+	1. [Responses with Different Content-Type](#responses_with_different_content_type)
+	1. [Error Responses](#error_responses)
 1. [Assets Pipeline](#assets_pipeline)
 	1. [Resource Aliases](#resource_aliases)
 	1. [CSS Optimization / Minification](#css_optimization___minification)
@@ -591,7 +593,9 @@ Because we have called render() without additional arguments, the template will 
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
-# Responses with Different Content-Type<a name="responses_with_different_content_type"></a>
+# Responses<a name="responses"></a>
+
+## Responses with Different Content-Type<a name="responses_with_different_content_type"></a>
 
 If you want to provide a different format (or different response altogether) from the controller methods based on accepted content types, you can use `respond_with` from `Amber::Helpers::Responders`.
 
@@ -607,6 +611,21 @@ end
 ```
 
 Supported format types are `html`, `json`, `xml`, and `text`. For all the available methods and arguments, please see [src/amber/controller/helpers/responders.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr).
+
+## Error Responses<a name="error_responses"></a>
+
+In any pipe or your controller action, you might need to return an error to the user. That typically means returning a HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
+
+To stop request execution and return an error, you would do it this way:
+
+```
+if some_condition_failed
+  Amber.logger.error "Error! Returning Bad Request"
+  context.response.puts "Bad Request"
+  context.response.status_code = 400
+  return
+end
+```
 
 # Assets Pipeline<a name="assets_pipeline"></a>
 
