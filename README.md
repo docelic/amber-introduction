@@ -344,9 +344,9 @@ Templates are actually executing in the controller class. If you do "<%= self.cl
 
 In the introduction we've mentioned that Amber supports two template languages &mdash; [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
 
-That's because Amber ships with the minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own (or want to convert existing) templates.
+That's because Amber ships with the minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own templates or want to convert existing ones.
 
-Amber's default rendering infrastructure is based on [Kilt](https://github.com/jeromegn/kilt), so any languages supported by Kilt should be usable out of the box.
+Amber's default rendering infrastructure is based on [Kilt](https://github.com/jeromegn/kilt) and all languages supported by Kilt should be usable out of the box. Amber does not make assumptions about the template languages and the view file's extension determines which language will interpret it (".ecr" for ecr, ".slang" for slang).
 
 ### Liquid Template Language<a name="liquid_template_language"></a>
 
