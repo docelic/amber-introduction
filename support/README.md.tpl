@@ -353,7 +353,7 @@ Will result in the log line:
 03:17:04 MySystem   | (WARN) Starting up
 ```
 
-In you still need a customized logger for special cases or purposes, please create `Logger.new` yourself.
+In you still need a customized logger for special cases or purposes, please create a separate `Logger.new` yourself.
 
 # Starting the Server
 
