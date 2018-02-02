@@ -40,7 +40,7 @@ make force_link # can also specify PREFIX=...
 
 After installation or linking, `amber` is the command you will be using for creating and managing Amber apps.
 
-Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, Amber ships with the build target "amber". Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to `bin/amber`.
+Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, project's `shard.yml` ships with the build target "amber". Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to project's local file `bin/amber`.
 
 # Creating New Amber App
 
