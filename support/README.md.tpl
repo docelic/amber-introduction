@@ -557,9 +557,9 @@ Supported format types are `html`, `json`, `xml`, and `text`. For all the availa
 
 ## Error Responses
 
-In any pipe or your controller action, you might need to return an error to the user. That typically means returning a HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
+In any pipe or controller action, you might need to return an error to the user. That typically means returning an HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
 
-To stop request execution and return an error, you would do it this way:
+To stop a request during execution and return an error, you would do it this way:
 
 ```
 if some_condition_failed
@@ -569,6 +569,8 @@ if some_condition_failed
   return
 end
 ```
+
+Please note that you must use `context.response.puts` or `context.response&lt;&lt;` to print to the output buffer in case of an error. (The return value from the controller will not be added to response body if HTTP code is not 2xx.)
 
 # Assets Pipeline
 
