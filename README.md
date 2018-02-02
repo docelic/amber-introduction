@@ -382,7 +382,7 @@ Amber logger (based on standard Crystal's class `Logger`) is initialized as soon
 
 The variable containing the logger is `Amber.settings.logger` and, for convenience, it is also available as `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
 
-Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in a controller or views will produce the expected log line:
+Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in the controller or views will produce the expected log line:
 
 ```crystal
 logger.info "Informational Message"
@@ -390,7 +390,7 @@ logger.info "Informational Message"
 
 Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
 
-The second, optional parameter passed to the log method will affect the displayed name of the subsystem from which the message arrived. For example:
+The second, optional parameter passed to the log method will affect the displayed name of the subsystem in which the message originated. For example:
 
 
 ```crystal
