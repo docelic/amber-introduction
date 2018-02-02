@@ -314,7 +314,7 @@ All that, combined with Kilt's standardized and somewhat restricted rendering op
 
 There is nothing "special" about methods in Amber which render view contents, so users can generate response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is to be returned to the user. From there, Amber will take care of returning it to the user as response body.
 
-However, Amber does not force its default rendering model to be part of the application. Users can completely remove it, be it to avoid using anything other than strictly necessary pieces, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
+However, Amber does not force its default rendering model to be part of the application. Users can completely remove it, be it to avoid using anything other than strictly necessary, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
 
 The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
 
@@ -324,7 +324,7 @@ require "amber/controller/helpers/render"
 include Amber::Controller::Helpers::Render
 ```
 
-Removing these lines will completely leave out Kilt dependencies and Amber's default rendering model based on Kilt.
+Removing these two lines will completely leave out Amber's default rendering model and its Kilt dependencies.
 
 # Logging
 
