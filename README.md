@@ -380,7 +380,7 @@ Removing these two lines will completely leave out Amber's default rendering mod
 
 Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
 
-The variable containing the logger is `Amber.settings.logger` and, for convenience, it is aliased to `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
+The variable containing the logger is `Amber.settings.logger` and, for convenience, it is also available as `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
 
 Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in a controller or views will produce the expected log line:
 
