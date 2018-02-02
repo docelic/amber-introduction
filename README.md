@@ -358,7 +358,7 @@ As such, Amber's principle of rendering the templates directly inside controller
 
 Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context, but that makes the user unable to pre-populate it with desired values. Also, it copies all instance variables (@ivars) from the current object into the newly created context, which is problematic. First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` will result in an error in Amber even if the template was empty.
 
-All that, combined with Kilt's standardized and restricted rendering assumptions, make Liquid non-ideal for use with Amber's Kilt-based default rendering model
+All that, combined with Kilt's standardized and somewhat restricted rendering options, make Liquid non-ideal for use with Amber's Kilt-based default rendering model
 
 ### Custom Rendering Model<a name="custom_rendering_model"></a>
 
