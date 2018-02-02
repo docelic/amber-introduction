@@ -43,6 +43,7 @@
 1. [Support Routines](#support_routines)
 1. [Amber::Controller::Base](#amber__controller__base)
 1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
+1. [Ecommerce with Amber](#ecommerce_with_amber)
 1. [Conclusion](#conclusion)
 
 
@@ -915,6 +916,10 @@ And we can modify one of the views to display the user IP address. Assuming you 
 ```
     a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
 ```
+
+# Ecommerce with Amber<a name="ecommerce_with_amber"></a>
+
+I am working on [Jet](https://github.com/jetcommerce/jet), an ecommerce solution for Amber.
 
 # Conclusion<a name="conclusion"></a>
 

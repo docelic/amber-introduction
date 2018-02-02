@@ -762,6 +762,10 @@ And we can modify one of the views to display the user IP address. Assuming you 
     a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
 ```
 
+# Ecommerce with Amber
+
+I am working on [Jet](https://github.com/jetcommerce/jet), an ecommerce solution for Amber.
+
 # Conclusion
 
 We hope you have enjoyed this hands-on introduction to Amber!
