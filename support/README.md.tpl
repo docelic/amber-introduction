@@ -570,7 +570,7 @@ if some_condition_failed
 end
 ```
 
-Please note that you must use `context.response.puts` or `context.response<<` to print to the output buffer in case of an error. (The return value from the controller will not be added to response body if HTTP code is not 2xx.)
+Please note that you must use `context.response.puts` or `context.response<<` to print to the output buffer in case of errors. (The return value from the controller will not be added to response body if HTTP code is not 2xx.)
 
 # Assets Pipeline
 
