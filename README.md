@@ -358,11 +358,15 @@ As such, Amber's principle of rendering the templates directly inside controller
 
 Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context, but that makes the user unable to pre-populate it with desired values. Also, it copies all instance variables (@ivars) from the current object into the newly created context, which is problematic. First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` will result in an error in Amber even if the template was empty.
 
-All that, combined with Kilt's standardized and somewhat restricted rendering options, make Liquid non-ideal for use with Amber's Kilt-based default rendering model
+All that, combined with Kilt's standardized and somewhat restricted rendering options, make Liquid non-ideal for use with Amber's default, Kilt-based rendering model.
 
 ### Custom Rendering Model<a name="custom_rendering_model"></a>
 
-Amber does not force users to use Kilt for rendering. The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
+There is nothing "special" about methods in Amber which render view contents, so users can produce the response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is intended to be returned to the user. From there, Amber will take care of returning it to the user as response body.
+
+However, Amber does not force its default rendering model to be part of an application. Users can completely remove it, be it to avoid using anything that is not strictly necessary, avoid Kilt dependencies, or specifically free up the name of the `render()` macro and other methods.
+
+The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
 
 ```crystal
 require "amber/controller/helpers/render"
@@ -370,7 +374,7 @@ require "amber/controller/helpers/render"
 include Amber::Controller::Helpers::Render
 ```
 
-Removing these two lines removes the default rendering model in Amber and users can add their own.
+Removing these lines will completely leave out Kilt dependencies and Amber's default rendering model based on Kilt.
 
 # Logging<a name="logging"></a>
 
