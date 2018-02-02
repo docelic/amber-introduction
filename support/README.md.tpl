@@ -302,7 +302,7 @@ Amber's default rendering model is based on [Kilt](https://github.com/jeromegn/k
 
 The original Kilt repository does not have support for the Liquid template language, but there are Kilt and Liquid forks available at [jetcommerce](https://github.com/jetcommerce/) which add the missing functionality to make it work.
 
-Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not support using arbitrary functions, objects, object methods, and data types in templates.
+Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not support using arbitrary functions, objects, object methods, and data types in its templates.
 
 As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is a separate object.
 
