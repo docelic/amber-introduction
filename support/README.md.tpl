@@ -38,8 +38,9 @@ make force_link # can also specify PREFIX=...
 
 ("stow" mentioned above is referring to [GNU Stow](https://www.gnu.org/software/stow/).)
 
-After installation or linking, `amber` is the command you will be using
-for creating and managing Amber apps.
+After installation or linking, `amber` is the command you will be using for creating and managing Amber apps.
+
+Some users prefer (or must use for compatibility reasons) Amber executables which match the version of Amber used in their project. For that, Amber ships with the build target "amber". Running `crystal deps build amber` will compile Amber located in `lib/amber/` into a local executable `bin/amber`.
 
 # Creating New Amber App
 
@@ -62,8 +63,7 @@ Granite is a very nice and simple, effective ORM model, where you mostly write y
 
 Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
-If argument --deps is provided, Amber will automatically run `crystal
-deps` in the new directory to install shards.
+If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
 
 # Running the App
 
