@@ -73,6 +73,8 @@ Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Mi
 
 If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
 
+Please note that shards-related commands use the directory `.shards/` for local staging area before contents are fully prepared and replace things in `lib/`.
+
 # Running the App
 
 The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
@@ -98,6 +100,8 @@ Amber by default uses a feature called "port reuse" available in newer Linux ker
 # Building the App and Troubleshooting
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
+
+Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or using `require`s in your program will generally not affect what is compiled.
 
 For faster build speed, development versions are compiled without the --release flag. With the --release flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
