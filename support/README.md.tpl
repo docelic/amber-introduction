@@ -314,7 +314,7 @@ All that, combined with Kilt's standardized and somewhat restricted rendering op
 
 There is nothing "special" about methods in Amber which render view contents, so users can generate response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is to be returned to the user. From there, Amber will take care of returning it to the user as response body.
 
-However, Amber does not force its default rendering model to be part of the application. Users can completely remove it, be it to avoid using anything other than strictly necessary, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
+However, Amber does not force its default rendering model to be part of an application. Users can completely remove it, be it to avoid using anything other than strictly necessary, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
 
 The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
 
@@ -340,7 +340,20 @@ logger.info "Informational Message"
 
 Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
 
-In case you need to use your customized logger for special cases or purposes, then simply create `Logger.new` yourself.
+The second, optional parameter passed to the log method will affect the displayed name of the subsystem from which the message arrived. For example:
+
+
+```crystal
+logger.warn "Starting up", "MySystem"
+```
+
+Will result in the log line:
+
+```
+03:17:04 MySystem   | (WARN) Starting up
+```
+
+In you still need a customized logger for special cases or purposes, please create `Logger.new` yourself.
 
 # Starting the Server
 
