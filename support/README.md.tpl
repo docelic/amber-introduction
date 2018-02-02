@@ -50,12 +50,10 @@ amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL] [--deps]
 
 Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
 
-Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
+Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html), but any languages can be used (please see [Template Languages](#template_languages) below for more information).
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
 ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts HTML pages into slang.)
-
-In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes templates extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
@@ -291,6 +289,38 @@ Hello, World! The time is now <%= time %>.
 ```
 
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
+
+## Template Languages
+
+In the introduction we've mentioned that Amber supports two template languages &mdash; [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
+
+That's simply because Amber ships with the minimal default layout and one view available in those two languages (a total of 3 files per language), but there is nothing preventing you from using any other languages if you have your own (or want to convert existing) templates.
+
+Amber's default rendering infrastructure is based on [Kilt](https://github.com/jeromegn/kilt), so any languages supported by Kilt should be usable out of the box.
+
+### Liquid Template Language
+
+The original Kilt repository does not have support for the Liquid template language, but there are Kilt and Liquid forks available at [jetcommerce](https://github.com/jetcommerce/) which add the missing functionality to make it work.
+
+Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and it also does not support using arbitrary functions, objects, object methods, and data types in templates.
+
+As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is a separate object.
+
+Also, Liquid's implementation by default tries to be helpful and it automatically copies all instance variables (@ivars) on the current object into Liquid context. This is problematic first because it doesn't work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable within Liquid) and second because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` wouldn't work even if the template was empty.
+
+All that, combined with Kilt's standardized and restricted rendering assumptions, make Liquid non-ideal for use with Amber's Kilt-based default rendering model
+
+### Custom Rendering Model
+
+Amber does not force users to use Kilt for rendering. The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
+
+```crystal
+require "amber/controller/helpers/render"
+...
+include Amber::Controller::Helpers::Render
+```
+
+Removing these two lines removes the default rendering model in Amber and users can add their own.
 
 # Logging
 
