@@ -108,7 +108,7 @@ Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Mi
 
 If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
 
-Please note that shards-related commands use the directory `.shards/` for local staging area before contents are fully prepared and replace things in `lib/`.
+Please note that shards-related commands use the directory `.shards/` as local staging area before contents are fully ready to replace shards in `lib/`.
 
 # Running the App<a name="running_the_app"></a>
 
