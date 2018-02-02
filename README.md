@@ -362,7 +362,7 @@ All that, combined with Kilt's standardized and somewhat restricted rendering op
 
 ### Custom Rendering Model<a name="custom_rendering_model"></a>
 
-There is nothing "special" about methods in Amber which render view contents, so users can produce the response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is intended to be returned to the user. From there, Amber will take care of returning it to the user as response body.
+There is nothing "special" about methods in Amber which render view contents, so users can generate response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is to be returned to the user. From there, Amber will take care of returning it to the user in response body.
 
 However, Amber does not force its default rendering model to be part of an application. Users can completely remove it, be it to avoid using anything that is not strictly necessary, avoid Kilt dependencies, or specifically free up the name of the `render()` macro and other methods.
 
