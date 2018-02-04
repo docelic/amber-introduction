@@ -39,6 +39,7 @@ require "optarg"                 EXTERNAL Parsing command-line options and argum
 require "option_parser"          CRYSTAL  Command line options processing
 require "shell-table"            EXTERNAL Creating text tables in command line terminal
 require "spinner"                EXTERNAL Animated spinner for command line applications
+
 ------- Misc ----------------------------------------------------------------------------------------------
 require "callback"               EXTERNAL Defining and invoking callbacks
 require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
