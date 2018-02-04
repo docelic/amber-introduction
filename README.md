@@ -724,7 +724,8 @@ In general it seems it shouldn't be much more complex than replacing the command
 
 Amber and all of its components depend on the following shards:
 
-########## Web, Routing, Templates, Mailers, Plugins ##########################################
+```
+########## Web, Routing, Templates, Mailers, Plugins ######################################################################
 require "amber"
 require "quartz_mailer"
 require "radix"
@@ -796,6 +797,7 @@ require "tempfile"
 require "uri"
 require "uuid"
 require "weak_ref"
+```
 
 
 Only the parts that are used end up in the compiled project.
