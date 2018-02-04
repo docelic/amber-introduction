@@ -789,7 +789,7 @@ require "crypto/subtle"          CRYSTAL
 require "file_utils"             CRYSTAL  Supporting functions for files and directories
 require "process"                CRYSTAL  Supporting functions for working with system processes
 require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
-require "selenium"               CRYSTAL  
+require "selenium"               
 require "socket"                 CRYSTAL  Supporting functions for working with sockets
 require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
 require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
