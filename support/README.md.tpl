@@ -655,34 +655,11 @@ Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
-# Default Shards
+# Shards
 
-By default, Amber project depends on just a few shards:
+Amber and all of its components depend on the following shards:
 
-```
-amberframework/amber          - Obviously, must depend on Amber
-amberframework/granite-orm    - Database ORM
-amberframework/quartz-mailer  - Sending and receiving emails
-amberframework/jasper-helpers - Helpers for working with HTML in Amber/Crystal
-will/crystal-pg               - PostgreSQL connector
-amberframework/garnet-spec    - Extended Crystal specs for testing web applications
-```
-
-In turn, these depend on:
-
-```
-{{{SHARDS}}}
-```
-
-And basic Crystal's build-in shards:
-
-```
-http
-logger
-json
-colorize
-random/secure
-```
+[[[cat shards.txt]]]
 
 Only the parts that are used end up in the compiled project.
 

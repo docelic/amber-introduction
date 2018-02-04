@@ -43,7 +43,7 @@
 	1. [CSS Optimization / Minification](#css_optimization___minification)
 	1. [File Copying](#file_copying)
 	1. [Asset Management Alternatives](#asset_management_alternatives)
-1. [Default Shards](#default_shards)
+1. [Shards](#shards)
 1. [Extensions](#extensions)
 1. [Support Routines](#support_routines)
 1. [Amber::Controller::Base](#amber__controller__base)
@@ -720,51 +720,83 @@ Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
-# Default Shards<a name="default_shards"></a>
+# Shards<a name="shards"></a>
 
-By default, Amber project depends on just a few shards:
+Amber and all of its components depend on the following shards:
 
-```
-amberframework/amber          - Obviously, must depend on Amber
-amberframework/granite-orm    - Database ORM
-amberframework/quartz-mailer  - Sending and receiving emails
-amberframework/jasper-helpers - Helpers for working with HTML in Amber/Crystal
-will/crystal-pg               - PostgreSQL connector
-amberframework/garnet-spec    - Extended Crystal specs for testing web applications
-```
+########## Web, Routing, Templates, Mailers, Plugins ##########################################
+require "amber"
+require "quartz_mailer"
+require "radix"
+require "teeplate"
 
-In turn, these depend on:
+############ Databases and ORM Models
+require "crecto"
+require "crikey"
+require "crustache"
+require "db"
+require "granite_orm/adapter/<%= @database %>"
+require "micrate"
+require "mysql"
+require "pg"
+require "redis"
+require "sqlite3"
 
-```
-veelenga/ameba                        - Static code analysis (development)
-mosop/callback                        - Defining and invoking callbacks
-amberframework/cli                    - Building cmdline apps (based on mosop)
-crystal-lang/crystal-db               - Common DB API
-jeromegn/kilt                         - Generic template interface
-juanedi/micrate                       - Database migration tool
-crystal-lang/crystal-mysql            - 
-mosop/optarg                          - Parsing cmdline args
-will/crystal-pg                       - PostgreSQL driver
-luislavena/radix                      - Radix Tree implementation
-stefanwille/crystal-redis             - 
-jwaldrip/shell-table.cr               - Creates textual tables in shell
-jeromegn/slang                        - Slang template language
-askn/spinner                          - Spinner for the shell
-crystal-lang/crystal-sqlite3          - 
-mosop/string_inflection               - Word plurals, counts, etc.
-amberframework/teeplate               - Rendering multiple template files
+######## Template Rendering
+require "ecr"
+require "ecr/macros"
+require "kilt"
+require "kilt/slang"
+require "slang"
+require "temel"
 
-```
+############ Command Line, Logs, And Output
+require "cli"
+require "colorize"
+require "logger"
+require "optarg"
+require "option_parser"
+require "shell-table"
+require "spinner"
 
-And basic Crystal's build-in shards:
+########### Misc
+require "callback"
+require "compiler/crystal/syntax/*"
+require "garnet_spec"
 
-```
-http
-logger
-json
-colorize
-random/secure
-```
+######## Formats, Protocols, Digests, and Compression
+require "digest/md5"
+require "html"
+require "http"
+require "http/params"
+require "jasper_helpers"
+require "json"
+require "openssl"
+require "openssl/cipher"
+require "openssl/hmac"
+require "openssl/sha1"
+require "yaml"
+require "zlib"
+
+########## Supporting Functionality
+require "base64"
+require "big"
+require "bit_array"
+require "crypto/bcrypt/password"
+require "crypto/subtle"
+require "file_utils"
+require "process"
+require "random/secure"
+require "socket"
+require "socket/tcp_socket"
+require "socket/unix_socket"
+require "string_inflection/kebab"
+require "string_inflection/snake"
+require "tempfile"
+require "uri"
+require "uuid"
+require "weak_ref"
+
 
 Only the parts that are used end up in the compiled project.
 
