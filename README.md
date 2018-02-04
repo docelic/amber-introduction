@@ -758,18 +758,16 @@ require "slang"                  EXTERNAL Template language, inspired by Slim
 require "temel"                  EXTERNAL Template language, Extensible Markup DSL
 
 ------- Command Line, Logs, And Output --------------------------------------------------------------------
-require "cli"
-require "colorize"
-require "logger"
-require "optarg"
-require "option_parser"
-require "shell-table"
-require "spinner"
-
+require "cli"                    EXTERNAL Support for building command-line interface applications
+require "colorize"               CRYSTAL  Changing colors and text decorations
+require "logger"                 CRYSTAL  Simple but sophisticated logging utility
+require "optarg"                 EXTERNAL Parsing command-line options and arguments
+require "option_parser"          CRYSTAL  Command line options processing
+require "shell-table"            EXTERNAL Creating text tables in command line terminal
+require "spinner"                EXTERNAL Animated spinner for command line applications
 ------- Misc ----------------------------------------------------------------------------------------------
-require "callback"
-require "compiler/crystal/syntax/*"
-require "garnet_spec"
+require "callback"               EXTERNAL Defining and invoking callbacks
+require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
 
 ------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
 require "digest/md5"
