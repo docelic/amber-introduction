@@ -738,6 +738,7 @@ require "radix"                  EXTERNAL Radix Tree implementation
 require "teeplate"               AMBER    Rendering multiple template files
 
 ------- Databases and ORM Models --------------------------------------------------------------------------
+require "big"                    EXTERNAL BigRational for numeric. Retains precision, requires LibGMP
 require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
 require "db"                     CRYSTAL  Common DB API
 require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
@@ -754,7 +755,7 @@ require "ecr"                    CRYSTAL  Template language, Embedded Crystal (E
 require "kilt"                   EXTERNAL Generic template interface
 require "kilt/slang"             EXTERNAL Kilt support for Slang template language
 require "slang"                  EXTERNAL Template language, inspired by Slim
-require "temel"                  EXTERNAL Template language, Extensible Markup DSL
+require "temel"                  EXTERNAL Template language, extensible Markup DSL
 
 ------- Command Line, Logs, And Output --------------------------------------------------------------------
 require "cli"                    EXTERNAL Support for building command-line interface applications
@@ -780,24 +781,23 @@ require "yaml"                   CRYSTAL  Serialization and deserialization of Y
 require "zlib"                   CRYSTAL  Readoing/writomg Zlib compressed data as specified in RFC 1950
 
 ------- Supporting Functionality --------------------------------------------------------------------------
-require "base64"
-require "big"
-require "bit_array"
-require "crypto/bcrypt/password"
-require "crypto/subtle"
-require "file_utils"
-require "process"
-require "random/secure"
-require "selenium"
-require "socket"
-require "socket/tcp_socket"
-require "socket/unix_socket"
-require "string_inflection/kebab"
-require "string_inflection/snake"
-require "tempfile"
-require "uri"
-require "uuid"
-require "weak_ref"
+require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
+require "bit_array"              CRYSTAL  Array data structure that compactly stores bits
+require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
+require "crypto/subtle"          CRYSTAL  
+require "file_utils"             CRYSTAL  Supporting functions for files and directories
+require "process"                CRYSTAL  Supporting functions for working with system processes
+require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
+require "selenium"               CRYSTAL  
+require "socket"                 CRYSTAL  Supporting functions for working with sockets
+require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
+require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
+require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" style ("foo-bar")
+require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
+require "tempfile"               CRYSTAL  Managing temporary files
+require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
+require "uuid"                   
+require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
 ```
 
 
