@@ -738,18 +738,18 @@ require "radix"                  EXTERNAL Radix Tree implementation
 require "teeplate"               AMBER    Rendering multiple template files
 
 ------- Databases and ORM Models --------------------------------------------------------------------------
-require "crecto"
-require "crikey"
-require "crustache"
-require "db"
-require "granite_orm/adapter/<%- @database %>"
-require "micrate"
-require "mysql"
-require "pg"
-require "redis"
-require "sqlite3"
+require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
+require "db"                     CRYSTAL  Common DB API
+require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
+require "micrate"                EXTERNAL Database migration tool
+require "mysql"                  CRYSTAL  MySQL connector
+require "pg"                     EXTERNAL PostgreSQL connector
+require "redis"                  EXTERNAL Redis client
+require "sqlite3"                EXTERNAL SQLite3 bindings
 
 ------- Template Rendering --------------------------------------------------------------------------------
+require "crikey"                 
+require "crustache"
 require "ecr"
 require "ecr/macros"
 require "kilt"
