@@ -25,7 +25,6 @@ require "sqlite3"                EXTERNAL SQLite3 bindings
 require "crikey"                 EXTERNAL Template language, Data structure view, inspired by Hiccup
 require "crustache"              EXTERNAL Template language, {{Mustache}} for Crystal
 require "ecr"                    CRYSTAL  Template language, Embedded Crystal (ECR)
-require "ecr/macros"             CRYSTAL
 require "kilt"                   EXTERNAL Generic template interface
 require "kilt/slang"             EXTERNAL Kilt support for Slang template language
 require "slang"                  EXTERNAL Template language, inspired by Slim
@@ -44,16 +43,15 @@ require "callback"               EXTERNAL Defining and invoking callbacks
 require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
 
 ------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
-require "digest/md5"
-require "html"
-require "jasper_helpers"
-require "json"
-require "openssl"
-require "openssl/cipher"
-require "openssl/hmac"
-require "openssl/sha1"
-require "yaml"
-require "zlib"
+require "digest/md5"             CRYSTAL  MD5 digest algorithm
+require "html"                   CRYSTAL  HTML escaping and unescaping methods
+require "jasper_helpers"         AMBER    Helper functions for working with HTML
+require "json"                   CRYSTAL  Parsing and generating JSON documents
+require "openssl"                CRYSTAL  OpenSSL integration
+require "openssl/hmac"           CRYSTAL  Computing Hash-based Message Authentication Code (HMAC)
+require "openssl/sha1"           CRYSTAL  OpenSSL SHA1 hash functions
+require "yaml"                   CRYSTAL  Serialization and deserialization of YAML 1.1
+require "zlib"                   CRYSTAL  Readoing/writomg Zlib compressed data as specified in RFC 1950
 
 ------- Supporting Functionality --------------------------------------------------------------------------
 require "base64"
