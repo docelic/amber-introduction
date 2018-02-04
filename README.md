@@ -748,14 +748,14 @@ require "redis"                  EXTERNAL Redis client
 require "sqlite3"                EXTERNAL SQLite3 bindings
 
 ------- Template Rendering --------------------------------------------------------------------------------
-require "crikey"                 
-require "crustache"
-require "ecr"
-require "ecr/macros"
-require "kilt"
-require "kilt/slang"
-require "slang"
-require "temel"
+require "crikey"                 EXTERNAL Template language, Data structure view, inspired by Hiccup
+require "crustache"              EXTERNAL Template language, {{Mustache}} for Crystal
+require "ecr"                    CRYSTAL  Template language, Embedded Crystal (ECR)
+require "ecr/macros"             CRYSTAL
+require "kilt"                   EXTERNAL Generic template interface
+require "kilt/slang"             EXTERNAL Kilt support for Slang template language
+require "slang"                  EXTERNAL Template language, inspired by Slim
+require "temel"                  EXTERNAL Template language, Extensible Markup DSL
 
 ------- Command Line, Logs, And Output --------------------------------------------------------------------
 require "cli"
