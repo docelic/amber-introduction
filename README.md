@@ -726,8 +726,13 @@ Amber and all of its components depend on the following shards:
 
 ```
 ------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
-require "amber"
-require "quartz_mailer"
+require "amber"           - Amber itself
+require "http"
+require "http/client"
+require "http/params"
+require "http/server"
+require "quartz_mailer"   - Emailing functionality
+require "email"           - 
 require "radix"
 require "teeplate"
 
@@ -768,8 +773,6 @@ require "garnet_spec"
 ------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
 require "digest/md5"
 require "html"
-require "http"
-require "http/params"
 require "jasper_helpers"
 require "json"
 require "openssl"
@@ -788,6 +791,7 @@ require "crypto/subtle"
 require "file_utils"
 require "process"
 require "random/secure"
+require "selenium"
 require "socket"
 require "socket/tcp_socket"
 require "socket/unix_socket"
