@@ -1,14 +1,15 @@
 ```
+--------SHARD--------------------SOURCE---DESCRIPTION------------------------------------------------------
 ------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
-require "amber"           - Amber itself
-require "http"
-require "http/client"
-require "http/params"
-require "http/server"
-require "quartz_mailer"   - Emailing functionality
-require "email"           - 
-require "radix"
-require "teeplate"
+require "amber"                  AMBER    Amber itself
+require "http"                   CRYSTAL  Lower-level supporting HTTP functionality
+require "http/client"            CRYSTAL  HTTP Client
+require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
+require "http/server"            CRYSTAL  HTTP Server
+require "quartz_mailer"          AMBER    Sending and receiving emails
+require "email"                  EXTERNAL Simple email sending library
+require "radix"                  EXTERNAL Radix Tree implementation
+require "teeplate"               AMBER    Rendering multiple template files
 
 ------- Databases and ORM Models --------------------------------------------------------------------------
 require "crecto"
