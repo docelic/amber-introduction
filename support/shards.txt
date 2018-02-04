@@ -1,3 +1,4 @@
+```
 ########## Web, Routing, Templates, Mailers, Plugins ######################################################################
 require "amber"
 require "quartz_mailer"
@@ -70,3 +71,4 @@ require "tempfile"
 require "uri"
 require "uuid"
 require "weak_ref"
+```
