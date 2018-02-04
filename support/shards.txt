@@ -52,7 +52,7 @@ require "openssl"                CRYSTAL  OpenSSL integration
 require "openssl/hmac"           CRYSTAL  Computing Hash-based Message Authentication Code (HMAC)
 require "openssl/sha1"           CRYSTAL  OpenSSL SHA1 hash functions
 require "yaml"                   CRYSTAL  Serialization and deserialization of YAML 1.1
-require "zlib"                   CRYSTAL  Readoing/writomg Zlib compressed data as specified in RFC 1950
+require "zlib"                   CRYSTAL  Reading/writing Zlib compressed data as specified in RFC 1950
 
 ------- Supporting Functionality --------------------------------------------------------------------------
 require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
