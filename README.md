@@ -725,13 +725,13 @@ In general it seems it shouldn't be much more complex than replacing the command
 Amber and all of its components depend on the following shards:
 
 ```
-####### Web, Routing, Templates, Mailers, Plugins #########################################################
+======= Web, Routing, Templates, Mailers, Plugins =========================================================
 require "amber"
 require "quartz_mailer"
 require "radix"
 require "teeplate"
 
-####### Databases and ORM Models ##########################################################################
+======= Databases and ORM Models ==========================================================================
 require "crecto"
 require "crikey"
 require "crustache"
@@ -743,7 +743,7 @@ require "pg"
 require "redis"
 require "sqlite3"
 
-####### Template Rendering ################################################################################
+======= Template Rendering ================================================================================
 require "ecr"
 require "ecr/macros"
 require "kilt"
@@ -751,7 +751,7 @@ require "kilt/slang"
 require "slang"
 require "temel"
 
-####### Command Line, Logs, And Output ####################################################################
+======= Command Line, Logs, And Output ====================================================================
 require "cli"
 require "colorize"
 require "logger"
@@ -760,12 +760,12 @@ require "option_parser"
 require "shell-table"
 require "spinner"
 
-####### Misc ##############################################################################################
+======= Misc ==============================================================================================
 require "callback"
 require "compiler/crystal/syntax/*"
 require "garnet_spec"
 
-####### Formats, Protocols, Digests, and Compression ######################################################
+======= Formats, Protocols, Digests, and Compression ======================================================
 require "digest/md5"
 require "html"
 require "http"
@@ -779,7 +779,7 @@ require "openssl/sha1"
 require "yaml"
 require "zlib"
 
-####### Supporting Functionality ##########################################################################
+======= Supporting Functionality ==========================================================================
 require "base64"
 require "big"
 require "bit_array"
