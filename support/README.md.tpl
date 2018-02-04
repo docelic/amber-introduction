@@ -36,8 +36,21 @@ make install PREFIX=/usr/local/stow/
 make force_link # can also specify PREFIX=...
 ```
 
-After installation or linking, `amber` is the command you will be using
-for creating and managing Amber apps.
+("stow" mentioned above is referring to [GNU Stow](https://www.gnu.org/software/stow/).)
+
+After installation or linking, `amber` is the command you will be using for creating and managing Amber apps.
+
+Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, project's `shard.yml` ships with the build target "amber":
+
+```
+targets:
+  ...
+  amber:
+    main: lib/amber/src/amber/cli.cr
+
+```
+
+Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to project's local file `bin/amber`.
 
 # Creating New Amber App
 
@@ -47,12 +60,10 @@ amber new <app_name> [-d DATABASE] [-t TEMPLATE_LANG] [-m ORM_MODEL] [--deps]
 
 Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default), [MySQL](https://www.mysql.com/) (mysql), and [SQLite](https://sqlite.org/) (sqlite).
 
-Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
+Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (But any languages can be used; more on that can be found below in [Template Languages](#template_languages).)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
 ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts HTML pages into slang.)
-
-In any case, you can combine templates in various languages in a project, and regardless of the language, have in mind that the templates are compiled into the application. There is no lookup on disk or choosing between available templates during runtime. This makes templates extremely fast, as well as read-only which is a very welcome side-benefit!
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
@@ -60,8 +71,9 @@ Granite is a very nice and simple, effective ORM model, where you mostly write y
 
 Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
-If argument --deps is provided, Amber will automatically run `crystal
-deps` in the new directory to install shards.
+If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
+
+Please note that shards-related commands use the directory `.shards/` as local staging area before contents are fully ready to replace shards in `lib/`.
 
 # Running the App
 
@@ -83,13 +95,13 @@ amber watch
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
-Please note that Granite currently has problems in edge cases. For example, if you create a new model but do not specify any fields for it, then until you add at least one field, Amber won't start due to a compile error ([#112](https://github.com/amberframework/granite-orm/issues/112)).
-
 Amber by default uses a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available", it means your kernel does not have it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
 # Building the App and Troubleshooting
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
+
+Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or using `require`s in your program will generally not affect what is compiled.
 
 For faster build speed, development versions are compiled without the --release flag. With the --release flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
@@ -107,9 +119,9 @@ Often times, it is very useful to enter an interactive console (think of IRB she
 
 Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
 
-Another, more professional way to do it is via standalone REPL-like script tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
+Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`), Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "./config/application.cr"` as the first command.
 
 # File Structure
 
@@ -176,6 +188,8 @@ And then try the database commands from the beginning of this section.
 
 Please note that for the database connection to succeed, all parameters must be correct (hostname, port, username, password, database name), the database server must be accessible, and the database must actually exist (unless you are invoking 'amber db create' to create it). In case of *any error in any of the stages* of connecting to the database, the error message will be very terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
 
+(If you are sure that the username and password are correct, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command.)
+
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
 
 # Routes
@@ -192,9 +206,9 @@ $ amber routes
 
 From this example, we see that a "GET /" request will instantiate
 HomeController and then call method index() in it. The return value of
-the method will be returned to the client.
+the method will be returned as response body to the client.
 
-Similarly, here's an example of a route that would route HTTP POST requests to "/registration" to the method create() in class RegistrationController:
+Similarly, here's an example of a route that would route POST "/registration" to RegistrationController.new.create():
 
 ```
 post "/registration", RegistrationController, :create
@@ -255,7 +269,7 @@ And unless it is confined with arguments `only` or `except`, it will automatical
 index, new, create, show, edit, update, destroy
 ```
 
-Please note that it is not currently possible to define a different behavior for HEAD and GET methods ont he same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
+Please note that it is not currently possible to define a different behavior for HEAD and GET methods on the same path, because if a GET is defined it will also automatically add the matching HEAD route. That will result in two HEAD routes existing for the same path and trigger error `Amber::Exceptions::DuplicateRouteError`.
 
 # Views
 
@@ -271,7 +285,7 @@ Information about views can be summarized in bullet points:
 - Partials begin with "_" by convention, but that is not required
 - To render a partial, use `render( partial: "_name.ext")`
 
-# Variables in Views
+## Variables in Views
 
 In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views.
 
@@ -292,9 +306,74 @@ Hello, World! The time is now <%= time %>.
 
 Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
 
+## Template Languages
+
+In the introduction we've mentioned that Amber supports two template languages &mdash; [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
+
+That's because Amber ships with the minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own templates or want to convert existing ones.
+
+Amber's default rendering model is based on [Kilt](https://github.com/jeromegn/kilt), so all languages supported by Kilt should be usable out of the box. Amber does not make assumptions about the template language used; the view file's extension will determine which parser will be invoked (e.g. ".ecr" for ecr, ".slang" for slang).
+
+### Liquid Template Language
+
+The original Kilt repository does not have support for the Liquid template language, but there are Kilt and Liquid forks available at [jetcommerce](https://github.com/jetcommerce/) which add the missing functionality to make it work.
+
+Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not support using arbitrary functions, objects, object methods, and data types in its templates.
+
+As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is separate and local variables are not there.
+
+Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context, but that makes the user unable to pre-populate it with desired values. Also, it copies all instance variables (@ivars) from the current object into the newly created context, which is problematic. First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` will result in an error in Amber even if the template was empty.
+
+All that, combined with Kilt's standardized and somewhat restricted rendering options, make Liquid non-ideal for use with Amber's default, Kilt-based rendering model.
+
+### Custom Rendering Model
+
+There is nothing "special" about methods in Amber which render view contents, so users can generate response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is to be returned to the user. From there, Amber will take care of returning it to the user as response body.
+
+However, Amber does not force its default rendering model to be part of an application. Users can completely remove it, be it to avoid using anything other than strictly necessary, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
+
+The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
+
+```crystal
+require "amber/controller/helpers/render"
+...
+include Amber::Controller::Helpers::Render
+```
+
+Removing these two lines will completely leave out Amber's default rendering model and its Kilt dependencies.
+
+# Logging
+
+Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
+
+The variable containing the logger is `Amber.settings.logger` and, for convenience, it is also available as `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
+
+Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in the controller or views will produce the expected log line:
+
+```crystal
+logger.info "Informational Message"
+```
+
+Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
+
+The second, optional parameter passed to the log method will affect the displayed name of the subsystem in which the message originated. For example:
+
+
+```crystal
+logger.warn "Starting up", "MySystem"
+```
+
+Will result in the log line:
+
+```
+03:17:04 MySystem   | (WARN) Starting up
+```
+
+In you still need a customized logger for special cases or purposes, please create a separate `Logger.new` yourself.
+
 # Starting the Server
 
-It is important to explain exactly what is happening from when you run the application til Amber starts serving the aplication:
+It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
 
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
 	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
@@ -335,7 +414,7 @@ Amber's app serving model is based on Crystal's built-in, underlying functionali
 	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 4. Please note that calling the chain of pipes is not automatic; every pipe needs to call `call_next(context)` at the appropriate point in its execution to call the next pipe in a row. It is not necessary to check whether the next pipe exists, because currently `Amber::Pipe::Controller` is always implicitly added as the last pipe, so at least one does exist. State between pipes is not passed via variables but via modifying `context` and the data contained in it
 
-After that, pipelines, pipes, routes, and otherAmber-specific parts come into play.
+After that, pipelines, pipes, routes, and other Amber-specific parts come into play.
 
 So, in detail, from the beginning:
 
@@ -350,10 +429,62 @@ So, in detail, from the beginning:
 			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
 				1. `raise ...error... if context.invalid_route?` - route validity is checked early
 				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
-				1. `elsif ...; ...pipeline.first...call(context)` - if reqular HTTP request, call the first handler in the appropriate pipeline
+				1. `elsif ...; ...pipeline.first...call(context)` - if regular HTTP request, call the first handler in the appropriate pipeline
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
+
+# Useful Classes and Methods
+
+This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
+
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
+
+```
+Amber.settings         # Singleton object, contains current settings
+Amber.logger           # Alias for Amber.settings.logger
+Amber.env, Amber.env=  # Environment (development, production, test)
+```
+
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
+```crystal
+[[[grep 'def ' amber/src/amber/environment/env.cr]]]
+```
+
+The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s "Amber::Server.configure" block.
+
+# Parameter Validation
+
+On each request, an appropriate Controller is instantiated to handle it. The params are kept in a number of places, going from lowest to highest level:
+
+```
+request.params     - raw params
+context.params     - parsed request params
+route.params       - parameters parsed from route/URL
+@raw_params        - pointer to context.params
+@params            - copy of parameters that passed validation
+```
+
+This will be simplified/streamlined in Amber in the future, but for now:
+
+There are three important methods &mdash; `params.validation {...}` defines validation rules, `valid?` returns whether parameters pass validation, and `validate!` requires the parameters to be valid or raises an error.
+
+A complete validation process in a controller looks like this (showing the whole Controller class for completeness):
+
+```crystal
+class HomeController < ApplicationController
+  def index
+    params.validation do
+      required(:name) { |n| n.size > 6 }
+      optional(:phone) { |n| n.phone? }
+    end
+    "Params valid: #{params.valid?.to_s}<br>
+    Name is: #{params[:name]}"
+  end
+end
+```
+
+Please note that the extensions to the String class (such as `phone?` seen above) come especially handy for writing validations. Please search for "phone?" in this guide to find the complete list.
 
 # Static Pages
 
@@ -370,7 +501,7 @@ amber g controller page
 Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController. We do this inside the "routes :web" block:
 
 ```
-routes :web do 
+routes :web do
   ...
   get "/about", PageController, :about
   ...
@@ -405,7 +536,9 @@ Because we have called render() without additional arguments, the template will 
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
-# Responses with Different Content-Type
+# Responses
+
+## Responses with Different Content-Type
 
 If you want to provide a different format (or different response altogether) from the controller methods based on accepted content types, you can use `respond_with` from `Amber::Helpers::Responders`.
 
@@ -422,6 +555,23 @@ end
 
 Supported format types are `html`, `json`, `xml`, and `text`. For all the available methods and arguments, please see [src/amber/controller/helpers/responders.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr).
 
+## Error Responses
+
+In any pipe or controller action, you might need to return an error to the user. That typically means returning an HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
+
+To stop a request during execution and return an error, you would do it this way:
+
+```
+if some_condition_failed
+  Amber.logger.error "Error! Returning Bad Request"
+  context.response.puts "Bad Request"
+  context.response.status_code = 400
+  return
+end
+```
+
+Please note that you must use `context.response.puts` or `context.response<<` to print to the output buffer in case of errors. (You cannot set the error code and then call `return "Bad Request"` because the return value will not be added to response body if HTTP code is not 2xx.)
+
 # Assets Pipeline
 
 In an Amber project, raw assets are in `src/assets/`:
@@ -433,9 +583,77 @@ In an Amber project, raw assets are in `src/assets/`:
 At build time, all these are processed and placed under `public/dist/`.
 The JS resources are bundled to `main.bundle.js` and CSS resources are bundled to `main.bundle.css`.
 
-Currently, webpack is being used for asset management. I recommend replacing it with at least [Parcel](https://parceljs.org/). Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.
+[Webpack](https://webpack.js.org/) is used for asset management.
 
-This section will be expanded to include a full replacement procedure. (In general it seems it shouldn't be much more complex than replacing the command and development dependencies in project's `package.json` file.)
+To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. The packer being webpack, it processes import statements in .js, but not in .css/.scss files. As a result, this produces a JS bundle which has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
+
+The base/common configuration for all this is in `config/webpack/common.js`.
+
+## Resource Aliases
+
+Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. You would add the following to the "resolve" section in `config/webpack/common.js`:
+
+```
+...
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, '../../vendor/mylibs/jquery-3.2.1.min.js'),
+    }
+  }
+...
+```
+
+## CSS Optimization / Minification
+
+You might want to minimize the CSS that is output to the final CSS bundle.
+
+To do so you need an entry under "devDependencies" in the file `package.json`:
+
+```
+    "optimize-css-assets-webpack-plugin": "^1.3.0",
+```
+
+And an entry at the top of `config/webpack/common.js`:
+
+```
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+```
+
+And you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
+
+## File Copying
+
+You might also want to copy some of the files from their original location to `public/dist/`, without doing any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
+
+```
+    "copy-webpack-plugin": "^4.1.1",
+```
+
+The following at the top of `config/webpack/common.js`:
+
+```
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+```
+
+And the following under "plugins" section down below in the file:
+
+```
+  new CopyWebPackPlugin([
+    {
+      from: path.resolve(__dirname, '../../vendor/images/'),
+      to: path.resolve(__dirname, '../../public/dist/images/'),
+      ignore: ['.*'],
+    }
+  ]),
+```
+
+And as usual, you need to run `npm install` for the plugin to be installed (saved to "node_modules/" subdirectory).
+
+## Asset Management Alternatives
+
+Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
+
+In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
 # Default Shards
 
@@ -453,23 +671,7 @@ amberframework/garnet-spec    - Extended Crystal specs for testing web applicati
 In turn, these depend on:
 
 ```
-luislavena/radix                      - Radix Tree implementation
-jeromegn/kilt                         - Generic template interface
-jeromegn/slang                        - Slang template language
-stefanwille/crystal-redis             - 
-amberframework/cli                    - Building cmdline apps (based on mosop)
-mosop/optarg                          - Parsing cmdline args
-mosop/callback                        - Defining and invoking callbacks
-mosop/string_inflection               - Word plurals, counts, etc.
-amberframework/teeplate               - Rendering multiple template files
-juanedi/micrate                       - Database migration tool
-crystal-lang/crystal-db               - Common DB API
-jwaldrip/shell-table.cr               - Creates textual tables in shell
-askn/spinner                          - Spinner for the shell
-crystal-lang/crystal-mysql            - 
-crystal-lang/crystal-sqlite3          - 
-amberframework/smtp.cr                - SMTP client (to be replaced with arcage/crystal-email)
-ysbaddaden/selenium-webdriver-crystal - Selenium Webdriver client
+{{{SHARDS}}}
 ```
 
 And basic Crystal's build-in shards:
@@ -493,13 +695,13 @@ Amber adds some very convenient extensions to existing String and Number classes
 For String:
 
 ```crystal
-[[[grep 'def ' amber/src/amber/extensions/string_extension.cr]]]
+[[[grep 'def ' amber/src/amber/extensions/string.cr]]]
 ```
 
 For Number:
 
 ```crystal
-[[[grep 'def ' amber/src/amber/extensions/number_extension.cr]]]
+[[[grep 'def ' amber/src/amber/extensions/number.cr]]]
 ```
 
 # Support Routines
@@ -579,19 +781,72 @@ The content of this controller and the methods it gets from including other modu
     macro after_action
 ```
 
-# Amber behind a Proxy
+# Amber behind a Load Balancer | Reverse Proxy | ADC
+
+(In this section, the terms "Load Balancer", "Reverse Proxy", "Proxy", and "Application Delivery Controller" (ADC) are used interchangeably.)
 
 By default, in development environment Amber listens on port 3000, and in production environment it listens on port 8080. This makes it very easy to run a load balancer on ports 80 (HTTP) and 443 (HTTPS) and proxy user requests to Amber.
 
 There are three groups of benefits of running Amber behind a proxy:
 
-On a basic level, a proxy should provide TCP and HTTP normalization &mdash; it should filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It should only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it should perform SSL and compression offloading for your application so that these are done on the load balancers rather than on the application servers.
+On a basic level, a proxy will perform TCP and HTTP normalization &mdash; it will filter out invalid TCP packets, flags, window sizes, sequence numbers, and SYN floods. It will only pass valid HTTP requests through (protecting the application from protocol-based attacks) and smoothen out deviations which are tolerated by HTTP specification (such as multi-line HTTP headers). Finally, it will provide HTTP/2 support for your application and perform SSL and compression offloading so that these functions are done on the load balancers rather than on the application servers.
 
-Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip`.
+Also, as an important implementation-specific detail, Crystal currently does not provide applications with the information on the client IPs that are making HTTP requests. Therefore, Amber is by default unaware of them. With a proxy in front of Amber and using Amber's pipe `ClientIp`, the client IP information will be passed from the proxy to Amber and be available as `context.client_ip.address`.
 
-On an intermediate level, a proxy should provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It should cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
+On an intermediate level, a proxy will provide you with caching and scaling and serve as a versatile TCP and HTTP load balancer. It will cache static files, route your application and database traffic to multiple backend servers, balance multiple protocols based on any criteria, fix and rewrite HTTP traffic, and so on. The benefits of starting application development with acceleration and scaling in mind from the get-go are numerous.
 
-On an advanced level, a proxy should allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
+On an advanced level, a proxy will allow you to keep track of arbitrary statistics and counters, perform GeoIP offloading and rate limiting, filter out bots and suspicious web clients, implement DDoS protection and web application firewall, troubleshoot network conditions, and so on.
+
+[HAProxy](www.haproxy.org) is an excellent proxy to use and to run it you will only need the `haproxy` binary, two command line options, and a config file. A simple HAProxy config file that can be used out of the box is available in [support/haproxy.conf](https://github.com/docelic/amber-introduction/blob/master/support/haproxy.conf). This config file will be expanded over time into a full-featured configuration to demonstrate all of the above-mentioned points, but even by default the configuration should be good enough to get you started with practical results.
+
+HAProxy comes pre-packaged for most GNU/Linux distributions and MacOS, but if you do not see version 1.8.x available, it is recommended to manually install the latest stable version.
+
+<a name="install-haproxy"></a>To compile the latest stable HAProxy from source, you could use the following procedure:
+
+```
+git clone http://git.haproxy.org/git/haproxy-1.8.git/
+cd haproxy-1.8
+make -j4 TARGET=linux2628 USE_OPENSSL=1
+```
+
+The compilation will go trouble-free and you will end up with the binary `haproxy` in the current directory.
+
+To obtain the config file and set up the basic directory structure, please run the following in your Amber app directory:
+
+```sh
+cd config
+wget https://raw.githubusercontent.com/docelic/amber-introduction/master/support/haproxy.conf
+cd ..
+mkdir -p var/{run,empty}
+```
+
+And finally, to start HAProxy in development/foreground mode, please run:
+
+```sh
+sudo ../haproxy-1.8/haproxy -f config/haproxy.conf -d
+```
+
+And then start `amber watch` and point your browser to [http://localhost/](http://localhost/) instead of [http://localhost:3000/](http://localhost:3000/)!
+
+Please also note that this HAProxy configuration enables the built-in HAProxy status page at [http://localhost/server-status](http://localhost/server-status) and restricts access to it to localhost.
+
+When you confirm everything is working, you can omit the `-d` flag and it will start HAProxy in background, returning the shell back to you. You can then forget about HAProxy until you modify its configuration and want to reload it. Then simply call `kill -USR2 var/run/haproxy.pid`.
+
+Finally, now that we are behind a proxy, to get access to client IPs we can enable the following line in `config/routes.cr`:
+
+```
+    plug Amber::Pipe::ClientIp.new(["X-Forwarded-For"])
+```
+
+And we can modify one of the views to display the user IP address. Assuming you are using slang, you could edit the default view file `src/views/home/index.slang` and add the following to the bottom:
+
+```
+    a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
+```
+
+# Ecommerce with Amber
+
+I am working on [Jet](https://github.com/jetcommerce/jet), an ecommerce solution for Amber.
 
 # Conclusion
 
