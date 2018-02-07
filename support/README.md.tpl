@@ -440,11 +440,11 @@ This section provides an overview of various contexts where classes and modules 
 
 After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
-
-|File|Name|Description||
-src/amber/environment.cr|Amber.settings|Singleton object, contains current settings|
-src/amber/environment.cr|mber.logger|Alias for Amber.settings.logger|
-src/amber/environment.cr|Amber.env, Amber.env=|Environment (development, production, test)||
+```
+Amber.settings         # Singleton object, contains current settings
+Amber.logger           # Alias for Amber.settings.logger
+Amber.env, Amber.env=  # Environment (development, production, test)
+```
 
 [Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
 ```crystal
