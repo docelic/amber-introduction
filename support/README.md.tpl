@@ -333,10 +333,10 @@ The best approach to work with Liquid in Amber is to create a custom context and
 context = Liquid::Context.new
 context.set "process", { "pid" => Process.pid }
 
-# This will default to src/views/(controller)/index.liquid
+#: This will default to src/views/[controller]/index.liquid
 Kilt.render "index.liquid", context
 
-# This will render specific path relative to app base directory
+#: This will render specific path relative to app base directory
 Kilt.render "src/views/myview.liquid", context
 ```
 

@@ -28,8 +28,6 @@
 	1. [Variables in Views](#variables_in_views)
 	1. [Template Languages](#template_languages)
 		1. [Liquid Template Language](#liquid_template_language)
-1. [This will default to src/views/(controller)/index.liquid](#this_will_default_to_src_views__controller__index_liquid)
-1. [This will render specific path relative to app base directory](#this_will_render_specific_path_relative_to_app_base_directory)
 1. [Logging](#logging)
 1. [Starting the Server](#starting_the_server)
 1. [Serving Requests](#serving_requests)
@@ -386,10 +384,10 @@ The best approach to work with Liquid in Amber is to create a custom context and
 context = Liquid::Context.new
 context.set "process", { "pid" => Process.pid }
 
-# This will default to src/views/(controller)/index.liquid<a name="this_will_default_to_src_views__controller__index_liquid"></a>
+# This will default to src/views/[controller]/index.liquid
 Kilt.render "index.liquid", context
 
-# This will render specific path relative to app base directory<a name="this_will_render_specific_path_relative_to_app_base_directory"></a>
+# This will render specific path relative to app base directory
 Kilt.render "src/views/myview.liquid", context
 ```
 
