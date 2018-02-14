@@ -316,31 +316,29 @@ Amber's default rendering model is based on [Kilt](https://github.com/jeromegn/k
 
 ### Liquid Template Language
 
-The original Kilt repository does not have support for the Liquid template language, but there are Kilt and Liquid forks available at [jetcommerce](https://github.com/jetcommerce/) which add the missing functionality to make it work.
+The original [Kilt](https://github.com/jeromegn/kilt) repository now has support for the Liquid template language.
 
 Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not support using arbitrary functions, objects, object methods, and data types in its templates.
 
 As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is separate and local variables are not there.
 
-Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context, but that makes the user unable to pre-populate it with desired values. Also, it copies all instance variables (@ivars) from the current object into the newly created context, which is problematic. First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that cannot be serialized, so simply saying `render("index.liquid")` will result in an error in Amber even if the template was empty.
+Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context. It copies all instance variables (@ivars) from the current object into the newly created context, which can't be used with Amber for two primary reasons.
+First, it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that should not or can not be serialized, so simply saying `render("index.liquid")` will result in an error in Amber even if the template was empty.
 
-All that, combined with Kilt's standardized and somewhat restricted rendering options, make Liquid non-ideal for use with Amber's default, Kilt-based rendering model.
+Also, Amber's variant of the `render` macro does not accept arbitrary extra arguments (e.g. to pass custom context to Kilt and from there to Liquid), so it cannot be used.
 
-### Custom Rendering Model
+The best approach to work with Liquid in Amber is to create a custom context and then invoke `Kilt.render` directly, for example:
 
-There is nothing "special" about methods in Amber which render view contents, so users can generate response data in any way they want, with or without using the default implementation as part of it. It is only important that the return value from the controller is the literal content that is to be returned to the user. From there, Amber will take care of returning it to the user as response body.
-
-However, Amber does not force its default rendering model to be part of an application. Users can completely remove it, be it to avoid using anything other than strictly necessary, to avoid Kilt dependencies, or to specifically free up the name of the `render()` macro and other methods.
-
-The app's main application controller (`src/controllers/application_controller.cr`) ships (or [soon will](https://github.com/amberframework/amber/pull/610) ship) with the following lines in it:
-
-```crystal
-require "amber/controller/helpers/render"
-...
-include Amber::Controller::Helpers::Render
 ```
+context = Liquid::Context.new
+context.set "process", { "pid" => Process.pid }
 
-Removing these two lines will completely leave out Amber's default rendering model and its Kilt dependencies.
+# This will default to src/views/[controller]/index.liquid
+Kilt.render "index.liquid", context
+
+# This will render specific path relative to app base directory
+Kilt.render "src/views/myview.liquid", context
+```
 
 # Logging
 
