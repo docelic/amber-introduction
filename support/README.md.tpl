@@ -866,7 +866,7 @@ cd haproxy-1.8
 make -j4 TARGET=linux2628 USE_OPENSSL=1
 ```
 
-The compilation will go trouble-free and you will end up with the binary `haproxy` in the current directory.
+The compilation will go trouble-free and you will end up with the binary named `haproxy` in the current directory.
 
 To obtain the config file and set up the basic directory structure, please run the following in your Amber app directory:
 
@@ -895,7 +895,7 @@ Finally, now that we are behind a proxy, to get access to client IPs we can enab
     plug Amber::Pipe::ClientIp.new(["X-Forwarded-For"])
 ```
 
-And we can modify one of the views to display the user IP address. Assuming you are using slang, you could edit the default view file `src/views/home/index.slang` and add the following to the bottom:
+And we can modify one of the views to display the user IP address. Assuming you are using slang, you could edit the default view file `src/views/home/index.slang` and add the following to the bottom to confirm the new behavior:
 
 ```
     a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
