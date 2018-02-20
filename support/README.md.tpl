@@ -163,8 +163,6 @@ I prefer to have some of these directories accessible directly in the root direc
 
 # Database Commands
 
-## Amber db
-
 Amber provides a group of subcommands under `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
 ```shell
@@ -194,50 +192,6 @@ Please note that for the database connection to succeed, all parameters must be 
 (If you are sure that the username and password are correct, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command.)
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
-
-## Micrate
-
-Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
-
-Micrate is primarily a library so a small piece of custom code is required to provide a minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
-
-```crystal
-#!/usr/bin/env crystal
-require "amber"
-require "micrate"
-require "pg"
-
-Micrate::DB.connection_url = Amber.settings.database_url
-Micrate::Cli.run
-```
-
-And the following in `shard.yml` under `targets`:
-
-```
-targets:
-  micrate:
-    main: src/micrate.cr
-```
-
-From there, running `crystal deps build micrate` will build `bin/micrate` which you can use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably. Run `bin/micrate -h` to see an overview of micrate's own commands.
-
-The setup with a standalone `bin/micrate` command should also be used if you want your migrations to run with different credentials or a different database URL than your regular Amber application.
-
-In that case, `src/micrate.cr` could look like the following:
-
-```crystal
-#!/usr/bin/env crystal
-require "amber"
-require "micrate"
-require "pg"
-
-env_name = ENV["AMBER_ENV"]? || "development"
-suffix = if env_name == "production"; "" else "_#{env_name}" end
-Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
-Micrate::Cli.run
-```
-
-Please note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want. (The pro fix for this situation would probably be to create a fourth environment named e.g. "admin" and define specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin` both `amber db` and `bin/micrate` could again be used interchangeably in the correct and expected "admin mode".)
 
 # Routes
 
@@ -699,6 +653,50 @@ And as usual, you need to run `npm install` for the plugin to be installed (save
 Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
+
+# More on Database Commands
+
+Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+
+Micrate is primarily a library so a small piece of custom code is required to provide a minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+Micrate::DB.connection_url = Amber.settings.database_url
+Micrate::Cli.run
+```
+
+And the following in `shard.yml` under `targets`:
+
+```
+targets:
+  micrate:
+    main: src/micrate.cr
+```
+
+From there, running `crystal deps build micrate` will build `bin/micrate` which you can use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably. Run `bin/micrate -h` to see an overview of micrate's own commands.
+
+The setup with a standalone `bin/micrate` command should also be used if you want your migrations to run with different credentials or a different database URL than your regular Amber application.
+
+In that case, `src/micrate.cr` could look like the following:
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+env_name = ENV["AMBER_ENV"]? || "development"
+suffix = if env_name == "production"; "" else "_#{env_name}" end
+Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
+Micrate::Cli.run
+```
+
+Please note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want. (The pro fix for this situation would probably be to create a fourth environment named e.g. "admin" and define specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin` both `amber db` and `bin/micrate` could again be used interchangeably in the correct and expected "admin mode".)
 
 # Shards
 
