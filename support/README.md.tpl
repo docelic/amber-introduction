@@ -544,17 +544,19 @@ Also, the shard in turn depends on the shard [i18n.cr](https://github.com/TechMa
 The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
 
 1. Initializer file `config/initializers/i18n.cr` where basic configuration settings are defined and `I18n.init` is invoked
-1. Locale files in `src/locales/`
+1. Locale files in `src/locales/` which contain the settings for both translation and localization
 1. Pipe named `Amber::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for the request
 1. Controller helpers named `t()` and `l()` which provide convenient access to methods `::I18n.translate` and `::I18n.localize`
 
 Once the pipe runs on the request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
 
-From there, invoking `t()` and `l()` would perform translation and localization according to the current locale.
+For a locale to be available and honored, it must be requested (or be the default) and exist anywhere under the directory structure `./src/locales/` with the name `[lang].yml`.
+
+From there, invoking `t()` and `l()` would perform translation and localization according to the current locale. Since these two methods are a direct shorthand for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n's README](https://github.com/TechMagister/i18n.cr).
 
 In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title of the default homepage.
 
-For a locale to be available, it must exist anywhere under the directory structure `./src/locales/` and be named `[lang].yml`.
+In the future, the default/built-in I18n functionality in Amber might be expanded to automatically use translations and localizations found in various subdirectories under `src/locales/` just like it works for `src/views/`. (This functionality already exists per-se as explained in [i18n's README](https://github.com/TechMagister/i18n.cr), but is not yet used by Amber.)
 
 # Responses
 
