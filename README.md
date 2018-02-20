@@ -609,10 +609,10 @@ The internationalization functionality in Amber is enabled by default. Its setup
 
 1. Initializer file `config/initializers/i18n.cr` where basic configuration settings are defined and `I18n.init` is invoked
 1. Locale files in `src/locales/` which contain the settings for both translation and localization
-1. Pipe named `Amber::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for the request
-1. Controller helpers named `t()` and `l()` which provide convenient access to methods `::I18n.translate` and `::I18n.localize`
+1. Pipe named `Amber::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for the request based on the value of the HTTP header "Accept-Language"
+1. Controller helpers named `t()` and `l()` which provide shorthand access to methods `::I18n.translate` and `::I18n.localize`
 
-Once the pipe runs on the request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
+Once the pipe runs on the incoming request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
 
 For a locale to be available and honored, it must be requested (or be the default) and exist anywhere under the directory structure `./src/locales/` with the name `[lang].yml`.
 
