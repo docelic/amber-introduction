@@ -23,6 +23,8 @@
 1. [REPL](#repl)
 1. [File Structure](#file_structure)
 1. [Database Commands](#database_commands)
+	1. [Amber db](#amber_db)
+	1. [Micrate](#micrate)
 1. [Routes](#routes)
 1. [Views](#views)
 	1. [Variables in Views](#variables_in_views)
@@ -53,7 +55,7 @@
 
 # Introduction<a name="introduction"></a>
 
-**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage is at [amberframework.org](https://amberframework.org/), docs are on [Amber Docs](https://docs.amberframework.org), GitHub repository is at [amberframework/amber](https://github.com/amberframework/amber), and the chat is on [Gitter](https://gitter.im/amberframework/amber) or FreeNode IRC channel #amber.
+**Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage can be found at [amberframework.org](https://amberframework.org/), docs at [Amber Docs](https://docs.amberframework.org), GitHub repository at [amberframework/amber](https://github.com/amberframework/amber), and the chat on [Gitter](https://gitter.im/amberframework/amber) or on the FreeNode IRC channel #amber.
 
 Amber is inspired by Kemal, Rails, Phoenix and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit some concepts from Rails that are good.)
 
@@ -103,7 +105,7 @@ ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
-Granite is a very nice and simple, effective ORM model, where you mostly write your own SQL (i.e. all search queries typically look like YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
+Granite is Amber's native very nice and simple, effective ORM model where you mostly write your own SQL (i.e. all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
 Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
@@ -137,7 +139,7 @@ Amber by default uses a feature called "port reuse" available in newer Linux ker
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be executed and later discarded.
 
-Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or using `require`s in your program will generally not affect what is compiled.
+Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or using `require`s in your program will generally not affect what is compiled in.
 
 For faster build speed, development versions are compiled without the --release flag. With the --release flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
@@ -147,7 +149,7 @@ Sometimes building the app will fail on the C level because of missing header fi
 
 The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
 
-There are some issues with the `libgc` library here and there. Crystal comes with built-in `libgc`, but it may conflict with the system one. In my case the solution was to install and then remove package `libgc-dev`.
+There are some issues with the `libgc` library here and there. In my case the solution was to reinstall the package `libgc-dev`.
 
 # REPL<a name="repl"></a>
 
@@ -157,7 +159,7 @@ Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia
 
 Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "./config/application.cr"` as the first command.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "./config/application"` as the first command.
 
 # File Structure<a name="file_structure"></a>
 
@@ -182,6 +184,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./src/views/layouts/       - All layouts
 ./src/views/               - All views
 ./src/views/home/          - Views for HomeController (path "/")
+./src/locales/             - Toplevel directory for locale (translation) files named [lang].yml
 ./src/assets/              - Static assets which will be bundled and placed into ./public/dist/
 ./src/assets/stylesheets/
 ./src/assets/fonts/
@@ -203,6 +206,8 @@ ln -sf src/views/layouts
 ```
 
 # Database Commands<a name="database_commands"></a>
+
+## Amber db<a name="amber_db"></a>
 
 Amber provides a group of commands under the 'db' group to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
@@ -233,6 +238,48 @@ Please note that for the database connection to succeed, all parameters must be 
 (If you are sure that the username and password are correct, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command.)
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
+
+## Micrate<a name="micrate"></a>
+
+Amber relies on the shard "micrate" to perform migrations. The command `amber db` relies on "micrate" and uses it unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+
+Micrate is a library and a small piece of custom code is required to provide a minimal `micrate` executable. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+Micrate::DB.connection_url = Amber.settings.database_url
+Micrate::Cli.run
+```
+
+And the following in `shard.yml` under `targets`:
+
+```
+targets:
+  micrate:
+	  main: src/micrate.cr
+```
+
+From there, running `crystal deps build micrate` will build `bin/micrate` which you can use as an executable to access micrate's functionality directly in a way that is compatible with interchangeably using `bin/micrate` and `amber db`. Run `bin/micrate -h` to see an overview.
+
+Please note that this setup (using both `amber db` and `bin/micrate`) should also be used if you want your migrations to run with different credentials or a different database URL than your regular `amber db` commands.
+
+In such case, `src/micrate.cr` could look like the following:
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+env_name = ENV["AMBER_ENV"]? || "development"
+suffix = if env_name == "production"; "" else "_#{env_name}" end
+Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
+Micrate::Cli.run
+```
 
 # Routes<a name="routes"></a>
 
