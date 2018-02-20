@@ -209,7 +209,7 @@ ln -sf src/views/layouts
 
 ## Amber db<a name="amber_db"></a>
 
-Amber provides a group of commands under the group `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
+Amber provides a group of subcommands under `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
 ```shell
 amber db create
