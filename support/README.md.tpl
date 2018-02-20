@@ -161,7 +161,7 @@ I prefer to have some of these directories accessible directly in the root direc
 [[[cat ln-sfs]]]
 ```
 
-# Amber Database Commands
+# Database Commands
 
 Amber provides a group of subcommands under `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
@@ -535,6 +535,10 @@ Because we have called render() without additional arguments, the template will 
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
+# Translation and Localization
+
+Amber uses shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide translation and 
+
 # Responses
 
 ## Responses with Different Content-Type
@@ -654,9 +658,11 @@ Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
-# Micrate Database Commands
+# More on Database Commands
 
-Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+## Micrate
+
+As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
 Micrate is primarily a library so a small piece of custom code is required to provide a minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
 
@@ -699,6 +705,12 @@ Micrate::Cli.run
 Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
 
 (The professional implementation here would probably consist of creating a separate environment named e.g. "admin" and defining specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin`, both `amber db` and `bin/micrate` could again be used interchangeably in the expected "admin mode".)
+
+## Custom Migrations Engine
+
+While `amber db` unconditionally depends on "micrate", that's the only place where it makes an assumption about the migrations engine used.
+
+To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
 
 # Shards
 
