@@ -560,7 +560,7 @@ From there, invoking `t()` and `l()` would perform translation and localization 
 
 In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title of the default homepage.
 
-In the future, the default/built-in I18n functionality in Amber might be expanded to automatically organize translations and localizations under subdirectories in `src/locales/` when generators are invoked, just like it is already done for e.g. files in `src/views/`. (This functionality already exists in i18n.cr as explained in [i18n.cr's README](https://github.com/TechMagister/i18n.cr), but is not yet used by Amber.)
+In the future, the default/built-in I18n functionality in Amber might be expanded to automatically organize translations and localizations under subdirectories in `src/locales/` when generators are invoked, just like it is already done for e.g. files in `src/views/`. (This functionality already exists in i18n.cr as explained in [i18n.cr's README](https://github.com/TechMagister/i18n.cr), but is not used by Amber yet.)
 
 # Responses
 
