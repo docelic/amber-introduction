@@ -263,11 +263,11 @@ targets:
     main: src/micrate.cr
 ```
 
-From there, running `crystal deps build micrate` will build `bin/micrate` which you can use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can then be used interchangeably. Run `bin/micrate -h` to see an overview of micrate's own commands.
+From there, running `crystal deps build micrate` will build `bin/micrate` which you can use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably. Run `bin/micrate -h` to see an overview of micrate's own commands.
 
-Please note that this setup (using both `amber db` and `bin/micrate`) should also be used if you want your migrations to run with different credentials or a different database URL than your regular `amber db` commands.
+The setup with a standalone `bin/micrate` command should also be used if you want your migrations to run with different credentials or a different database URL than your regular Amber application.
 
-In such case, `src/micrate.cr` could look like the following:
+In that case, `src/micrate.cr` could look like the following:
 
 ```crystal
 #!/usr/bin/env crystal
@@ -280,6 +280,8 @@ suffix = if env_name == "production"; "" else "_#{env_name}" end
 Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
 Micrate::Cli.run
 ```
+
+Please note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want. (The pro fix for this situation would probably be to create a fourth environment named e.g. "admin" and define specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin` both `amber db` and `bin/micrate` could again be used interchangeably in the correct and expected "admin mode".)
 
 # Routes<a name="routes"></a>
 
