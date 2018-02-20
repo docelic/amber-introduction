@@ -34,7 +34,7 @@
 1. [Useful Classes and Methods](#useful_classes_and_methods)
 1. [Parameter Validation](#parameter_validation)
 1. [Static Pages](#static_pages)
-1. [Translation and Localization](#translation_and_localization)
+1. [Internationalization (I18n)](#internationalization__i18n_)
 1. [Responses](#responses)
 	1. [Responses with Different Content-Type](#responses_with_different_content_type)
 	1. [Error Responses](#error_responses)
@@ -595,9 +595,26 @@ Because we have called render() without additional arguments, the template will 
 
 And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
 
-# Translation and Localization<a name="translation_and_localization"></a>
+# Internationalization (I18n)<a name="internationalization__i18n_"></a>
 
-Amber uses shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide translation and 
+Amber uses Amber's native shard [citrine-18n](https://github.com/amberframework/citrine-i18n) to provide translation and localization. Even though it's been authored by the Amber Framework project, the shard is Amber-independent and can be used to initialize I18n and determine the visitor's preferred language in any application based on Crystal's HTTP::Server.
+
+Also, the shard in turn depends on the shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide the actual translation and localization functionality. 
+
+The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
+
+1. Initializer file `config/initializers/i18n.cr` where basic configuration settings are defined and `I18n.init` is invoked
+1. Locale files in `src/locales/`
+1. Pipe named `Amber::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for the request
+1. Controller helpers named `t()` and `l()` which provide convenient access to methods `::I18n.translate` and `::I18n.localize`
+
+Once the pipe runs on the request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
+
+From there, invoking `t()` and `l()` would perform translation and localization according to the current locale.
+
+In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title of the default homepage.
+
+For a locale to be available, it must exist anywhere under the directory structure `./src/locales/` and be named `[lang].yml`.
 
 # Responses<a name="responses"></a>
 
