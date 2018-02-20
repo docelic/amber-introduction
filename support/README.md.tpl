@@ -664,7 +664,7 @@ In general it seems it shouldn't be much more complex than replacing the command
 
 As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
-Micrate is primarily a library so a small piece of custom code is required to provide a minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
+Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
 
 ```crystal
 #!/usr/bin/env crystal
