@@ -556,11 +556,11 @@ Once the pipe runs on the incoming request, the current request's locale is set 
 
 For a locale to be available and honored, it must be requested (or be the default) and exist anywhere under the directory structure `./src/locales/` with the name `[lang].yml`.
 
-From there, invoking `t()` and `l()` would perform translation and localization according to the current locale. Since these two methods are a direct shorthand for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n's README](https://github.com/TechMagister/i18n.cr).
+From there, invoking `t()` and `l()` would perform translation and localization according to the current locale. Since these two methods are direct shorthands for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n's README](https://github.com/TechMagister/i18n.cr).
 
 In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title of the default homepage.
 
-In the future, the default/built-in I18n functionality in Amber might be expanded to automatically use translations and localizations found in various subdirectories under `src/locales/` just like it works for `src/views/`. (This functionality already exists per-se as explained in [i18n's README](https://github.com/TechMagister/i18n.cr), but is not yet used by Amber.)
+In the future, the default/built-in I18n functionality in Amber might be expanded to automatically organize translations and localizations under subdirectories in `src/locales/` when generators are invoked, just like it is already done for e.g. files in `src/views/`. (This functionality already exists per-se as explained in [i18n's README](https://github.com/TechMagister/i18n.cr), but is not yet used by Amber.)
 
 # Responses
 
