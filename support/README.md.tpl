@@ -165,7 +165,7 @@ I prefer to have some of these directories accessible directly in the root direc
 
 ## Amber db
 
-Amber provides a group of commands under the 'db' group to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
+Amber provides a group of commands under the group `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
 ```shell
 amber db create
