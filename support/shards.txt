@@ -2,6 +2,7 @@
 --------SHARD--------------------SOURCE---DESCRIPTION------------------------------------------------------
 ------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
 require "amber"                  AMBER    Amber itself
+require "citrine-18n"            AMBER    Translation and localization
 require "http"                   CRYSTAL  Lower-level supporting HTTP functionality
 require "http/client"            CRYSTAL  HTTP Client
 require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
@@ -61,6 +62,7 @@ require "bit_array"              CRYSTAL  Array data structure that compactly st
 require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
 require "crypto/subtle"          CRYSTAL  
 require "file_utils"             CRYSTAL  Supporting functions for files and directories
+require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
 require "process"                CRYSTAL  Supporting functions for working with system processes
 require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
 require "selenium"               
