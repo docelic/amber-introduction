@@ -744,7 +744,7 @@ Micrate::DB.connection_url = Amber.settings.database_url
 Micrate::Cli.run
 ```
 
-And the following in `shard.yml` under `targets`:
+And by placing the following in `shard.yml` under `targets`:
 
 ```
 targets:
