@@ -69,7 +69,7 @@ Supported ORM models are [granite](https://github.com/amberframework/granite-orm
 
 Granite is Amber's native very nice and simple, effective ORM model where you mostly write your own SQL (i.e. all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
-Supported migrations engine is [micrate](https://github.com/juanedi/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+Supported migrations engine is [micrate](https://github.com/amberframework/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
 If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
 
@@ -197,7 +197,7 @@ Please note that the environment files for non-production environment are given 
 
 ## Micrate
 
-Amber relies on the shard "micrate" to perform migrations. The command `amber db` relies on "micrate" and uses it unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
 Micrate is a library and a small piece of custom code is required to provide a minimal `micrate` executable. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
 
