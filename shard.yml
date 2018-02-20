@@ -1,0 +1,15 @@
+name: amber-introduction
+version: 0.1.0
+
+authors:
+  - Davor Ocelic <docelic@spinlocksolutions.com>
+
+crystal: 0.24.1
+
+license: MIT
+
+dependencies:
+  amber:
+    github: amberframework/amber
+    branch: master
+    #version: 0.6.7
