@@ -772,7 +772,7 @@ Micrate::Cli.run
 
 Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
 
-(The professional implementation here would probably consist of creating a separate environment named e.g. "admin" and defining specific database credentials for it in `config/environments/admin.yml`. Then, after setting the environment variable `AMBER_ENV=admin`, both `amber db` and `bin/micrate` could be used interchangeably in the expected "admin mode". In that case you would use the first variant of the `src/micrate.cr` command.)
+(The professional implementation here would probably consist of creating a separate environment named e.g. "admin" and defining specific database credentials for it in `config/environments/admin.yml`. Then, after setting the environment variable `AMBER_ENV=admin`, both `amber db` and `bin/micrate` could be used interchangeably in the expected "admin mode". In that case you would use the first variant of the `src/micrate.cr` command given above and not require the customization.)
 
 ## Custom Migrations Engine<a name="custom_migrations_engine"></a>
 
