@@ -656,7 +656,7 @@ In general it seems it shouldn't be much more complex than replacing the command
 
 # More on Database Commands
 
-Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate`. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
 Micrate is primarily a library so a small piece of custom code is required to provide a minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
 
@@ -696,7 +696,9 @@ Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME
 Micrate::Cli.run
 ```
 
-Please note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want. (The pro fix for this situation would probably be to create a fourth environment named e.g. "admin" and define specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin` both `amber db` and `bin/micrate` could again be used interchangeably in the correct and expected "admin mode".)
+Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
+
+(The professional implementation here would probably consist of creating a separate environment named e.g. "admin" and defining specific database credentials for it in `config/environments/admin.yml`. Then, after setting environment variable `AMBER_ENV=admin` both `amber db` and `bin/micrate` could again be used interchangeably in the correct and expected "admin mode".)
 
 # Shards
 
