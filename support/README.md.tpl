@@ -688,7 +688,7 @@ From there, running `crystal deps build micrate` will build `bin/micrate` which 
 
 The setup with a standalone `bin/micrate` command should also be used if you want your migrations to run with different credentials or a different database URL than your regular Amber application.
 
-In that case, `src/micrate.cr` could look like the following:
+In that case, `src/micrate.cr` could be customized and look like the following:
 
 ```crystal
 #!/usr/bin/env crystal
