@@ -1,4 +1,4 @@
-<p align="center">
+<Micrate p align="center">
   <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/support/amber.png">
   <h3 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
   And its Out-of-the-Box Features</h3>
@@ -22,7 +22,7 @@
 1. [Building the App and Troubleshooting](#building_the_app_and_troubleshooting)
 1. [REPL](#repl)
 1. [File Structure](#file_structure)
-1. [Database Commands](#database_commands)
+1. [Amber Database Commands](#amber_database_commands)
 1. [Routes](#routes)
 1. [Views](#views)
 	1. [Variables in Views](#variables_in_views)
@@ -42,7 +42,7 @@
 	1. [CSS Optimization / Minification](#css_optimization___minification)
 	1. [File Copying](#file_copying)
 	1. [Asset Management Alternatives](#asset_management_alternatives)
-1. [More on Database Commands](#more_on_database_commands)
+1. [Micrate Database Commands](#micrate_database_commands)
 1. [Shards](#shards)
 1. [Extensions](#extensions)
 1. [Support Routines](#support_routines)
@@ -204,7 +204,7 @@ ln -sf src/views/layouts
 
 ```
 
-# Database Commands<a name="database_commands"></a>
+# Amber Database Commands<a name="amber_database_commands"></a>
 
 Amber provides a group of subcommands under `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
@@ -719,7 +719,7 @@ Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
-# More on Database Commands<a name="more_on_database_commands"></a>
+# Micrate Database Commands<a name="micrate_database_commands"></a>
 
 Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 

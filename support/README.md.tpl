@@ -1,4 +1,4 @@
-<p align="center">
+<Micrate p align="center">
   <img src="https://raw.githubusercontent.com/docelic/amber-introduction/master/support/amber.png">
   <h3 align="center"><strong>Introduction to the Amber Web Framework</strong><br>
   And its Out-of-the-Box Features</h3>
@@ -161,7 +161,7 @@ I prefer to have some of these directories accessible directly in the root direc
 [[[cat ln-sfs]]]
 ```
 
-# Database Commands
+# Amber Database Commands
 
 Amber provides a group of subcommands under `amber db` to allow working with the database. The simple commands you will most probably want to run just to see basic things working are:
 
@@ -654,7 +654,7 @@ Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
 
-# More on Database Commands
+# Micrate Database Commands
 
 Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
