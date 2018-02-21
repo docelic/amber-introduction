@@ -1,0 +1,2 @@
+*.bash linguist-language=Crystal
+*.pl linguist-language=Crystal
