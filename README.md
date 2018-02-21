@@ -107,7 +107,7 @@ ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
-Granite is Amber's native very nice and simple, effective ORM model where you mostly write your own SQL (i.e. all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`). But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
+Granite is Amber's native very nice and simple, effective ORM model where you mostly write your own SQL. For example, all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`. But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
 Supported migrations engine is [micrate](https://github.com/amberframework/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
 
