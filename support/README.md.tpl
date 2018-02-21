@@ -593,9 +593,12 @@ if some_condition_failed
 
   # Status and headers should be set before writing response body
   context.response.status_code = 400
-
   # Finally, write response body
   context.response.puts "Bad Request"
+
+	# Another way to do the same and respond with a text/plain error
+	# is to use Crystal's respond_with_error():
+	context.response.respond_with_error("Bad Request", 400)
 
   return
 end
