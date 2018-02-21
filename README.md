@@ -72,7 +72,7 @@ make # The result of 'make' is one file -- command line tool bin/amber
 
 # To install the file, or to symlink the system-wide executable to current directory, run one of:
 make install # default PREFIX is /usr/local
-make install PREFIX=/usr/local/stow/
+make install PREFIX=/usr/local/stow/amber
 make force_link # can also specify PREFIX=...
 ```
 
