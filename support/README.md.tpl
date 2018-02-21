@@ -50,7 +50,7 @@ targets:
 
 ```
 
-Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to project's local file `bin/amber`.
+Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to the project's local file `bin/amber`.
 
 # Creating New Amber App
 
