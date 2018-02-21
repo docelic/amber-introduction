@@ -5,7 +5,7 @@
   <p align="center">
     <sup>
       <i>
-				Amber makes building web applications easy, fast, and enjoyable.
+        Amber makes building web applications easy, fast, and enjoyable.
       </i>
     </sup>
   </p>
@@ -650,8 +650,13 @@ To stop a request during execution and return an error, you would do it this way
 ```
 if some_condition_failed
   Amber.logger.error "Error! Returning Bad Request"
-  context.response.puts "Bad Request"
+
+  # Status and headers should be set before writing response body
   context.response.status_code = 400
+
+  # Finally, write response body
+  context.response.puts "Bad Request"
+
   return
 end
 ```
