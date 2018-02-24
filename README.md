@@ -549,7 +549,7 @@ As you might know, for every incoming request, Amber uses data from `config/rout
 protected getter params : Amber::Validators::Params
 
 def initialize(@context : HTTP::Server::Context)
-	@params = Amber::Validators::Params.new(context.params)
+  @params = Amber::Validators::Params.new(context.params)
 end
 ```
 
