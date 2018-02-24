@@ -483,7 +483,7 @@ end
 
 With this foundation in place, let's take a step back to explain the underlying principles and then also expand the description:
 
-As you might know, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls .new on it), and because all controllers inherit from `ApplicationController` which inherits from `Amber::Controller:Base`, the following code is executed as part of initialize:
+As you might know, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls .new on it), and because all controllers inherit from `ApplicationController` (which in turn inherits from `Amber::Controller:Base`), the following code is executed as part of initialize:
 
 ```crystal
 protected getter params : Amber::Validators::Params
