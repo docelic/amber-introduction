@@ -533,13 +533,13 @@ class HomeController < ApplicationController
       required(:name) { |n| n.size > 6 } # Name must have at least 6 characters
       optional(:phone) { |n| n.phone? }  # Phone must look like a phone number
     end
-    "Params valid: #{params.valid?.to_s}<br>
-    Name is: #{params[:name]}"
+
+    "Params valid: #{params.valid?.to_s}<br>Name is: #{params[:name]}"
   end
 end
 ```
 
-(Please note that the extensions to the String class (such as `phone?` seen above) come especially handy for this purpose &mdash; writing validations. Please search for "phone?" down below in this guide to find the complete list of extensions.)
+(Extensions to the String class such as `phone?` seen above come especially handy for writing validations. Please see [Extensions](#extensions) below for the complete list of built-in extensions available.)
 
 With this foundation explained, let's take a step back to explain the underlying principles and then also expand the description:
 
