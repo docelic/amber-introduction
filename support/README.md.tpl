@@ -471,7 +471,7 @@ class HomeController < ApplicationController
   def index
     params.validation do
       required(:name) { |n| n.size > 6 } # Name must have at least 6 characters
-      optional(:phone) { |n| n.phone? }  # Phone must look like phone number
+      optional(:phone) { |n| n.phone? }  # Phone must look like a phone number
     end
     "Params valid: #{params.valid?.to_s}<br>
     Name is: #{params[:name]}"
