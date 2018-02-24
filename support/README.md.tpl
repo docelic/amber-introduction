@@ -497,7 +497,7 @@ In other words, `params` object is initialized using raw params (`context.params
 
 1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there affect `context.params`.
 1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`.
-1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed them when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this variable ensures that you only work with validated/valid parameters.
+1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed them when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this hash ensures that you only work with validated/valid parameters.
 1. `params.errors` - this is a list of all eventual errors that have ocurred during validation with `valid?` or `validate!`. This list is re-initialized on every call to `valid?` or `validate!`.
 
 This is basically all there is to it, and from here you should have a complete understanding how to work with params validation in Amber.
