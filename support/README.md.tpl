@@ -596,7 +596,9 @@ Supported format types are `html`, `json`, `xml`, and `text`. For all the availa
 
 ## Error Responses
 
-In any pipe or controller action, you might need to return an error to the user. That typically means returning an HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
+### Manual Error Responses
+
+In any pipe or controller action, you might want to return a simple error to the user. That typically means returning an HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
 
 To stop a request during execution and return an error, you would do it this way:
 
@@ -618,6 +620,29 @@ end
 ```
 
 Please note that you must use `context.response.puts` or `context.response<<` to print to the output buffer in case of errors. You cannot set the error code and then call `return "Bad Request"` because the return value will not be added to response body if HTTP code is not 2xx.
+
+### Error Responses via Error Pipe
+
+The above example for manually returning error responses does not involve raising any Exceptions &mdash; it simply consists of setting the status and response body and returning them to the client.
+
+Another approach to returning errors consists in using Amber's error subsystem. It automatically provides you with a convenient way to raise Exceptions and return them to the client properly wrapped in application templates etc. Using this warrants explaining some underlying concepts first:
+
+Namely, "pipes" in Amber (or "handlers" as they are called in Crystal) work in such a way that each handler must explicitly invoke `call_next(context)` to call the next pipe in line. This creates two interesting properties as a consequence. The first one is that you can call the next pipe at exactly the right place in the code where you want it (at the beginning, in the middle, or at the end of your current pipe's code). The second one is that there is a call stack of methods established, so e.g. raising an exception in your controller can be rescued by an earlier pipe in row and be handled accordingly.
+
+Amber uses this property #2 to to provide you with a generic pipe for handling errors. It is called "Errors" and Amber already uses it for generating its errors (see the line `plug Amber::Pipe::Error.new` in your `config/routes.cr`). But to be able to extend the list of errors or modify error templates yourself, you should run `amber g error` to copy the relevant files to your application. In principle, you will get files `src/pipes/error.cr`, `src/controllers/error_controller.cr`, and `src/views/error/`, all of which can be modified to suit your needs.
+
+To see the error subsystem at work, you could do something as simple as:
+
+```crystal
+class HomeController < ApplicationController
+	def index
+		raise Exception.new "No pass!"
+		render("index.slang")
+	end
+end
+```
+
+And then visit [http://localhost:3000/](http://localhost:3000/). You should see a HTTP 500 (Internal Server Error) containing your error message.
 
 # Assets Pipeline
 
