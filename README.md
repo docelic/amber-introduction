@@ -23,6 +23,7 @@
 1. [REPL](#repl)
 1. [File Structure](#file_structure)
 1. [Database Commands](#database_commands)
+1. [Pipes and Pipelines](#pipes_and_pipelines)
 1. [Routes](#routes)
 1. [Views](#views)
 	1. [Variables in Views](#variables_in_views)
@@ -241,11 +242,25 @@ Please note that for the database connection to succeed, all parameters must be 
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
 
+# Pipes and Pipelines<a name="pipes_and_pipelines"></a>
+
+In a very simple application framework, it could suffice to directly map incoming requests to methods in the application, call them, and return results to the user.
+
+Modern application frameworks provide more flexibility and allow pluggable components (interchangeably called "middleware", "handlers", or "pipes") to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
+
+These handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which handles delivery of static files.
+
+Using pipes promotes code reuse and is a nice way to plug various standard or custom functionality in the request serving process, while it does not require developers to duplicate code or include certain parts of code in every controller action.
+
+In Amber, the pipes that may need to run for a request are grouped in so-called "pipelines". When a request comes in, all pipes in the associated pipeline are executed, and as the last step the [pipe "Controller"](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr) is invoked. (This is currently non-configurable &mdash; the pipe "Controller" is always automatically and implicitly added as the last pipe in the associated pipeline.)
+
+The configuration for pipes, pipelines, and routes can be found in `config/routes.cr`.
+
 # Routes<a name="routes"></a>
 
-Routes are very easy to understand. Routes connect HTTP methods (and the paths with which they were invoked) to controllers and methods on the Amber side.
+Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed on the request before the controller action is invoked.
 
-Amber includes a wonderful command `amber routes` to display current routes. By default, the routes table looks like the following:
+Amber includes a wonderful command `amber routes` to display configured routes. By default, the routes table looks like the following:
 
 ```shell
 $ amber routes
@@ -263,10 +278,10 @@ $ amber routes
 ```
 
 From this example, we see that a "GET /" request will instantiate
-HomeController and then call method index() in it. The return value of
-the method will be returned as response body to the client.
+HomeController and then call method index() in it. (And the return value of
+the method will be returned as response body to the client, as usual.)
 
-Similarly, here's an example of a route that would route POST "/registration" to RegistrationController.new.create():
+Similarly, here's an actual example of a route definition that would route POST "/registration" to RegistrationController.new.create():
 
 ```
 post "/registration", RegistrationController, :create
