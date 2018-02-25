@@ -220,16 +220,16 @@ $ amber routes
 ```
 
 From this example, we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
-HomeController#index method will be called. (And the return value of
+HomeController.new.index method will be called. (And the return value of
 the method will be returned as response body to the client, as usual.)
 
-Similarly, here's an actual example of a route definition that would route POST "/registration" to RegistrationController.new.create():
+As another example, the following definition would route "POST /registration" requests to RegistrationController.new.create(context):
 
 ```
 post "/registration", RegistrationController, :create
 ```
 
-By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) should be routed to standard-named methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've done with "index" above.
+By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) should be routed to standard-named methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with "index" above.
 
 Websocket routes are supported too.
 
@@ -244,7 +244,7 @@ pipeline :name do
 end
 
 #: Group a set of routes
-routes :name, "path" do
+routes :pipeline_name, "/optional_path_prefix" do
   ...
 end
 ```
