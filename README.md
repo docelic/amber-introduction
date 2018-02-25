@@ -704,7 +704,7 @@ class HomeController < ApplicationController
 end
 ```
 
-And then visit [http://localhost:3000/](http://localhost:3000/). You should see a HTTP 500 (Internal Server Error) containing your error message.
+And then visit [http://localhost:3000/](http://localhost:3000/). You should see a HTTP 500 (Internal Server Error) containing the specified error message.
 
 # Assets Pipeline<a name="assets_pipeline"></a>
 
