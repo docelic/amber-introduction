@@ -219,8 +219,8 @@ $ amber routes
 [[[cd app && amber routes --no-color]]]
 ```
 
-From this example, we see that a "GET /" request will instantiate
-HomeController and then call method index() in it. (And the return value of
+From this example, we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
+HomeController#index method will be called. (And the return value of
 the method will be returned as response body to the client, as usual.)
 
 Similarly, here's an actual example of a route definition that would route POST "/registration" to RegistrationController.new.create():
