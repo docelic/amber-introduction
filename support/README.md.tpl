@@ -635,10 +635,10 @@ To see the error subsystem at work, you could do something as simple as:
 
 ```crystal
 class HomeController < ApplicationController
-	def index
-		raise Exception.new "No pass!"
-		render("index.slang")
-	end
+  def index
+    raise Exception.new "No pass!"
+    render("index.slang")
+  end
 end
 ```
 
