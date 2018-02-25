@@ -252,7 +252,7 @@ These handlers or pipes are not limited in what they can do. It is normal that t
 
 Using pipes promotes code reuse and is a nice way to plug various standard or custom functionality in the request serving process, while it does not require developers to duplicate code or include certain parts of code in every controller action.
 
-In Amber, the pipes that may need to run for a request are grouped in so-called "pipelines". When a request comes in, all pipes in the associated pipeline are executed, and as the last step the pipe "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)" is invoked. (This is currently non-configurable &mdash; the pipe "Controller" is always automatically and implicitly added as the last pipe in the associated pipeline.)
+In Amber, the pipes that may need to run for a request are grouped in so-called "pipelines". When a request comes in, all pipes in the associated pipeline are executed, and as the last step the pipe "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)" is invoked. (This is currently non-configurable &mdash; the controller pipe is always automatically and implicitly added as the last pipe in the associated pipeline.)
 
 The configuration for pipes, pipelines, and routes can be found in `config/routes.cr`.
 
