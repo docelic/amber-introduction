@@ -24,7 +24,7 @@
 1. [File Structure](#file_structure)
 1. [Database Commands](#database_commands)
 1. [Pipes and Pipelines](#pipes_and_pipelines)
-1. [Routes](#routes)
+1. [Routes, Controller Methods, and Responses](#routes__controller_methods__and_responses)
 1. [Views](#views)
 	1. [Variables in Views](#variables_in_views)
 	1. [Template Languages](#template_languages)
@@ -260,7 +260,7 @@ In Amber, the pipes that may need to run for a request are grouped in so-called 
 
 The configuration for pipes, pipelines, and routes is found in `config/routes.cr`. This file essentially invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps all routes-related configuration in this separate file.
 
-# Routes<a name="routes"></a>
+# Routes, Controller Methods, and Responses<a name="routes__controller_methods__and_responses"></a>
 
 Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed for the request before the controller action is invoked.
 
@@ -281,17 +281,20 @@ $ amber routes
 
 ```
 
-From this example, we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
-HomeController.new.index method will be called. (And the return value of
-the method will be returned as response body to the client, as usual.)
+From this example, we can see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
+HomeController.new.index method will be called.
 
-In the `config/routes.cr` configuration this is simply achieved with the line:
+In the `config/routes.cr` code, this is simply achieved with the line:
 
 ```crystal
 get "/", HomeController, :index
 ```
 
-As another example, the following definition would cause a POST request to "/registration" to essentially invoke `RegistrationController.new.create(context)`:
+As a rule, Amber calls all controller methods with one fixed argument &mdash; the "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields. (More on `context` is mentioned in multiple places in the sections below.)
+
+The return value of the controller method is returned as response body to the client.
+
+As another example, the following definition would cause a POST request to "/registration" to result in invoking `RegistrationController.new.create(context)`:
 
 ```
 post "/registration", RegistrationController, :create
