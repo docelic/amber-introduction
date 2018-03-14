@@ -262,7 +262,7 @@ The configuration for pipes, pipelines, and routes is found in `config/routes.cr
 
 # Routes<a name="routes"></a>
 
-Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed on the request before the controller action is invoked.
+Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed for the request before the controller action is invoked.
 
 Amber includes a wonderful command `amber routes` to display configured routes. By default, the routes table looks like the following:
 
@@ -285,7 +285,13 @@ From this example, we see that a "GET /" request will cause all pipes in the pip
 HomeController.new.index method will be called. (And the return value of
 the method will be returned as response body to the client, as usual.)
 
-As another example, the following definition would route "POST /registration" requests to RegistrationController.new.create(context):
+In the `config/routes.cr` configuration this is simply achieved with the line:
+
+```crystal
+get "/", HomeController, :index
+```
+
+As another example, the following definition would cause a POST request to "/registration" to essentially invoke `RegistrationController.new.create(context)`:
 
 ```
 post "/registration", RegistrationController, :create
