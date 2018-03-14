@@ -209,7 +209,7 @@ Using pipes promotes code reuse and is a nice way to plug various standard or cu
 
 In Amber, the pipes that may need to run for a request are grouped in so-called "pipelines". When a request comes in, all pipes in the associated pipeline are executed, and as the last step the pipe "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)" is invoked. This is currently non-configurable &mdash; the controller pipe is always automatically added and executed as the last pipe in the associated pipeline unless the execution stops in one of the earlier pipes.
 
-The configuration for pipes, pipelines, and routes can be found in `config/routes.cr`.
+The configuration for pipes, pipelines, and routes is found in `config/routes.cr`. This file essentially invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps all routes-related configuration in this separate file.
 
 # Routes
 
