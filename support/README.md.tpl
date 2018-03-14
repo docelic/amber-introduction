@@ -232,7 +232,7 @@ In the `config/routes.cr` code, this is simply achieved with the line:
 get "/", HomeController, :index
 ```
 
-As a rule, Amber calls all controller methods with one fixed argument &mdash; the "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields added by Amber. (More on `context` is mentioned in multiple places throughout the Guide.)
+Amber calls all controller methods with one fixed argument, the so-called "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields added by Amber. (More on `context` is mentioned below in the Guide.)
 
 The return value of the controller method is returned as response body to the client.
 
@@ -242,7 +242,7 @@ As another example, the following definition would cause a POST request to "/reg
 post "/registration", RegistrationController, :create
 ```
 
-By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, DELETE) should be routed to standard-named methods on the controllers (show, new, create, edit, update, destroy). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with "index" above.
+By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `new`, `create`, `edit`, `update`, and `destroy`). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
 
 Websocket routes are supported too.
 
@@ -262,19 +262,19 @@ routes :pipeline_name, "/optional_path_prefix" do
 end
 ```
 
-Such as:
+This is used in practice in the following way:
 
 ```crystal
 Amber::Server.configure do |app|
   pipeline :web do
-    # Plug is the method used to connect a pipe (middleware)
-    # A plug accepts an instance of HTTP::Handler
+    # Plug is the method used to connect a pipe (middleware).
+    # A plug accepts an instance of HTTP::Handler.
     plug Amber::Pipe::Logger.new
   end
 
   routes :web do
-    get "/", HomeController, :index    # Routes to HomeController::index()
-    get "/test", PageController, :test # Routes to PageController::test()
+    get "/", HomeController, :index    # Routes to HomeController.new.index(context)
+    get "/test", PageController, :test # Routes to PageController.new.test(context)
   end
 end
 ```
