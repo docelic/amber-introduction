@@ -343,17 +343,13 @@ Within "routes", the following commands are available:
 get, post, put, patch, delete, options, head, trace, connect, websocket, resources
 ```
 
-Most of these actions correspond to the respective HTTP methods.
-
-`websocket` defines websocker routes.
-
-`resources` is a macro defined as:
+Most of these actions correspond to the respective HTTP methods; `websocket` defines websocker routes; and `resources` is a macro defined as:
 
 ```crystal
     macro resources(resource, controller, only = nil, except = nil)
 ```
 
-And unless it is confined with arguments `only` or `except`, it will automatically define get, post, put, patch, and delete routes for your resource and route them to the following methods in the controller:
+Unless `resources` is confined with arguments `only` or `except`, it will automatically define `get`, `post`, `put`, `patch`, and `delete` routes for your resource and route them to the following methods in the controller:
 
 ```crystal
 index, new, create, show, edit, update, destroy
