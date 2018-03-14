@@ -320,7 +320,7 @@ routes :pipeline_name, "/optional_path_prefix" do
 end
 ```
 
-This is used in practice in the following way:
+This is used in practice in the following way in `config/routes.cr`:
 
 ```crystal
 Amber::Server.configure do |app|
