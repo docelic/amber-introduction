@@ -297,21 +297,22 @@ So unless `resources` is confined with arguments `only` or `except`, it will aut
 index, new, create, show, edit, update, destroy
 ```
 
-Please note that it is not currently possible to define a different behavior for HEAD and GET methods on the same path, because if a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
+Please note that it is not currently possible to define a different behavior for HEAD and GET methods on the same path. If a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
 
 # Views
 
-Information about views can be summarized in bullet points:
+Information about views can be summarized in the following bullet points:
 
-- Views in Amber are located in `src/views/`
-- They are rendered using `render()`
+- Views in Amber are located under toplevel directory `src/views/`
+- Views are typically rendered using `render()`
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
 - If we are in the context of a controller, `render("index.slang")` will look for view using the path `src/views/<controller_name>/index.slang`
 - If we are not rendering a partial, by default the template will be wrapped in a layout
-- If the layout name isn't given, the default layout will be `views/layouts/application.slang`
-- There is no unnecessary magic applied to template names &mdash; name given is the name that is looked up on disk
+- If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
+- There is no unnecessary magic applied to template names &mdash; name specified is the name that will be looked up on disk
 - Partials begin with "_" by convention, but that is not required
 - To render a partial, use `render( partial: "_name.ext")`
+- Views render directly as part of the controller (explained in the section just below)
 
 ## Variables in Views
 
