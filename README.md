@@ -381,7 +381,7 @@ The other is that since `render` executes directly in the controller method, it 
 
 As mentioned, in Amber, templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
 
-Any variable you define in the controller method is directly visible in the template. For example, let's add the current date and time and display them on a hypothetical "/about" page:
+Any variable you define in the controller method is directly visible in the template. For example, let's add the date and time and display them on the hypothetical "/about" page. The controller method and the corresponding view template would look like this:
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -396,7 +396,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-Templates are actually executing in the controller class. If you do "<%= self.class %> in the above example, the response will be "PageController". So all the methods and variables you have on the controller are also available in views rendered from it.
+To recap, templates are executing directly in the controller method, but through that also as part of the controller object. If you do "<%= self.class %> in the above example, the response will be "PageController". So in addition to seeing the invoked method's local variables, this also means that all the instance variables existing on the controller object are accessible in the templates.
 
 ## Template Languages<a name="template_languages"></a>
 
