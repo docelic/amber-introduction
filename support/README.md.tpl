@@ -232,7 +232,7 @@ In the `config/routes.cr` code, this is simply achieved with the line:
 get "/", HomeController, :index
 ```
 
-As a rule, Amber calls all controller methods with one fixed argument &mdash; the "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields. (More on `context` is mentioned in multiple places in the sections below.)
+As a rule, Amber calls all controller methods with one fixed argument &mdash; the "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields added by Amber. (More on `context` is mentioned in multiple places throughout the Guide.)
 
 The return value of the controller method is returned as response body to the client.
 
