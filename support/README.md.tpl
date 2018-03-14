@@ -321,9 +321,9 @@ The other is that since `render` executes directly in the controller method, it 
 
 ## Variables in Views
 
-As mentioned, in Amber templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
+As mentioned, in Amber, templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
 
-Any variable you define in the controller method is directly visible in the template. For example, let's add the current date and time display to our /about page:
+Any variable you define in the controller method is directly visible in the template. For example, let's add the current date and time and display them on a hypothetical "/about" page:
 
 ```shell
 $ vi src/controllers/page_controller.cr
