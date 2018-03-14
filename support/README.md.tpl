@@ -273,8 +273,8 @@ Amber::Server.configure do |app|
   end
 
   routes :web do
-    get "/", HomeController, :index    # Routes to HomeController.new.index(context)
-    get "/test", PageController, :test # Routes to PageController.new.test(context)
+    get "/", HomeController, :index    # Routes "GET /" to HomeController.new.index(context)
+    post "/test", PageController, :test # Routes "POST /test" to PageController.new.test(context)
   end
 end
 ```
