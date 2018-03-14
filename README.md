@@ -370,8 +370,9 @@ Information about views can be summarized in the following bullet points:
 - There is no unnecessary magic applied to template names &mdash; names specified are the names that will be looked up on disk
 - Partials begin with "\_" by convention, but that is not required. If they are named with "\_", then the "\_" must be mentioned as part of the name
 - To render a partial, use `render( partial: "_name.ext")`
+- Templates are read from disk and compiled into the application at compile time. This makes them fast to access and also read-only which is a useful side-benefit
 
-It is important to know that `render` is a macro and views are rendered directly in-place as part of the method that was invoked on the controller object.
+It is also important to know that `render` is a macro and views are rendered directly in-place as part of the method that was invoked on the controller object.
 
 This gives us two interesting properties. One is that the result of the `render` macro is essentially the return value of the controller method, and as mentioned previously, as such it is returned to the clients as response body.
 
