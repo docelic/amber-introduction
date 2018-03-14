@@ -159,7 +159,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./spec/                    - Toplevel directory for test files named "*_spec.cr"
 ```
 
-I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory named `etc`, so I run:
+I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory aliased to `etc`, so I run:
 
 ```
 [[[cat ln-sfs]]]
