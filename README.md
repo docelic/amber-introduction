@@ -371,17 +371,17 @@ Information about views can be summarized in the following bullet points:
 - Partials begin with "\_" by convention, but that is not required. If they are named with "\_", then the "\_" must be mentioned as part of the name
 - To render a partial, use `render( partial: "_name.ext")`
 
-It is important to know that `render` is a macro, and views render directly, in-place as part of the controller. They are not a separate method or object.
+It is important to know that `render` is a macro and views are rendered directly in-place as part of the method that was invoked on the controller object.
 
 This gives us two interesting properties. One is that the result of the `render` macro is essentially the return value of the controller method, and as mentioned previously, as such it is returned to the clients as response body.
 
-The other is that since `render` executes directly within the controller, it sees local variables and data does not have to be passed via instance variables. That particular aspect is explained in more detail just below:
+The other is that since `render` executes directly in the controller method, it sees all local variables and data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
 
 ## Variables in Views<a name="variables_in_views"></a>
 
-In Amber, templates are compiled in the same scope as controller methods. This means you do not need instance variables for passing the information from controllers to views.
+As mentioned, in Amber templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
 
-Any variable you define in the controller method is automagically visible in the template. For example, let's add the current date and time display to our /about page:
+Any variable you define in the controller method is directly visible in the template. For example, let's add the current date and time display to our /about page:
 
 ```shell
 $ vi src/controllers/page_controller.cr
