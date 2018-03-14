@@ -269,9 +269,9 @@ $ amber routes
 ╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
 ║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
 ╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
 ║ get  | HomeController            | index  | web      |       | /           ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
 ╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 
 
@@ -874,9 +874,11 @@ Amber and all of its components depend on the following shards:
 --------SHARD--------------------SOURCE---DESCRIPTION------------------------------------------------------
 ------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
 require "amber"                  AMBER    Amber itself
+require "amber_router"           AMBER    Request router implementation
 require "citrine-18n"            AMBER    Translation and localization
 require "http"                   CRYSTAL  Lower-level supporting HTTP functionality
 require "http/client"            CRYSTAL  HTTP Client
+require "http/headers"           CRYSTAL  HTTP Headers
 require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
 require "http/server"            CRYSTAL  HTTP Server
 require "quartz_mailer"          AMBER    Sending and receiving emails
@@ -911,11 +913,6 @@ require "logger"                 CRYSTAL  Simple but sophisticated logging utili
 require "optarg"                 EXTERNAL Parsing command-line options and arguments
 require "option_parser"          CRYSTAL  Command line options processing
 require "shell-table"            EXTERNAL Creating text tables in command line terminal
-require "spinner"                EXTERNAL Animated spinner for command line applications
-
-------- Misc ----------------------------------------------------------------------------------------------
-require "callback"               EXTERNAL Defining and invoking callbacks
-require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
 
 ------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
 require "digest/md5"             CRYSTAL  MD5 digest algorithm
@@ -930,11 +927,16 @@ require "zlib"                   CRYSTAL  Reading/writing Zlib compressed data a
 
 ------- Supporting Functionality --------------------------------------------------------------------------
 require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
+require "benchmark"              CRYSTAL  Benchmark routines for benchmarking Crystal code
 require "bit_array"              CRYSTAL  Array data structure that compactly stores bits
+require "callback"               EXTERNAL Defining and invoking callbacks
+require "compiled_license"       EXTERNAL Compile in LICENSE files from project and dependencies
+require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
 require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
 require "crypto/subtle"          CRYSTAL  
 require "file_utils"             CRYSTAL  Supporting functions for files and directories
 require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
+require "inflector"              
 require "process"                CRYSTAL  Supporting functions for working with system processes
 require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
 require "selenium"               
@@ -1068,7 +1070,6 @@ module Amber::Controller
       :put?,
       :request,
       :requested_url,
-      :request_handler,
       :response,
       :route,
       :session,
