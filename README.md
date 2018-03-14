@@ -173,7 +173,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ```
 ./config/                  - All configuration, detailed in subsequent lines:
 ./config/initializers/     - Initializers (files you want loaded at the very beginning)
-./config/environments/     - Environment-specific YAML configurations
+./config/environments/     - Environment-specific YAML configurations (development, production, test)
 ./config/application.cr    - Main configuration file for the app. Generally not touched (apart
                              from adding "require"s to the top) because most of the config
                              settings are specified in YAML files in config/environments/
@@ -181,9 +181,11 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./config/routes.cr         - All routes
 
 ./db/migrations/           - All DB migration files (created with 'amber g migration ...')
+
 ./public/                  - The "public" directory for static files
 ./public/dist/             - Directory inside "public" for generated files and bundles
 ./public/dist/images/
+
 ./src/                     - Main source directory, with <app_name>.cr being the main/entry file
 ./src/controllers/         - All controllers
 ./src/models/              - All models
