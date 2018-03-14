@@ -148,7 +148,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./src/models/              - All models
 ./src/views/layouts/       - All layouts
 ./src/views/               - All views
-./src/views/home/          - Views for HomeController (path "/")
+./src/views/home/          - Views for HomeController (the app's "/" path)
 ./src/locales/             - Toplevel directory for locale (translation) files named [lang].yml
 ./src/assets/              - Static assets which will be bundled and placed into ./public/dist/
 ./src/assets/stylesheets/
