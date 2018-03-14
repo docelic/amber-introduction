@@ -111,7 +111,7 @@ Sometimes building the app will fail on the C level because of missing header fi
 
 The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause will be determined easily.
 
-There are some issues with the `libgc` library here and there. In my case the solution was to reinstall the package `libgc-dev`.
+There are some issues with the `libgc` library here and there. In my case the solution was to reinstall system's package `libgc-dev`.
 
 # REPL
 
@@ -128,7 +128,7 @@ In any case, running a script "in application context" simply means requiring `c
 So, at this point you might be wanting to know what's placed where in an Amber application. The default structure looks like this:
 
 ```
-./config/                  - All configuration
+./config/                  - All configuration, detailed in subsequent lines:
 ./config/initializers/     - Initializers (files you want loaded at the very beginning)
 ./config/environments/     - Environment-specific YAML configurations
 ./config/application.cr    - Main configuration file for the app. Generally not touched (apart
@@ -136,6 +136,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
                              settings are specified in YAML files in config/environments/
 ./config/webpack/          - Webpack (asset bundler) configuration
 ./config/routes.cr         - All routes
+
 ./db/migrations/           - All DB migration files (created with 'amber g migration ...')
 ./public/                  - The "public" directory for static files
 ./public/dist/             - Directory inside "public" for generated files and bundles
