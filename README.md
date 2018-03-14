@@ -337,11 +337,15 @@ Amber::Server.configure do |app|
 end
 ```
 
-Within 'routes', the following commands are available:
+Within "routes", the following commands are available:
 
 ```crystal
 get, post, put, patch, delete, options, head, trace, connect, websocket, resources
 ```
+
+Most of these actions correspond to the respective HTTP methods.
+
+`websocket` defines websocker routes.
 
 `resources` is a macro defined as:
 
