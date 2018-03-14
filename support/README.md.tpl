@@ -223,8 +223,8 @@ $ amber routes
 [[[cd app && amber routes --no-color]]]
 ```
 
-From this example, we can see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
-HomeController.new.index method will be called.
+From the first line of the output we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
+`HomeController.new.index` method will be called.
 
 In the `config/routes.cr` code, this is simply achieved with the line:
 
