@@ -306,11 +306,11 @@ Information about views can be summarized in the following bullet points:
 - Views in Amber are located under toplevel directory `src/views/`
 - Views are typically rendered using `render()`
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
-- If we are in the context of a controller, `render("index.slang")` will look for view using the path `src/views/<controller_name>/index.slang`
+- If we are in the context of a controller, `render("index.slang")` will look for a view named `src/views/<controller_name>/index.slang`
 - If we are not rendering a partial, by default the template will be wrapped in a layout
 - If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
-- There is no unnecessary magic applied to template names &mdash; name specified is the name that will be looked up on disk
-- Partials begin with "_" by convention, but that is not required
+- There is no unnecessary magic applied to template names &mdash; names specified are the names that will be looked up on disk
+- Partials begin with "_" by convention, but that is not required. If they are named with "_", the "_" must be mentioned as part of the name
 - To render a partial, use `render( partial: "_name.ext")`
 
 It is important to know that `render` is a macro, and views render directly, in-place as part of the controller. They are not a separate method or object.
