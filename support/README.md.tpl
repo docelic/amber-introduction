@@ -137,7 +137,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./config/webpack/          - Webpack (asset bundler) configuration
 ./config/routes.cr         - All routes
 
-./db/migrations/           - All DB migration files (created with 'amber g migration ...')
+./db/migrations/           - All DB migration files (created with "amber g migration ...")
 
 ./public/                  - The "public" directory for static files
 ./public/dist/             - Directory inside "public" for generated files and bundles
@@ -155,7 +155,8 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./src/assets/fonts/
 ./src/assets/images/
 ./src/assets/javascripts/
-./spec/                    - Tests (named *_spec.cr)
+
+./spec/                    - Toplevel directory for test files named "*_spec.cr"
 ```
 
 I prefer to have some of these directories accessible directly in the root directory of the application and to have the config directory named `etc`, so I run:
