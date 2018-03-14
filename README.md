@@ -83,7 +83,7 @@ make force_link # can also specify PREFIX=...
 
 After installation or linking, `amber` is the command you will be using for creating and managing Amber apps.
 
-Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, project's `shard.yml` ships with the build target "amber":
+Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, each project's `shard.yml` ships with the build target named "amber":
 
 ```
 targets:
@@ -93,7 +93,7 @@ targets:
 
 ```
 
-Running `crystal deps build amber` will compile Amber located in `lib/amber/` and place the executable to the project's local file `bin/amber`.
+Running `crystal deps build amber` will compile local Amber found in `lib/amber/` and place the executable into the project's local file `bin/amber`.
 
 # Creating New Amber App<a name="creating_new_amber_app"></a>
 
@@ -106,13 +106,13 @@ Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default),
 Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (But any languages can be used; more on that can be found below in [Template Languages](#template_languages).)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like, very similar to Ruby ERB, and more than mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (from e.g. [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts HTML pages into slang.)
+ECR is HTML-like, very similar to Ruby ERB, and mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (e.g. from [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts HTML pages into slang.)
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
 Granite is Amber's native very nice and simple, effective ORM model where you mostly write your own SQL. For example, all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`. But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
 
-Supported migrations engine is [micrate](https://github.com/amberframework/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down".
+Supported migrations engine is [micrate](https://github.com/amberframework/micrate). Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". Additionally, complex statements which contain semicolons are also enclosed in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
 
 If argument --deps is provided, Amber will automatically run `crystal deps` in the new directory to install shards.
 
