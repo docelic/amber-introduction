@@ -372,17 +372,17 @@ Information about views can be summarized in the following bullet points:
 - To render a partial, use `render( partial: "_name.ext")`
 - Templates are read from disk and compiled into the application at compile time. This makes them fast to access and also read-only which is a useful side-benefit
 
-It is also important to know that `render` is a macro and views are rendered directly in-place as part of the method that was invoked on the controller object.
+It is also important to know that `render` is a macro and views are rendered directly (in-place) as part of the controller method.
 
-This gives us two interesting properties. One is that the result of the `render` macro is essentially the return value of the controller method, and as mentioned previously, as such it is returned to the clients as response body.
+This gives us two interesting properties. One is that the result of the `render` macro is essentially the return value of the controller method, and as mentioned previously, the controller method's return value is returned to the clients as response body.
 
-The other is that since `render` executes directly in the controller method, it sees all local variables and data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
+The other is that since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
 
 ## Variables in Views<a name="variables_in_views"></a>
 
 As mentioned, in Amber, templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
 
-Any variable you define in the controller method is directly visible in the template. For example, let's add the date and time and display them on the hypothetical "/about" page. The controller method and the corresponding view template would look like this:
+Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on a hypothetical "/about" page. The controller method and the corresponding view template would look like this:
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -397,7 +397,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To recap, templates are executing directly in the controller method, but through that also as part of the controller object. If you do "<%= self.class %> in the above example, the response will be "PageController". So in addition to seeing the invoked method's local variables, this also means that all the instance variables existing on the controller object are accessible in the templates.
+To recap and expand, templates are executing directly as part of the controller methods. This also means they are executing as part of the controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response will be "PageController". So in addition to seeing the invoked method's local variables, this means that all the instance variables existing on the controller object are also transparently accessible in the templates.
 
 ## Template Languages<a name="template_languages"></a>
 
