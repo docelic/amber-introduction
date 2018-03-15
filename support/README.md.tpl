@@ -417,7 +417,7 @@ After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)
 ```
 Amber.settings         # Singleton object, contains current settings
 Amber.logger           # Alias for Amber.settings.logger
-Amber.env, Amber.env=  # Environment (development, production, test)
+Amber.env, Amber.env=  # Env (environment) object (development, production, test)
 ```
 
 [Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
@@ -425,15 +425,15 @@ Amber.env, Amber.env=  # Environment (development, production, test)
 [[[grep 'def ' amber/src/amber/environment/env.cr]]]
 ```
 
-The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s "Amber::Server.configure" block.
+The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s `Amber::Server.configure` block.
 
 # Parameter Validation
 
 First of all, Amber framework considers query and body params equal and makes them available to the application in the same, uniform way.
 
-Second of all, the params handling in Amber is not programmed in a truly clean way, but hopefully the description here will be clear.
+Second of all, the params handling in Amber is not programmed in a truly clean and non-overlapping way, but the description here should be clear to understand.
 
-There are just three important methods to have in mind &mdash; `params.validation {...}` which defines validation rules, `valid?` which returns whether parameters pass validation, and `validate!` which requires that parameters pass validation or raises an error.
+There are just three important methods to have in mind &mdash; `params.validation {...}` which defines validation rules, `params.valid?` which returns whether parameters pass validation, and `params.validate!` which requires that parameters pass validation or raises an error.
 
 A simple validation process in a controller could look like this (showing the whole Controller class for completeness):
 
@@ -452,9 +452,9 @@ end
 
 (Extensions to the String class such as `phone?` seen above come especially handy for writing validations. Please see [Extensions](#extensions) below for the complete list of built-in extensions available.)
 
-With this foundation in place, let's take a step back to explain the underlying principles and then also expand the description:
+With this foundation in place, let's take a step back to explain the underlying principles and also expand the full description:
 
-As you might know, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls .new on it), and because all controllers inherit from `ApplicationController` (which in turn inherits from `Amber::Controller:Base`), the following code is executed as part of initialize:
+As you might know, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls `new` on it), and because all controllers inherit from `ApplicationController` (which in turn inherits from `Amber::Controller:Base`), the following code is executed as part of initialize:
 
 ```crystal
 protected getter params : Amber::Validators::Params
@@ -464,12 +464,12 @@ def initialize(@context : HTTP::Server::Context)
 end
 ```
 
-In other words, `params` object is initialized using raw params (`context.params`). From there, it is important to know that `params` contains 4 important sub-variables:
+In other words, `params` object is initialized using raw params passed with the request (i.e. `context.params`). From there, it is important to know that `params` object contains 4 important variables:
 
-1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there affect `context.params`.
-1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`.
-1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed them when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this hash ensures that you only work with validated/valid parameters.
-1. `params.errors` - this is a list of all eventual errors that have ocurred during validation with `valid?` or `validate!`. This list is re-initialized on every call to `valid?` or `validate!`.
+1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there also affect `context.params`
+1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`
+1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed them when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this hash ensures that you only work with validated/valid parameters
+1. `params.errors` - this is a list of all eventual errors that have ocurred during validation with `valid?` or `validate!`. This list is re-initialized on every call to `valid?` or `validate!`
 
 This is basically all there is to it, and from here you should have a complete understanding how to work with params validation in Amber.
 
