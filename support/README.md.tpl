@@ -855,7 +855,7 @@ Only the parts that are used end up in the compiled project.
 
 ## Starting the Server
 
-It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
+It is important to explain exactly what happens from the time you run the application til Amber starts serving user requests:
 
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
 	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
