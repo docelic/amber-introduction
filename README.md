@@ -701,13 +701,13 @@ The JS resources are bundled to `main.bundle.js` and CSS resources are bundled t
 
 [Webpack](https://webpack.js.org/) is used for asset management.
 
-To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. The packer used is webpack as mentioned, and it processes import statements in .js, but not in .css/.scss files. So you must add the "import" lines to a .js file, and as a result, this will produce a JS bundle that has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
+To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. The packer used is webpack as mentioned, and it processes import statements in .js, but not in .css/.scss files. So you must add the "import" lines to a .js file, and as a result, this will produce a JS bundle that has both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) will be used to extract CSS parts into their own bundle.
 
 The base/common configuration for all this is in `config/webpack/common.js`.
 
 ## Resource Aliases<a name="resource_aliases"></a>
 
-Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. You would add the following to the "resolve" section in `config/webpack/common.js`:
+Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. For example, you would add the following to the "resolve" section in `config/webpack/common.js`:
 
 ```
 ...
@@ -723,7 +723,7 @@ Sometimes, the code or libraries you include will in turn require libraries by g
 
 You might want to minimize the CSS that is output to the final CSS bundle.
 
-To do so you need an entry under "devDependencies" in the file `package.json`:
+To do so you need an entry under "devDependencies" in the project's file `package.json`:
 
 ```
     "optimize-css-assets-webpack-plugin": "^1.3.0",
@@ -739,7 +739,7 @@ And you need to run `npm install` for the plugin to be installed (saved to "node
 
 ## File Copying<a name="file_copying"></a>
 
-You might also want to copy some of the files from their original location to `public/dist/`, without doing any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
+You might also want to copy some of the files from their original location to `public/dist/` without doing any modifications in the process. This is done by adding the following under "devDependencies" in `package.json`:
 
 ```
     "copy-webpack-plugin": "^4.1.1",
@@ -777,7 +777,7 @@ In general it seems it shouldn't be much more complex than replacing the command
 
 As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
-Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but can trivially be adapted to MySQL or SQLite):
+Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but could be trivially adapted to MySQL or SQLite):
 
 ```crystal
 #!/usr/bin/env crystal
@@ -797,7 +797,7 @@ targets:
     main: src/micrate.cr
 ```
 
-From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably. Run `bin/micrate -h` to see an overview of micrate's own commands.
+From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality. Run `bin/micrate -h` to see an overview of micrate's own commands.
 
 The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
 
@@ -810,14 +810,12 @@ require "micrate"
 require "pg"
 
 env_name = ENV["AMBER_ENV"]? || "development"
-suffix = if env_name == "production"; "" else "_#{env_name}" end
+suffix = env_name == "production" ? "" : "_#{env_name}"
 Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
 Micrate::Cli.run
 ```
 
 Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
-
-(The professional implementation here would probably consist of creating a separate environment named e.g. "admin" and defining specific database credentials for it in `config/environments/admin.yml`. Then, after setting the environment variable `AMBER_ENV=admin`, both `amber db` and `bin/micrate` could be used interchangeably in the expected "admin mode". In that case you would use the first variant of the `src/micrate.cr` command given above and not require the customization.)
 
 ## Custom Migrations Engine<a name="custom_migrations_engine"></a>
 
