@@ -479,7 +479,7 @@ It can be pretty much expected that a website will need a set of simple, "static
 
 Let's say that, for simplicity and logical grouping, we want all "static" pages to be served by a controller we will create, named "PageController". We will group all the "static" pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. Because these pages won't be backed by objects, we won't need models or anything else other than one controller method and one view per each page.
 
-Let's start by creating a controller:
+Let's start by creating the controller:
 
 ```shell
 amber g controller page
@@ -495,7 +495,7 @@ routes :web do
 end
 ```
 
-Then, we edit the controller and actually add method about(). This method can just directly return some string in response, or it can render a view, and then the expanded view contents will be returned as the response.
+Then, we edit the controller and actually add method about(). This method can just directly return a string in response, or it can render a view. In any case the final return value will be returned as the response body to the client.
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -508,7 +508,7 @@ def about
 end
 ```
 
-Since this is happening in the "page" controller, the view directory for finding the templates defaults to `src/views/page/`. We will create the directory and the file "about.ecr" in it:
+Since this is happening in the "page" controller, the view directory for finding the templates will default to `src/views/page/`. We will create the directory and the file "about.ecr" in it:
 
 ```shell
 $ mkdir -p src/views/page/
@@ -521,19 +521,19 @@ Hello, World!
 
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
-And that's it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be returned to the controller, and from there it will be returned to the client.
+And that is it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will at the same time be the final return value from the controller, and from there it will be returned to the client as response body.
 
 # Internationalization (I18n)
 
 Amber uses Amber's native shard [citrine-18n](https://github.com/amberframework/citrine-i18n) to provide translation and localization. Even though the shard has been authored by the Amber Framework project, it is Amber-independent and can be used to initialize I18n and determine the visitor's preferred language in any application based on Crystal's HTTP::Server.
 
-Also, the shard in turn depends on the shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide the actual translation and localization functionality. 
+That shard in turn depends on the shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide the actual translation and localization functionality. 
 
 The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
 
 1. Initializer file `config/initializers/i18n.cr` where basic configuration settings are defined and `I18n.init` is invoked
-1. Locale files in `src/locales/` which contain the settings for both translation and localization
-1. Pipe named `Amber::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for every request, based on the value of the request HTTP header "Accept-Language"
+1. Locale files in `src/locales/` and subdirectories which contain the settings for both translation and localization
+1. Pipe named `Citrine::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for every request, based on the value of the request's HTTP header "Accept-Language"
 1. Controller helpers named `t()` and `l()` which provide shorthand access to methods `::I18n.translate` and `::I18n.localize`
 
 Once the pipe runs on the incoming request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
