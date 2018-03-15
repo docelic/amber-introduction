@@ -468,16 +468,16 @@ In other words, `params` object is initialized using raw params passed with the 
 
 1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there also affect `context.params`
 1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`
-1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed them when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this hash ensures that you only work with validated/valid parameters
+1. `params.params` - this is a hash of key=value parameters, but only those that were mentioned in the validation rules and that passed validation when `valid?` or `validate!` were called. This list is re-initialized on every call to `valid?` or `validate!`. Using this hash ensures that you only work with validated/valid parameters
 1. `params.errors` - this is a list of all eventual errors that have ocurred during validation with `valid?` or `validate!`. This list is re-initialized on every call to `valid?` or `validate!`
 
-This is basically all there is to it, and from here you should have a complete understanding how to work with params validation in Amber.
+And this is basically all there is to it. From here you should have a complete understanding how to work with params validation in Amber.
 
 # Static Pages
 
-It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial.
+It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial and will serve as a great example.
 
-Let's say that, for simplicity and grouping, we want all "static" pages to be served by PageController. We will group all these pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. (Because these pages won't be objects, we won't need a model or anything else other than one controller method and one view per each page.)
+Let's say that, for simplicity and logical grouping, we want all "static" pages to be served by a controller we will create, named "PageController". We will group all the "static" pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. Because these pages won't be backed by objects, we won't need models or anything else other than one controller method and one view per each page.
 
 Let's start by creating a controller:
 
