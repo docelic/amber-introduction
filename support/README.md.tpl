@@ -339,13 +339,13 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To recap and expand, templates are rendering directly in the context of controller methods. This also means they are rendering in the context of controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the invoked method's local variables, this means that all the instance variables existing on the controller object are also transparently accessible in the templates.
+To recap and expand, templates are rendering directly in the context of controller methods. This also means they are rendering in the context of controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, that means all the instance variables existing on the controller object are also visible in the templates.
 
 ## Template Languages
 
 In the introduction we've mentioned that Amber supports two template languages &mdash; [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html).
 
-That's because Amber ships with the minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own templates or want to convert existing ones.
+That's because Amber ships with a minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own templates or want to convert existing ones.
 
 Amber's default rendering model is based on [Kilt](https://github.com/jeromegn/kilt), so all languages supported by Kilt should be usable out of the box. Amber does not make assumptions about the template language used; the view file's extension will determine which parser will be invoked (e.g. ".ecr" for ecr, ".slang" for slang).
 
@@ -355,10 +355,10 @@ The original [Kilt](https://github.com/jeromegn/kilt) repository now has support
 
 Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not allow arbitrary functions, objects, object methods, and data types to be used in its templates.
 
-As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) does not apply here because Liquid's context is separate and local variables are not there.
+As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) cannot be used because Liquid's context is separate and local variables are not there.
 
-Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context. It copies all instance variables (@ivars) from the current object into the newly created context, which can't be used with Amber for two reasons.
-First, because it does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that should not or can not be serialized, so simply saying `render("index.liquid")` will result in a compile-time error in Amber even if the template was empty.
+Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context. It copies all instance variables (@ivars) from the current object into the newly created context, which again cannot be used with Amber for two reasons.
+First, because the copying does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that should not or can not be serialized, so simply saying `render("index.liquid")` would result in a compile-time error in Amber even if the template itself was empty.
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
@@ -393,7 +393,7 @@ logger.info "Informational Message"
 
 Log levels available are `debug`, `info`, `warn`, `error`, `fatal`, and `unknown`.
 
-The second, optional parameter passed to the log method will affect the displayed name of the subsystem in which the message originated. For example:
+The second, optional parameter passed to the log method will affect the displayed name of the subsystem from which the message originated. For example:
 
 
 ```crystal
@@ -408,74 +408,11 @@ Will result in the log line:
 
 In you still need a customized logger for special cases or purposes, please create a separate `Logger.new` yourself.
 
-# Starting the Server
-
-It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
-
-1. `crystal src/<app_name>.cr` - you or a script starts Amber
-	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
-		1. `require "../config/application.cr"` - this is usually the first file in `config/`
-			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including in subdirectories. Inclusion is always current-dir first, then depth
-			1. `require "amber"` - Amber itself is loaded
-				1. Loading Amber makes `Amber::Server` class available
-				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
-			1. `require "../src/controllers/application_controller"` - main controller is required. This is the base class for all other controllers
-				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang").
-			1. `require "../src/controllers/**"` - all other controllers are loaded
-			1. `Amber::Server.configure` block is invoked to override any config settings
-		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but concerns itself with routes and feeds all the routes in
-	1. `Amber::Server.start` is invoked
-		1. `instance.run` - implicitly creates a singleton instance of server, saves it to `@@instance`, and calls `run` on it
-		1. Consults variable `settings.process_count`
-		1. If process count is 1, `instance.start` is called
-		1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
-			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
-		1. `instance.start` is called for every process
-			1. It saves current time and prints startup info
-			1. `@handler.prepare_pipelines` is called. @handler is Amber::Pipe::Pipeline, a subclass of Crystal's [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). `prepare_pipelines` is called to connect the pipes so the processing can work, and implicitly adds Amber::Pipe::Controller (the pipe in which app's controller is invoked) as the last pipe. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
-			1. `server = HTTP::Server.new(host, port, @handler)`- Crystal's HTTP server is created
-			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?`
-			1. Signal::INT is trapped (calls `server.close` when received)
-			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
-
-# Serving Requests
-
-Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
-
-Amber's app serving model is based on Crystal's built-in, underlying functionality:
-
-1. The server that is running is an instance of Crystal's
-	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
-2. On every incoming request, a "handler" is invoked. As supported by Crystal, handler can be a simple Proc or an instance of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, these individual handlers are called "pipes" and currently two of them are pre-defined: the first and last pipe. The first pipe is called "Pipeline" (Amber::Pipe::Pipeline); it determines which pipeline the request is meant for, and runs the next pipe in that pipeline. The last pipeline is called "Controller" (Amber::Pipe::Controller); its duty is to consult the routing table and call the appropriate controller and method in response to a request
-3. In the pipeline, every Pipe (Amber::Pipe::*, ultimately subclass of Handler) is invoked, with one argument. That argument is
-	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
-4. Please note that calling the chain of pipes is not automatic; every pipe needs to call `call_next(context)` at the appropriate point in its execution to call the next pipe in a row. It is not necessary to check whether the next pipe exists, because currently `Amber::Pipe::Controller` is always implicitly added as the last pipe, so at least one does exist. State between pipes is not passed via variables but via modifying `context` and the data contained in it
-
-After that, pipelines, pipes, routes, and other Amber-specific parts come into play.
-
-So, in detail, from the beginning:
-
-1. `loop do server.listen(settings.port_reuse) end` - main loop is running
-	1. `spawn handle_client(server.accept?)` - handle_client() is called in a new fiber after connection is accepted
-		1. `io = OpenSSL::SSL::Socket::Server.new(io, tls, sync_close: true) if @tls`
-		1. `@processor.process(io, io)`
-			1. `if request.is_a?(HTTP::Request::BadRequest); response.respond_with_error("Bad Request", 400)`
-			1. `response.version = request.version`
-			1. `response.headers["Connection"] = "keep-alive" if request.keep_alive?`
-			1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
-			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
-				1. `raise ...error... if context.invalid_route?` - route validity is checked early
-				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
-				1. `elsif ...; ...pipeline.first...call(context)` - if regular HTTP request, call the first handler in the appropriate pipeline
-					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
-						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
-					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
-
 # Useful Classes and Methods
 
 This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
 
-After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
 ```
 Amber.settings         # Singleton object, contains current settings
@@ -917,6 +854,69 @@ The content of this controller and the methods it gets from including other modu
     macro before_action
     macro after_action
 ```
+
+# Starting the Server
+
+It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
+
+1. `crystal src/<app_name>.cr` - you or a script starts Amber
+	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
+		1. `require "../config/application.cr"` - this is usually the first file in `config/`
+			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including in subdirectories. Inclusion is always current-dir first, then depth
+			1. `require "amber"` - Amber itself is loaded
+				1. Loading Amber makes `Amber::Server` class available
+				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
+			1. `require "../src/controllers/application_controller"` - main controller is required. This is the base class for all other controllers
+				1. It defines `ApplicationController`, includes JasperHelpers in it, and sets default layout ("application.slang").
+			1. `require "../src/controllers/**"` - all other controllers are loaded
+			1. `Amber::Server.configure` block is invoked to override any config settings
+		1. `require "config/routes.cr"` - this again invokes `Amber::Server.configure` block, but concerns itself with routes and feeds all the routes in
+	1. `Amber::Server.start` is invoked
+		1. `instance.run` - implicitly creates a singleton instance of server, saves it to `@@instance`, and calls `run` on it
+		1. Consults variable `settings.process_count`
+		1. If process count is 1, `instance.start` is called
+		1. If process count is > 1, the desired number of processes is forked, while main process enters sleep
+			1. Forks invoke Process.run() and start completely separate, individual processes which go through the same initialization procedure from the beginning. Forked processes have env variable "FORKED" set to "1", and a variable "id" set to their process number. IDs are assigned in reverse order (highest number == first forked).
+		1. `instance.start` is called for every process
+			1. It saves current time and prints startup info
+			1. `@handler.prepare_pipelines` is called. @handler is Amber::Pipe::Pipeline, a subclass of Crystal's [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). `prepare_pipelines` is called to connect the pipes so the processing can work, and implicitly adds Amber::Pipe::Controller (the pipe in which app's controller is invoked) as the last pipe. This pipe's duty is to call Amber::Router::Context.process_request, which actually dispatches the request to the controller.
+			1. `server = HTTP::Server.new(host, port, @handler)`- Crystal's HTTP server is created
+			1. `server.tls = Amber::SSL.new(...).generate_tls if ssl_enabled?`
+			1. Signal::INT is trapped (calls `server.close` when received)
+			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
+
+# Serving Requests
+
+Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
+
+Amber's app serving model is based on Crystal's built-in, underlying functionality:
+
+1. The server that is running is an instance of Crystal's
+	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
+2. On every incoming request, a "handler" is invoked. As supported by Crystal, handler can be a simple Proc or an instance of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, these individual handlers are called "pipes" and currently two of them are pre-defined: the first and last pipe. The first pipe is called "Pipeline" (Amber::Pipe::Pipeline); it determines which pipeline the request is meant for, and runs the next pipe in that pipeline. The last pipeline is called "Controller" (Amber::Pipe::Controller); its duty is to consult the routing table and call the appropriate controller and method in response to a request
+3. In the pipeline, every Pipe (Amber::Pipe::*, ultimately subclass of Handler) is invoked, with one argument. That argument is
+	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+4. Please note that calling the chain of pipes is not automatic; every pipe needs to call `call_next(context)` at the appropriate point in its execution to call the next pipe in a row. It is not necessary to check whether the next pipe exists, because currently `Amber::Pipe::Controller` is always implicitly added as the last pipe, so at least one does exist. State between pipes is not passed via variables but via modifying `context` and the data contained in it
+
+After that, pipelines, pipes, routes, and other Amber-specific parts come into play.
+
+So, in detail, from the beginning:
+
+1. `loop do server.listen(settings.port_reuse) end` - main loop is running
+	1. `spawn handle_client(server.accept?)` - handle_client() is called in a new fiber after connection is accepted
+		1. `io = OpenSSL::SSL::Socket::Server.new(io, tls, sync_close: true) if @tls`
+		1. `@processor.process(io, io)`
+			1. `if request.is_a?(HTTP::Request::BadRequest); response.respond_with_error("Bad Request", 400)`
+			1. `response.version = request.version`
+			1. `response.headers["Connection"] = "keep-alive" if request.keep_alive?`
+			1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
+				1. `raise ...error... if context.invalid_route?` - route validity is checked early
+				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
+				1. `elsif ...; ...pipeline.first...call(context)` - if regular HTTP request, call the first handler in the appropriate pipeline
+					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
+						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
+					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
 # Amber behind a Load Balancer | Reverse Proxy | ADC
 
