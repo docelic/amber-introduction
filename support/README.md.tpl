@@ -752,16 +752,6 @@ While `amber db` unconditionally depends on "micrate", that's the only place whe
 
 To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
 
-# Shards
-
-Amber and all of its components depend on the following shards:
-
-[[[cat shards.txt]]]
-
-Only the parts that are used end up in the compiled project.
-
-Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
-
 # Extensions
 
 Amber adds some very convenient extensions to existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory, but here's a listing of the current ones:
@@ -854,6 +844,16 @@ The content of this controller and the methods it gets from including other modu
     macro before_action
     macro after_action
 ```
+
+# Shards
+
+Amber and all of its components depend on the following shards:
+
+[[[cat shards.txt]]]
+
+Only the parts that are used end up in the compiled project.
+
+Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
 # Starting the Server
 

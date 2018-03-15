@@ -47,10 +47,10 @@
 1. [More on Database Commands](#more_on_database_commands)
 	1. [Micrate](#micrate)
 	1. [Custom Migrations Engine](#custom_migrations_engine)
-1. [Shards](#shards)
 1. [Extensions](#extensions)
 1. [Support Routines](#support_routines)
 1. [Amber::Controller::Base](#amber__controller__base)
+1. [Shards](#shards)
 1. [Starting the Server](#starting_the_server)
 1. [Serving Requests](#serving_requests)
 1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
@@ -823,96 +823,6 @@ While `amber db` unconditionally depends on "micrate", that's the only place whe
 
 To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
 
-# Shards<a name="shards"></a>
-
-Amber and all of its components depend on the following shards:
-
-```
---------SHARD--------------------SOURCE---DESCRIPTION------------------------------------------------------
-------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
-require "amber"                  AMBER    Amber itself
-require "amber_router"           AMBER    Request router implementation
-require "citrine-18n"            AMBER    Translation and localization
-require "http"                   CRYSTAL  Lower-level supporting HTTP functionality
-require "http/client"            CRYSTAL  HTTP Client
-require "http/headers"           CRYSTAL  HTTP Headers
-require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
-require "http/server"            CRYSTAL  HTTP Server
-require "quartz_mailer"          AMBER    Sending and receiving emails
-require "email"                  EXTERNAL Simple email sending library
-require "radix"                  EXTERNAL Radix Tree implementation
-require "teeplate"               AMBER    Rendering multiple template files
-
-------- Databases and ORM Models --------------------------------------------------------------------------
-require "big"                    EXTERNAL BigRational for numeric. Retains precision, requires LibGMP
-require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
-require "db"                     CRYSTAL  Common DB API
-require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
-require "micrate"                EXTERNAL Database migration tool
-require "mysql"                  CRYSTAL  MySQL connector
-require "pg"                     EXTERNAL PostgreSQL connector
-require "redis"                  EXTERNAL Redis client
-require "sqlite3"                EXTERNAL SQLite3 bindings
-
-------- Template Rendering --------------------------------------------------------------------------------
-require "crikey"                 EXTERNAL Template language, Data structure view, inspired by Hiccup
-require "crustache"              EXTERNAL Template language, {{Mustache}} for Crystal
-require "ecr"                    CRYSTAL  Template language, Embedded Crystal (ECR)
-require "kilt"                   EXTERNAL Generic template interface
-require "kilt/slang"             EXTERNAL Kilt support for Slang template language
-require "slang"                  EXTERNAL Template language, inspired by Slim
-require "temel"                  EXTERNAL Template language, extensible Markup DSL
-
-------- Command Line, Logs, And Output --------------------------------------------------------------------
-require "cli"                    EXTERNAL Support for building command-line interface applications
-require "colorize"               CRYSTAL  Changing colors and text decorations
-require "logger"                 CRYSTAL  Simple but sophisticated logging utility
-require "optarg"                 EXTERNAL Parsing command-line options and arguments
-require "option_parser"          CRYSTAL  Command line options processing
-require "shell-table"            EXTERNAL Creating text tables in command line terminal
-
-------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
-require "digest/md5"             CRYSTAL  MD5 digest algorithm
-require "html"                   CRYSTAL  HTML escaping and unescaping methods
-require "jasper_helpers"         AMBER    Helper functions for working with HTML
-require "json"                   CRYSTAL  Parsing and generating JSON documents
-require "openssl"                CRYSTAL  OpenSSL integration
-require "openssl/hmac"           CRYSTAL  Computing Hash-based Message Authentication Code (HMAC)
-require "openssl/sha1"           CRYSTAL  OpenSSL SHA1 hash functions
-require "yaml"                   CRYSTAL  Serialization and deserialization of YAML 1.1
-require "zlib"                   CRYSTAL  Reading/writing Zlib compressed data as specified in RFC 1950
-
-------- Supporting Functionality --------------------------------------------------------------------------
-require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
-require "benchmark"              CRYSTAL  Benchmark routines for benchmarking Crystal code
-require "bit_array"              CRYSTAL  Array data structure that compactly stores bits
-require "callback"               EXTERNAL Defining and invoking callbacks
-require "compiled_license"       EXTERNAL Compile in LICENSE files from project and dependencies
-require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
-require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
-require "crypto/subtle"          CRYSTAL  
-require "file_utils"             CRYSTAL  Supporting functions for files and directories
-require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
-require "inflector"              
-require "process"                CRYSTAL  Supporting functions for working with system processes
-require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
-require "selenium"               
-require "socket"                 CRYSTAL  Supporting functions for working with sockets
-require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
-require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
-require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" style ("foo-bar")
-require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
-require "tempfile"               CRYSTAL  Managing temporary files
-require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
-require "uuid"                   
-require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
-```
-
-
-Only the parts that are used end up in the compiled project.
-
-Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
-
 # Extensions<a name="extensions"></a>
 
 Amber adds some very convenient extensions to existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory, but here's a listing of the current ones:
@@ -1083,6 +993,96 @@ end
     macro before_action
     macro after_action
 ```
+
+# Shards<a name="shards"></a>
+
+Amber and all of its components depend on the following shards:
+
+```
+--------SHARD--------------------SOURCE---DESCRIPTION------------------------------------------------------
+------- Web, Routing, Templates, Mailers, Plugins ---------------------------------------------------------
+require "amber"                  AMBER    Amber itself
+require "amber_router"           AMBER    Request router implementation
+require "citrine-18n"            AMBER    Translation and localization
+require "http"                   CRYSTAL  Lower-level supporting HTTP functionality
+require "http/client"            CRYSTAL  HTTP Client
+require "http/headers"           CRYSTAL  HTTP Headers
+require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
+require "http/server"            CRYSTAL  HTTP Server
+require "quartz_mailer"          AMBER    Sending and receiving emails
+require "email"                  EXTERNAL Simple email sending library
+require "radix"                  EXTERNAL Radix Tree implementation
+require "teeplate"               AMBER    Rendering multiple template files
+
+------- Databases and ORM Models --------------------------------------------------------------------------
+require "big"                    EXTERNAL BigRational for numeric. Retains precision, requires LibGMP
+require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
+require "db"                     CRYSTAL  Common DB API
+require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
+require "micrate"                EXTERNAL Database migration tool
+require "mysql"                  CRYSTAL  MySQL connector
+require "pg"                     EXTERNAL PostgreSQL connector
+require "redis"                  EXTERNAL Redis client
+require "sqlite3"                EXTERNAL SQLite3 bindings
+
+------- Template Rendering --------------------------------------------------------------------------------
+require "crikey"                 EXTERNAL Template language, Data structure view, inspired by Hiccup
+require "crustache"              EXTERNAL Template language, {{Mustache}} for Crystal
+require "ecr"                    CRYSTAL  Template language, Embedded Crystal (ECR)
+require "kilt"                   EXTERNAL Generic template interface
+require "kilt/slang"             EXTERNAL Kilt support for Slang template language
+require "slang"                  EXTERNAL Template language, inspired by Slim
+require "temel"                  EXTERNAL Template language, extensible Markup DSL
+
+------- Command Line, Logs, And Output --------------------------------------------------------------------
+require "cli"                    EXTERNAL Support for building command-line interface applications
+require "colorize"               CRYSTAL  Changing colors and text decorations
+require "logger"                 CRYSTAL  Simple but sophisticated logging utility
+require "optarg"                 EXTERNAL Parsing command-line options and arguments
+require "option_parser"          CRYSTAL  Command line options processing
+require "shell-table"            EXTERNAL Creating text tables in command line terminal
+
+------- Formats, Protocols, Digests, and Compression ------------------------------------------------------
+require "digest/md5"             CRYSTAL  MD5 digest algorithm
+require "html"                   CRYSTAL  HTML escaping and unescaping methods
+require "jasper_helpers"         AMBER    Helper functions for working with HTML
+require "json"                   CRYSTAL  Parsing and generating JSON documents
+require "openssl"                CRYSTAL  OpenSSL integration
+require "openssl/hmac"           CRYSTAL  Computing Hash-based Message Authentication Code (HMAC)
+require "openssl/sha1"           CRYSTAL  OpenSSL SHA1 hash functions
+require "yaml"                   CRYSTAL  Serialization and deserialization of YAML 1.1
+require "zlib"                   CRYSTAL  Reading/writing Zlib compressed data as specified in RFC 1950
+
+------- Supporting Functionality --------------------------------------------------------------------------
+require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
+require "benchmark"              CRYSTAL  Benchmark routines for benchmarking Crystal code
+require "bit_array"              CRYSTAL  Array data structure that compactly stores bits
+require "callback"               EXTERNAL Defining and invoking callbacks
+require "compiled_license"       EXTERNAL Compile in LICENSE files from project and dependencies
+require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
+require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
+require "crypto/subtle"          CRYSTAL  
+require "file_utils"             CRYSTAL  Supporting functions for files and directories
+require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
+require "inflector"              
+require "process"                CRYSTAL  Supporting functions for working with system processes
+require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
+require "selenium"               
+require "socket"                 CRYSTAL  Supporting functions for working with sockets
+require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
+require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
+require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" style ("foo-bar")
+require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
+require "tempfile"               CRYSTAL  Managing temporary files
+require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
+require "uuid"                   
+require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
+```
+
+
+Only the parts that are used end up in the compiled project.
+
+Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
 
 # Starting the Server<a name="starting_the_server"></a>
 
