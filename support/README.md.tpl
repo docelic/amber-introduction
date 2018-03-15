@@ -754,7 +754,7 @@ To use a different migrations engine, such as [migrate.cr](https://github.com/vl
 
 # Extensions
 
-Amber adds some very convenient extensions to existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory, but here's a listing of the current ones:
+Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. Here's a listing of the current ones:
 
 For String:
 
@@ -853,9 +853,9 @@ Amber and all of its components depend on the following shards:
 
 Only the parts that are used end up in the compiled project.
 
-Now let's take a tour of all the important classes that exist in the Amber application and are useful for understanding the flow.
+# Advanced Topics
 
-# Starting the Server
+## Starting the Server
 
 It is important to explain exactly what is happening from when you run the application til Amber starts serving the application:
 
@@ -885,7 +885,7 @@ It is important to explain exactly what is happening from when you run the appli
 			1. Signal::INT is trapped (calls `server.close` when received)
 			1. `loop do server.listen(settings.port_reuse) end` - server enters main loop
 
-# Serving Requests
+## Serving Requests
 
 Similarly as with starting the server, is important to explain exactly what is happening when Amber is serving requests:
 
@@ -918,7 +918,7 @@ So, in detail, from the beginning:
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
 
-# Amber behind a Load Balancer | Reverse Proxy | ADC
+## Amber behind a Load Balancer | Reverse Proxy | ADC
 
 (In this section, the terms "Load Balancer", "Reverse Proxy", "Proxy", and "Application Delivery Controller" (ADC) are used interchangeably.)
 
