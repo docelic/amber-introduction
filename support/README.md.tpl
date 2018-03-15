@@ -339,7 +339,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To recap and expand, templates are executing directly as part of the controller methods. This also means they are executing as part of the controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response will be "PageController". So in addition to seeing the invoked method's local variables, this means that all the instance variables existing on the controller object are also transparently accessible in the templates.
+To recap and expand, templates are rendering directly in the context of controller methods. This also means they are rendering in the context of controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the invoked method's local variables, this means that all the instance variables existing on the controller object are also transparently accessible in the templates.
 
 ## Template Languages
 
