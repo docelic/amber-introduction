@@ -232,11 +232,9 @@ In the `config/routes.cr` code, this is simply achieved with the line:
 get "/", HomeController, :index
 ```
 
-Amber calls all controller methods with one fixed argument, the so-called "context". Context is an instance of Crystal's `HTTP::Server::Context` and contains request data, response data, and many other useful fields added by Amber. (More on `context` is mentioned below in the Guide.)
-
 The return value of the controller method is returned as response body to the client.
 
-As another example, the following definition would cause a POST request to "/registration" to result in invoking `RegistrationController.new.create(context)`:
+As another example, the following definition would cause a POST request to "/registration" to result in invoking `RegistrationController.new.create`:
 
 ```
 post "/registration", RegistrationController, :create
@@ -273,8 +271,8 @@ Amber::Server.configure do |app|
   end
 
   routes :web do
-    get "/", HomeController, :index    # Routes "GET /" to HomeController.new.index(context)
-    post "/test", PageController, :test # Routes "POST /test" to PageController.new.test(context)
+    get "/", HomeController, :index    # Routes "GET /" to HomeController.new.index
+    post "/test", PageController, :test # Routes "POST /test" to PageController.new.test
   end
 end
 ```
@@ -362,19 +360,19 @@ First, because the copying does not work for data other than basic types (e.g. s
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
-Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` directly. For example:
+Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` directly. Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which contains `HTTP::Server::Context`. For example:
 
 ```
 class HomeController < ApplicationController
   def index
-    context = Liquid::Context.new
-    context.set "process", { "pid" => Process.pid }
+    ctx = Liquid::Context.new
+    ctx.set "process", { "pid" => Process.pid }
     
     # This will default to src/views/[controller]/index.liquid
-    Kilt.render "index.liquid", context
+    Kilt.render "index.liquid", ctx
     
     # This will render specific path relative to app base directory
-    Kilt.render "src/views/myview.liquid", context
+    Kilt.render "src/views/myview.liquid", ctx
   end
 end
 ```
