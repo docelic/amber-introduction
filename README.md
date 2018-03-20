@@ -591,11 +591,13 @@ targets:
     main: src/micrate.cr
 ```
 
-From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Run `bin/micrate -h` to see an overview of micrate's own commands. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality.
+From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please run `bin/micrate -h` to see an overview of its commands.
+
+Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably in areas where they provide the same functionality.
 
 The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
 
-In that case, `src/micrate.cr` could be customized and look like the following:
+In that case, `src/micrate.cr` could be customized to look something like the following:
 
 ```crystal
 #!/usr/bin/env crystal
@@ -609,7 +611,7 @@ Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME
 Micrate::Cli.run
 ```
 
-Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
+In that case you would also probably use a combination of native database commands and `bin/micrate`, and avoid using `amber db`. That's  because `amber db` would run with Amber's (application's) regular credentials which you do not want.
 
 ## Custom Migrations Engine<a name="custom_migrations_engine"></a>
 
