@@ -316,7 +316,7 @@ Information about views can be summarized in the following bullet points:
 
 It is also important to know that `render` is a macro and views are rendered directly (in-place) as part of the controller method.
 
-This gives us two interesting properties. One is that the `render` macro is usually invoked at the end of the controller method. This essentially makes its return value to also be the return value of the controller method, and as mentioned previously, the controller method's return value is returned to the clients as response body.
+This gives us two interesting properties. One is that the `render` macro is usually invoked at the end of the controller method. This essentially makes its return value the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the clients as response body.
 
 The other is that since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
 
@@ -339,7 +339,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To recap and expand, templates are rendering directly in the context of controller methods. This also means they are rendering in the context of controller objects, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, that means all the instance variables existing on the controller object are also visible in the templates.
+To recap and expand, templates are rendered directly in the context of the methods that invoke `render()`. This means they are typically rendered in the context of controller methods, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, that means all the instance variables existing on the controller object are available in the templates as well.
 
 ## Template Languages
 
