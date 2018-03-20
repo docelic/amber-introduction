@@ -145,7 +145,7 @@ Amber apps by default use a feature called "port reuse" available in newer Linux
 
 # Building the App and Build Troubleshooting<a name="building_the_app_and_build_troubleshooting"></a>
 
-The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled without optimizations, executed, and then discarded.
+The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled, executed, and then discarded.
 
 Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
