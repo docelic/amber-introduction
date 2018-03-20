@@ -301,7 +301,7 @@ As another example, the following definition would cause a POST request to "/reg
 post "/registration", RegistrationController, :create
 ```
 
-By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `new`, `create`, `edit`, `update`, and `destroy`). However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
+By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `new`, `create`, `edit`, `update`, and `destroy`. However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
 
 Websocket routes are supported too.
 
@@ -375,7 +375,7 @@ Information about views can be summarized in the following bullet points:
 
 It is also important to know that `render` is a macro and views are rendered directly (in-place) as part of the controller method.
 
-This gives us two interesting properties. One is that the result of the `render` macro is essentially the return value of the controller method, and as mentioned previously, the controller method's return value is returned to the clients as response body.
+This gives us two interesting properties. One is that the `render` macro is usually invoked at the end of the controller method. This essentially makes its return value to also be the return value of the controller method, and as mentioned previously, the controller method's return value is returned to the clients as response body.
 
 The other is that since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
 
