@@ -84,7 +84,7 @@ make force_link # can also specify PREFIX=...
 
 After installation or linking, `amber` is the command you will be using for creating and managing Amber apps.
 
-Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, each project's `shard.yml` ships with the build target named "amber":
+Please note that some users prefer (or must use for compatibility reasons) local Amber executables which match the version of Amber used in their project. For that, each Amber project's `shard.yml` ships with the build target named "amber":
 
 ```
 targets:
@@ -94,7 +94,7 @@ targets:
 
 ```
 
-Running `crystal deps build amber` will compile local Amber found in `lib/amber/` and place the executable into the project's local file `bin/amber`.
+Thanks to it, running `crystal deps build amber` will compile local Amber found in `lib/amber/` and place the executable into the project's local file `bin/amber`.
 
 # Creating New Amber App<a name="creating_new_amber_app"></a>
 
@@ -269,15 +269,6 @@ Amber includes a wonderful command `amber routes` to display configured routes. 
 
 ```shell
 $ amber routes
-
-
-╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
-║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | HomeController            | index  | web      |       | /           ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
-╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 
 
 ```
