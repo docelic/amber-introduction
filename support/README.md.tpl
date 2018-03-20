@@ -575,11 +575,11 @@ The internationalization functionality in Amber is enabled by default. Its setup
 
 Once the pipe runs on the incoming request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
 
-For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`. If nothing can be found or matched, the locale will default to "en".
+For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`. If nothing can be found or matched, the locale value will default to "en".
 
-From there, invoking `t()` and `l()` would perform translation and localization according to the chosen locale. Since these two methods are direct shorthands for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n.cr's README](https://github.com/TechMagister/i18n.cr).
+From there, invoking `t()` and `l()` will perform translation and localization according to the chosen locale. Since these two methods are direct shorthands for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n.cr's README](https://github.com/TechMagister/i18n.cr).
 
-In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title of the default homepage.
+In a default Amber application there is a sample localization file `src/locales/en.yml` with one translated string ("Welcome to Amber Framework!") which is displayed as the title on the default project homepage.
 
 In the future, the default/built-in I18n functionality in Amber might be expanded to automatically organize translations and localizations under subdirectories in `src/locales/` when generators are invoked, just like it is already done for e.g. files in `src/views/`. (This functionality already exists in i18n.cr as explained in [i18n.cr's README](https://github.com/TechMagister/i18n.cr), but is not yet used by Amber.)
 
@@ -589,7 +589,7 @@ In the future, the default/built-in I18n functionality in Amber might be expande
 
 If you want to provide a different format (or a different response altogether) from the controller methods based on accepted content types, you can use `respond_with` from `Amber::Helpers::Responders`.
 
-Our `about` method from the previous example could be modified in the following way:
+Our `about` method from the previous example could be modified in the following way to respond with either HTML or JSON:
 
 ```crystal
 def about
@@ -606,7 +606,7 @@ Supported format types are `html`, `json`, `xml`, and `text`. For all the availa
 
 ### Manual Error Responses
 
-In any pipe or controller action, you might want to manually return a simple error to the user. That typically means returning an HTTP error code and a shorter error message (even though you could just as easily print complete pages into the return buffer and return an error code).
+In any pipe or controller action, you might want to manually return a simple error to the user. This typically means returning an HTTP error code and a shorter error message, even though you could just as easily print complete pages into the return buffer and return an error code.
 
 To stop a request during execution and return an error, you would do it this way:
 
@@ -635,13 +635,15 @@ Please note that you must use `context.response.puts` or `context.response<<` to
 
 The above example for manually returning error responses does not involve raising any Exceptions &mdash; it simply consists of setting the status and response body and returning them to the client.
 
-Another approach to returning errors consists in using Amber's error subsystem. It automatically provides you with a convenient way to raise Exceptions and return them to the client properly wrapped in application templates etc. Using this warrants explaining some underlying concepts first:
+Another approach to returning errors consists in using Amber's error subsystem. It automatically provides you with a convenient way to raise Exceptions and return them to the client properly wrapped in application templates etc. Using this approach warrants explaining some underlying concepts first:
 
 Namely, "pipes" in Amber (or "handlers" as they are called in Crystal) work in such a way that each handler must explicitly invoke `call_next(context)` to call the next pipe in line. This creates two interesting properties as a consequence. The first is that you can call the next pipe at exactly the right place in the code where you want it (at the beginning, in the middle, or at the end of your current pipe's code). The second is that there is a call stack of methods established, so e.g. raising an exception in your controller can be rescued by an earlier pipe in a row and be handled accordingly.
 
-Amber uses this property #2 to to provide you with a generic pipe named "Errors" for handling errors (see the line `plug Amber::Pipe::Error.new` in your `config/routes.cr`). To be able to extend the list of errors or modify error templates yourself, you should run `amber g error` to copy the relevant files to your application. In principle, you will get files `src/pipes/error.cr`, `src/controllers/error_controller.cr`, and `src/views/error/`, all of which can be modified to suit your needs.
+Amber uses this property #2 to to provide you with a generic pipe named "Errors" for handling errors (see the line `plug Amber::Pipe::Error.new` in your `config/routes.cr`).
 
-To see the error subsystem at work, you could do something as simple as:
+To be able to extend the list of errors or modify error templates yourself, you should first run `amber g error` to copy the relevant files to your application. In principle, you will get files `src/pipes/error.cr`, `src/controllers/error_controller.cr`, and `src/views/error/`, all of which can be modified to suit your needs.
+
+To see the error subsystem at work, you could now do something as simple as:
 
 ```crystal
 class HomeController < ApplicationController
@@ -652,7 +654,7 @@ class HomeController < ApplicationController
 end
 ```
 
-And then visit [http://localhost:3000/](http://localhost:3000/). You should see a HTTP 500 (Internal Server Error) containing the specified error message.
+And then visit [http://localhost:3000/](http://localhost:3000/). You would see a HTTP 500 (Internal Server Error) containing the specified error message, but wrapped in an application template rather than printed plainly like the most basic HTTP errors.
 
 # Assets Pipeline
 
