@@ -205,7 +205,7 @@ In very simple frameworks it could suffice to directly map incoming requests to 
 
 More elaborate application frameworks such as Amber provide many more features and flexibility, and allow pluggable components (interchangeably called "middleware", "handlers", or "pipes") to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
+These handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
 
 Using pipes promotes code reuse and is a nice way to plug various standard or custom functionality in the request serving process without requiring developers to duplicate code or include certain parts of code in every controller action.
 
