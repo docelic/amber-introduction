@@ -634,7 +634,7 @@ The internationalization functionality in Amber is enabled by default. Its setup
 
 Once the pipe runs on the incoming request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
 
-For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`. If nothing is found, it defaults to "en".
+For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`. If nothing can be found or matched, the locale will default to "en".
 
 From there, invoking `t()` and `l()` would perform translation and localization according to the chosen locale. Since these two methods are direct shorthands for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n.cr's README](https://github.com/TechMagister/i18n.cr).
 
