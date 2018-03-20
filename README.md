@@ -30,7 +30,6 @@
 	1. [Template Languages](#template_languages)
 		1. [Liquid Template Language](#liquid_template_language)
 1. [Logging](#logging)
-1. [Useful Classes and Methods](#useful_classes_and_methods)
 1. [Parameter Validation](#parameter_validation)
 1. [Static Pages](#static_pages)
 1. [Internationalization (I18n)](#internationalization__i18n_)
@@ -47,11 +46,12 @@
 1. [More on Database Commands](#more_on_database_commands)
 	1. [Micrate](#micrate)
 	1. [Custom Migrations Engine](#custom_migrations_engine)
-1. [Extensions](#extensions)
-1. [Support Routines](#support_routines)
 1. [Amber::Controller::Base](#amber__controller__base)
+1. [Extensions](#extensions)
 1. [Shards](#shards)
 1. [Advanced Topics](#advanced_topics)
+	1. [Useful Classes and Methods](#useful_classes_and_methods)
+1. [Support Routines](#support_routines)
 	1. [Starting the Server](#starting_the_server)
 	1. [Serving Requests](#serving_requests)
 	1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
@@ -469,30 +469,6 @@ Will result in the log line:
 
 In you still need a customized logger for special cases or purposes, please create a separate `Logger.new` yourself.
 
-# Useful Classes and Methods<a name="useful_classes_and_methods"></a>
-
-This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
-
-After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
-
-```
-Amber.settings         # Singleton object, contains current settings
-Amber.logger           # Alias for Amber.settings.logger
-Amber.env, Amber.env=  # Env (environment) object (development, production, test)
-```
-
-[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
-```crystal
-    def initialize(@env : String = ENV[AMBER_ENV]? || "development")
-    def in?(env_list : Array(EnvType))
-    def in?(*env_list : Object)
-    def to_s(io)
-    def ==(env2 : EnvType)
-
-```
-
-The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s `Amber::Server.configure` block.
-
 # Parameter Validation<a name="parameter_validation"></a>
 
 First of all, Amber framework considers query and body params equal and makes them available to the application in the same, uniform way.
@@ -826,77 +802,6 @@ While `amber db` unconditionally depends on "micrate", that's the only place whe
 
 To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
 
-# Extensions<a name="extensions"></a>
-
-Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. Here's a listing of the current ones:
-
-For String:
-
-```crystal
-      def str?
-      def email?
-      def domain?
-      def url?
-      def ipv4?
-      def ipv6?
-      def mac_address?
-      def hex_color?
-      def hex?
-      def alpha?(locale = "en-US")
-      def numeric?
-      def alphanum?(locale = "en-US")
-      def md5?
-      def base64?
-      def slug?
-      def lower?
-      def upper?
-      def credit_card?
-      def phone?(locale = "en-US")
-      def excludes?(value)
-      def time_string?
-
-```
-
-For Number:
-
-```crystal
-      def positive?
-      def negative?
-      def zero?
-      def div?(n)
-      def above?(n)
-      def below?(n)
-      def lt?(num)
-      def self?(num)
-      def lteq?(num)
-      def between?(range)
-      def gteq?(num)
-
-```
-
-# Support Routines<a name="support_routines"></a>
-
-In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready made routines.
-
-Currently, the following can be found there:
-
-```
-client_reload.cr      - Support for reloading developer's browser
-
-file_encryptor.cr     - Support for storing/reading encrypted versions of files
-message_encryptor.cr
-message_verifier.cr
-
-locale_formats.cr     - Very basic locate data for various, manually-added locales
-
-mime_types.cr         - List of MIME types and helper methods for working with them:
-                        def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
-                        def self.zip_types(path)
-                        def self.format(accepts)
-                        def self.default
-                        def self.get_request_format(request)
-```
-
 # Amber::Controller::Base<a name="amber__controller__base"></a>
 
 This is the base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
@@ -997,6 +902,54 @@ end
     macro after_action
 ```
 
+# Extensions<a name="extensions"></a>
+
+Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. Here's a listing of the current ones:
+
+For String:
+
+```crystal
+      def str?
+      def email?
+      def domain?
+      def url?
+      def ipv4?
+      def ipv6?
+      def mac_address?
+      def hex_color?
+      def hex?
+      def alpha?(locale = "en-US")
+      def numeric?
+      def alphanum?(locale = "en-US")
+      def md5?
+      def base64?
+      def slug?
+      def lower?
+      def upper?
+      def credit_card?
+      def phone?(locale = "en-US")
+      def excludes?(value)
+      def time_string?
+
+```
+
+For Number:
+
+```crystal
+      def positive?
+      def negative?
+      def zero?
+      def div?(n)
+      def above?(n)
+      def below?(n)
+      def lt?(num)
+      def self?(num)
+      def lteq?(num)
+      def between?(range)
+      def gteq?(num)
+
+```
+
 # Shards<a name="shards"></a>
 
 Amber and all of its components depend on the following shards:
@@ -1086,6 +1039,55 @@ require "weak_ref"               CRYSTAL  Weak Reference class allowing referenc
 Only the parts that are used end up in the compiled project.
 
 # Advanced Topics<a name="advanced_topics"></a>
+
+What follows is a collection of topics or notes which may or may not be of interest to you.
+
+## Useful Classes and Methods<a name="useful_classes_and_methods"></a>
+
+This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
+
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
+
+```
+Amber.settings         # Singleton object, contains current settings
+Amber.logger           # Alias for Amber.settings.logger
+Amber.env, Amber.env=  # Env (environment) object (development, production, test)
+```
+
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
+```crystal
+    def initialize(@env : String = ENV[AMBER_ENV]? || "development")
+    def in?(env_list : Array(EnvType))
+    def in?(*env_list : Object)
+    def to_s(io)
+    def ==(env2 : EnvType)
+
+```
+
+The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s `Amber::Server.configure` block.
+
+# Support Routines<a name="support_routines"></a>
+
+In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready made routines.
+
+Currently, the following can be found there:
+
+```
+client_reload.cr      - Support for reloading developer's browser
+
+file_encryptor.cr     - Support for storing/reading encrypted versions of files
+message_encryptor.cr
+message_verifier.cr
+
+locale_formats.cr     - Very basic locate data for various, manually-added locales
+
+mime_types.cr         - List of MIME types and helper methods for working with them:
+                        def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
+                        def self.zip_types(path)
+                        def self.format(accepts)
+                        def self.default
+                        def self.get_request_format(request)
+```
 
 ## Starting the Server<a name="starting_the_server"></a>
 
