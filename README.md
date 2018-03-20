@@ -273,6 +273,15 @@ Amber includes a wonderful command `amber routes` to display configured routes. 
 $ amber routes
 
 
+╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
+║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | HomeController            | index  | web      |       | /           ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
+╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
+
+
 ```
 
 From the first line of the output we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
