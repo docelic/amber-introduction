@@ -517,7 +517,7 @@ And this is basically all there is to it. From here you should have a complete u
 
 # Static Pages<a name="static_pages"></a>
 
-It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms of Conditions, etc. Making this work is trivial and will serve as a great example.
+It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms amd Conditions, and so on. Making this work is trivial and will serve as a great example.
 
 Let's say that, for simplicity and logical grouping, we want all "static" pages to be served by a controller we will create, named "PageController". We will group all the "static" pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. Because these pages won't be backed by objects, we won't need models or anything else other than one controller method and one view per each page.
 
