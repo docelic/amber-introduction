@@ -460,7 +460,7 @@ And this is basically all there is to it. From here you should have a complete u
 
 It can be pretty much expected that a website will need a set of simple, "static" pages. Those pages are served by the application, but mostly don't use a database nor any complex code. Such pages might include About and Contact pages, Terms amd Conditions, and so on. Making this work is trivial and will serve as a great example.
 
-Let's say that, for simplicity and logical grouping, we want all "static" pages to be served by a controller we will create, named "PageController". We will group all the "static" pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. Because these pages won't be backed by objects, we won't need models or anything else other than one controller method and one view per each page.
+Let's say that, for simplicity and logical grouping, we want all "static" pages to be served by a controller we will create, named "PageController". We will group all these "static" pages under a common web-accessible prefix of /page/, and finally we will route page requests to PageController's methods. Because these pages won't be backed by objects, we won't need models or anything else other than one controller method and one view per each page.
 
 Let's start by creating the controller:
 
@@ -468,7 +468,7 @@ Let's start by creating the controller:
 amber g controller page
 ```
 
-Afterwards, we edit `config/routes.cr` to link URL "/about" to method about() in PageController. We do this inside the "routes :web" block:
+Afterwards, we edit `config/routes.cr` to link e.g. URL "/about" to method about() in PageController. We do this inside the "routes :web" block:
 
 ```
 routes :web do
@@ -478,7 +478,7 @@ routes :web do
 end
 ```
 
-Then, we edit the controller and actually add method about(). This method can just directly return a string in response, or it can render a view. In any case the final return value will be returned as the response body to the client.
+Then, we edit the controller and actually add method about(). This method can just directly return a string in response, or it can render a view. In any case, the final return value will be returned as the response body to the client.
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -486,7 +486,7 @@ $ vi src/controllers/page_controller.cr
 #: Inside the file, we add:
 
 def about
-  # "return" can be omitted here. It is included only for clarity.
+  # "return" can be omitted here. It is included for clarity.
   return render "about.ecr"
 end
 ```
@@ -504,7 +504,7 @@ Hello, World!
 
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
-And that is it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will at the same time be the final return value from the controller, and from there it will be returned to the client as response body.
+And that is it! The request for `/about` will reach the router, the router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be the return value from the controller method, and as such it will be returned to the client as response body.
 
 # More on Database Commands
 
