@@ -532,7 +532,7 @@ targets:
     main: src/micrate.cr
 ```
 
-From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality. Run `bin/micrate -h` to see an overview of micrate's own commands.
+From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Run `bin/micrate -h` to see an overview of micrate's own commands. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality.
 
 The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
 
