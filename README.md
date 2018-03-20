@@ -243,7 +243,7 @@ Then, edit `config/environments/development.yml` and configure "database_url:" t
 
 And then try the database commands from the beginning of this section.
 
-Please note that for the database connection to succeed, all parameters must be correct &mdash; the hostname, port, username, password, and database name must be valid, the database server must be accessible, and the database must actually exist unless you are invoking 'amber db create' to create it. In case of *any error in any of these requirements*, the error message will be terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
+Please note that for the database connection to succeed, all parameters must be correct &mdash; hostname, port, username, password, and database name must be valid, the database server must be accessible, and the database must actually exist unless you are invoking 'amber db create' to create it. In case of *any error in any of these requirements*, the error message will be terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
 
 (If you are sure that the username and password are correct, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command to create it.)
 
@@ -251,7 +251,7 @@ Please note that the environment files for non-production environment are given 
 
 # Pipes and Pipelines<a name="pipes_and_pipelines"></a>
 
-In very simple application frameworks, it could suffice to directly map incoming requests to methods in the application, call them, and return their output to the user.
+In very simple application frameworks, it could suffice to directly map incoming requests to methods in the application, call them, and return their output to the user. This is basically what ultra-simple frameworks like [router.cr](https://github.com/tbrand/router.cr) do. (router.cr consists of about total 50 lines of code.)
 
 Modern application frameworks including Amber provide more flexibility and allow pluggable components (interchangeably called "middleware", "handlers", or "pipes") to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
