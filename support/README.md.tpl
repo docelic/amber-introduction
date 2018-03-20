@@ -121,9 +121,9 @@ Often times, it is very useful to enter an interactive console (think of IRB she
 
 Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
 
-Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) and [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
+Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) or [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
-In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "./config/application"` as the first command.
+In any case, running a script "in application context" simply means requiring `config/application.cr` (and through it, `config/**`). Therefore, be sure to list all your requires in `config/application.cr` so that everything works as expected, and if you are using `cry` or `icr`, have `require "./config/application"` as the first line.
 
 # File Structure
 
@@ -131,7 +131,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 
 ```
 ./config/                  - All configuration, detailed in subsequent lines:
-./config/initializers/     - Initializers (files you want loaded at the very beginning)
+./config/initializers/     - Initializers (code you want executed at the very beginning)
 ./config/environments/     - Environment-specific YAML configurations (development, production, test)
 ./config/application.cr    - Main configuration file for the app. Generally not touched (apart
                              from adding "require"s to the top) because most of the config
@@ -145,7 +145,7 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./public/dist/             - Directory inside "public" for generated files and bundles
 ./public/dist/images/
 
-./src/                     - Main source directory, with <app_name>.cr being the main/entry file
+./src/                     - Main source directory, with <app_name>.cr being the main file
 ./src/controllers/         - All controllers
 ./src/models/              - All models
 ./src/views/layouts/       - All layouts
@@ -153,10 +153,10 @@ So, at this point you might be wanting to know what's placed where in an Amber a
 ./src/views/home/          - Views for HomeController (the app's "/" path)
 ./src/locales/             - Toplevel directory for locale (translation) files named [lang].yml
 ./src/assets/              - Static assets which will be bundled and placed into ./public/dist/
-./src/assets/stylesheets/
 ./src/assets/fonts/
 ./src/assets/images/
 ./src/assets/javascripts/
+./src/assets/stylesheets/
 
 ./spec/                    - Toplevel directory for test files named "*_spec.cr"
 ```
