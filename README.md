@@ -115,11 +115,11 @@ Granite is Amber's native, nice, and effective ORM model where you mostly write 
 
 Supported migrations engine is [micrate](https://github.com/amberframework/micrate). (But any migrations engines can be used; more on that can be found below in [Custom Migrations Engine](#custom_migrations_engine).)
 
-Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration file which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". If you have complex statements that contain semicolons then you also enclose them in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
+Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration files which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". If you have complex statements that contain semicolons then you also enclose them in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
 
 Finally, if argument `--deps` is provided, Amber will automatically run `crystal deps` in the new project's directory after creation to download the shards required by the project.
 
-Please note that shards-related commands use the directory `.shards/` as local staging area before contents are fully ready to replace shards in `lib/`.
+Please note that shards-related commands use the directory `.shards/` as local staging area before the contents are fully ready to replace shards in `lib/`.
 
 # Running the App<a name="running_the_app"></a>
 
@@ -145,7 +145,7 @@ Amber apps by default use a feature called "port reuse" available in newer Linux
 
 # Building the App and Build Troubleshooting<a name="building_the_app_and_build_troubleshooting"></a>
 
-The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled in fast mode, executed, and later discarded.
+The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled without optimizations, executed, and then discarded.
 
 Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
