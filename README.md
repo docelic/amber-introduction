@@ -32,6 +32,9 @@
 1. [Logging](#logging)
 1. [Parameter Validation](#parameter_validation)
 1. [Static Pages](#static_pages)
+1. [More on Database Commands](#more_on_database_commands)
+	1. [Micrate](#micrate)
+	1. [Custom Migrations Engine](#custom_migrations_engine)
 1. [Internationalization (I18n)](#internationalization__i18n_)
 1. [Responses](#responses)
 	1. [Responses with Different Content-Type](#responses_with_different_content_type)
@@ -43,9 +46,6 @@
 	1. [CSS Optimization / Minification](#css_optimization___minification)
 	1. [File Copying](#file_copying)
 	1. [Asset Management Alternatives](#asset_management_alternatives)
-1. [More on Database Commands](#more_on_database_commands)
-	1. [Micrate](#micrate)
-	1. [Custom Migrations Engine](#custom_migrations_engine)
 1. [Amber::Controller::Base](#amber__controller__base)
 1. [Extensions](#extensions)
 1. [Shards](#shards)
@@ -565,6 +565,58 @@ Because we have called render() without additional arguments, the template will 
 
 And that is it! Visiting `/about` will go to the router, router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will at the same time be the final return value from the controller, and from there it will be returned to the client as response body.
 
+# More on Database Commands<a name="more_on_database_commands"></a>
+
+## Micrate<a name="micrate"></a>
+
+As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+
+Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but could be trivially adapted to MySQL or SQLite):
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+Micrate::DB.connection_url = Amber.settings.database_url
+Micrate::Cli.run
+```
+
+And by placing the following in `shard.yml` under `targets`:
+
+```
+targets:
+  micrate:
+    main: src/micrate.cr
+```
+
+From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality. Run `bin/micrate -h` to see an overview of micrate's own commands.
+
+The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
+
+In that case, `src/micrate.cr` could be customized and look like the following:
+
+```crystal
+#!/usr/bin/env crystal
+require "amber"
+require "micrate"
+require "pg"
+
+env_name = ENV["AMBER_ENV"]? || "development"
+suffix = env_name == "production" ? "" : "_#{env_name}"
+Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
+Micrate::Cli.run
+```
+
+Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
+
+## Custom Migrations Engine<a name="custom_migrations_engine"></a>
+
+While `amber db` unconditionally depends on "micrate", that's the only place where it makes an assumption about the migrations engine used.
+
+To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
+
 # Internationalization (I18n)<a name="internationalization__i18n_"></a>
 
 Amber uses Amber's native shard [citrine-18n](https://github.com/amberframework/citrine-i18n) to provide translation and localization. Even though the shard has been authored by the Amber Framework project, it is Amber-independent and can be used to initialize I18n and determine the visitor's preferred language in any application based on Crystal's HTTP::Server.
@@ -749,58 +801,6 @@ And as usual, you need to run `npm install` for the plugin to be installed (save
 Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
-
-# More on Database Commands<a name="more_on_database_commands"></a>
-
-## Micrate<a name="micrate"></a>
-
-As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
-
-Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but could be trivially adapted to MySQL or SQLite):
-
-```crystal
-#!/usr/bin/env crystal
-require "amber"
-require "micrate"
-require "pg"
-
-Micrate::DB.connection_url = Amber.settings.database_url
-Micrate::Cli.run
-```
-
-And by placing the following in `shard.yml` under `targets`:
-
-```
-targets:
-  micrate:
-    main: src/micrate.cr
-```
-
-From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please note that this sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used interchangeably in cases where they provide the same functionality. Run `bin/micrate -h` to see an overview of micrate's own commands.
-
-The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
-
-In that case, `src/micrate.cr` could be customized and look like the following:
-
-```crystal
-#!/usr/bin/env crystal
-require "amber"
-require "micrate"
-require "pg"
-
-env_name = ENV["AMBER_ENV"]? || "development"
-suffix = env_name == "production" ? "" : "_#{env_name}"
-Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
-Micrate::Cli.run
-```
-
-Please also note that in that case you would probably use a combination of direct database commands and `bin/micrate`, and avoid using `amber db` because `amber db` would run with Amber's (application's) regular credentials which you do not want.
-
-## Custom Migrations Engine<a name="custom_migrations_engine"></a>
-
-While `amber db` unconditionally depends on "micrate", that's the only place where it makes an assumption about the migrations engine used.
-
-To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
 
 # Amber::Controller::Base<a name="amber__controller__base"></a>
 
