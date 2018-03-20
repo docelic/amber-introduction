@@ -617,7 +617,7 @@ In that case you would also probably use a combination of native database comman
 
 While `amber db` unconditionally depends on "micrate", that's the only place where it makes an assumption about the migrations engine used.
 
-To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. Nothing else is necessary and Amber won't get into your way.
+To use a different migrations engine, such as [migrate.cr](https://github.com/vladfaust/migrate.cr), simply perform all database migration work using the engine's native commands instead of using `amber db`. No other adjustments are necessary, and Amber won't get into your way.
 
 # Internationalization (I18n)<a name="internationalization__i18n_"></a>
 
@@ -627,14 +627,14 @@ That shard in turn depends on the shard [i18n.cr](https://github.com/TechMagiste
 
 The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
 
-1. Initializer file `config/initializers/i18n.cr` where basic configuration settings are defined and `I18n.init` is invoked
+1. Initializer file `config/initializers/i18n.cr` where basic I18n settings are defined and `I18n.init` is invoked
 1. Locale files in `src/locales/` and subdirectories which contain the settings for both translation and localization
-1. Pipe named `Citrine::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for every request, based on the value of the request's HTTP header "Accept-Language"
-1. Controller helpers named `t()` and `l()` which provide shorthand access to methods `::I18n.translate` and `::I18n.localize`
+1. Pipe named `Citrine::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for every request based on the value of the request's HTTP header "Accept-Language"
+1. Controller helpers named `t()` and `l()` which provide shorthand access for methods `::I18n.translate` and `::I18n.localize`
 
 Once the pipe runs on the incoming request, the current request's locale is set in the variable `::I18n.locale`. The value is not stored or copied in any other location and it can be overriden in runtime in any way that the application would require.
 
-For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`.
+For a locale to be used, it must be requested (or be the default) and exist anywhere under the directory `./src/locales/` with the name `[lang].yml`. If nothing is found, it defaults to "en".
 
 From there, invoking `t()` and `l()` would perform translation and localization according to the chosen locale. Since these two methods are direct shorthands for methods `::I18n.translate` and `::I18n.localize`, all their usage information and help should be looked up in [i18n.cr's README](https://github.com/TechMagister/i18n.cr).
 
