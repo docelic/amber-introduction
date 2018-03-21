@@ -253,9 +253,11 @@ Please note that the environment files for non-production environment are given 
 
 In very simple frameworks it could suffice to directly map incoming requests to methods in the application, call them, and return their output to the user. This is basically what [router.cr](https://github.com/tbrand/router.cr) does in a total of about 50 lines of code.
 
-More elaborate application frameworks such as Amber provide many more features and flexibility, and allow pluggable components (interchangeably called "middleware", "handlers", or "pipes") to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
+More elaborate application frameworks such as Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
+These components are in general terminology called the "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Crystal-based applications they all refer to the same thing &mdash; classes that include the [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) module and that implement method `def call(context)`.
+
+Handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
 
 Using pipes promotes code reuse and is a nice way to plug various standard or custom functionality in the request serving process without requiring developers to duplicate code or include certain parts of code in every controller action.
 
