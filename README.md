@@ -251,7 +251,7 @@ Please note that the environment files for non-production environment are given 
 
 # Pipes and Pipelines<a name="pipes_and_pipelines"></a>
 
-In very simple frameworks it could suffice to directly map incoming requests to methods in the application, call them, and return their output to the user. This is basically what [router.cr](https://github.com/tbrand/router.cr) does in a total of about 50 lines of code.
+In very simple frameworks it could suffice to directly map incoming requests to methods in the application, call them, and return their output to the user.
 
 More elaborate application frameworks such as Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
