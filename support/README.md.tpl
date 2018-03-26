@@ -114,9 +114,9 @@ To build the application in a more manual way and control more of the options, y
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
-Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
-
 As mentioned, for faster build speed, development versions are compiled without the `--release` flag. With the `--release` flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
+
+Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
 Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds. This directory is also where temporary binaries are placed when one runs programs with `crystal [run]` rather than `crystal build`.
 
