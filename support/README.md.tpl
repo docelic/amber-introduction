@@ -84,14 +84,14 @@ The app can be started as soon as you have created it and ran `crystal deps` in 
 
 Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is just compiled, executed, and then discarded.
 
-To run the app, you can use a couple different approaches:
+To run the app, you could use a couple different approaches:
 
 ```shell
 #: For development, clean and simple - compiles and runs your app:
 crystal src/<app_name>.cr
 
 #: For development, clean and simple - compiles and runs your app, but
-#: also watches for changes in files and rebuilds/re-runs automatically.
+#: also watches for changes in files and rebuilds/re-runs automatically:
 amber watch
 ```
 
@@ -99,7 +99,14 @@ Amber apps by default use a feature called "port reuse" available in newer Linux
 
 # Building the App and Build Troubleshooting
 
-To build the application and produce an executable file with optimizations, you would run something like:
+To build the application in a simple and effective way, you would run the following to produce executable file `bin/<app_name>`:
+
+```shell
+#: For production, compiles app with optimizations and places it in bin/<app_name>.
+crystal deps build <app_name> --production
+```
+
+To build the application in a more manual way and control more of the options, you would run:
 
 ```shell
 #: For production, compiles app with optimizations and places it in bin/<app_name>.
