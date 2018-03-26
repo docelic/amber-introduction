@@ -126,6 +126,8 @@ Please note that shards-related commands use the directory `.shards/` as local s
 The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
 (It is not necessary to run deps if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
+Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is just compiled, executed, and then discarded.
+
 To run the app, you can use a couple different approaches:
 
 ```shell
@@ -141,9 +143,7 @@ Amber apps by default use a feature called "port reuse" available in newer Linux
 
 # Building the App and Build Troubleshooting<a name="building_the_app_and_build_troubleshooting"></a>
 
-The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled, executed, and then discarded.
-
-To build the application and produce an executable file including optimizations and everything, you would run something like:
+To build the application and produce an executable file with optimizations, you would run something like:
 
 ```shell
 # For production, compiles app with optimizations and places it in bin/<app_name>.
@@ -153,7 +153,7 @@ crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app
 
 Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
-For faster build speed, development versions are compiled without the `--release` flag. With the `--release` flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
+As mentioned, for faster build speed, development versions are compiled without the `--release` flag. With the `--release` flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
 Crystal caches partial results of the compilation (*.o files etc.) under `~/.cache/crystal/` for faster subsequent builds. This directory is also where temporary binaries are placed when one runs programs with `crystal [run]` rather than `crystal build`.
 
