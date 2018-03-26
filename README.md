@@ -150,7 +150,7 @@ To build the application in a simple and effective way, you would run the follow
 crystal deps build <app_name> --production
 ```
 
-To build the application in a more manual way and control more of the options, you would run:
+To build the application in a more manual way, skip dependency checking, and control more of the options, you would run:
 
 ```shell
 # For production, compiles app with optimizations and places it in bin/<app_name>.
