@@ -126,7 +126,7 @@ Please note that shards-related commands use the directory `.shards/` as local s
 The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
 (It is not necessary to run deps if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
-To run the app, you can use a couple different approaches. Some are suitable for development, some for production, etc.:
+To run the app, you can use a couple different approaches:
 
 ```shell
 # For development, clean and simple - compiles and runs your app:
@@ -135,10 +135,6 @@ crystal src/<app_name>.cr
 # For development, clean and simple - compiles and runs your app, but
 # also watches for changes in files and rebuilds/re-runs automatically.
 amber watch
-
-# For production, compiles app with optimizations and places it in bin/app.
-# Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
-crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
 Amber apps by default use a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available" upon running the app, it means your kernel does not support it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
@@ -146,6 +142,14 @@ Amber apps by default use a feature called "port reuse" available in newer Linux
 # Building the App and Build Troubleshooting<a name="building_the_app_and_build_troubleshooting"></a>
 
 The application is always built, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary won't be saved to a file, but will be compiled, executed, and then discarded.
+
+To build the application and produce an executable file including optimizations and everything, you would run something like:
+
+```shell
+# For production, compiles app with optimizations and places it in bin/<app_name>.
+# Crystal by default compiles using 8 threads (tune if needed with --threads NUM)
+crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
+```
 
 Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
