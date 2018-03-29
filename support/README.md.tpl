@@ -216,7 +216,7 @@ In very simple frameworks it could suffice to directly map incoming requests to 
 
 More elaborate application frameworks such as Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These components are in general terminology called the "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Crystal-based applications they all refer to the same thing &mdash; classes that include the [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) module and that implement method `def call(context)`.
+These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Crystal-based applications they all refer to the same thing &mdash; classes that include the module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`.
 
 Handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
 
@@ -286,7 +286,7 @@ Amber::Server.configure do |app|
   end
 
   routes :web do
-    get "/", HomeController, :index    # Routes "GET /" to HomeController.new.index
+    get "/", HomeController, :index     # Routes "GET /" to HomeController.new.index
     post "/test", PageController, :test # Routes "POST /test" to PageController.new.test
   end
 end
@@ -319,7 +319,8 @@ Information about views can be summarized in the following bullet points:
 - Views in Amber are located under toplevel directory `src/views/`
 - Views are typically rendered using `render()`
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
-- If we are in the context of a controller, `render("index.slang")` will look for a view named `src/views/<controller_name>/index.slang`
+- `render("index.slang")` will look for a view named `src/views/<controller_name>/index.slang`
+- `render("./abs/or/rel/path.slang")` will look for that specific template
 - If we are not rendering a partial, by default the template will be wrapped in a layout
 - If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
 - There is no unnecessary magic applied to template names &mdash; names specified are the names that will be looked up on disk
@@ -327,15 +328,14 @@ Information about views can be summarized in the following bullet points:
 - To render a partial, use `render( partial: "_name.ext")`
 - Templates are read from disk and compiled into the application at compile time. This makes them fast to access and also read-only which is a useful side-benefit
 
+The `render` macro is usually invoked at the end of the controller method. This makes its return value be the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the clients as response body.
+
 It is also important to know that `render` is a macro and views are rendered directly (in-place) as part of the controller method.
-
-This gives us two interesting properties. One is that the `render` macro is usually invoked at the end of the controller method. This essentially makes its return value the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the clients as response body.
-
-The other is that since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
+This results in a very interesting property &mdash; since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
 
 ## Variables in Views
 
-As mentioned, in Amber, templates are compiled and rendered in the scope of the methods calling `render()`. Those are typically the controller methods themselves. This means you do not need instance variables for passing the information from controllers to views.
+As mentioned, in Amber, templates are compiled and rendered directly in the context of the methods that call `render()`. Those are typically the controller methods themselves, and it means you generally do not need instance variables for passing the information from controllers to views.
 
 Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on a hypothetical "/about" page. The controller method and the corresponding view template would look like this:
 
@@ -352,7 +352,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To recap and expand, templates are rendered directly in the context of the methods that invoke `render()`. This means they are typically rendered in the context of controller methods, which can be confirmed by placing e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means all the instance variables existing on the controller object are available in the templates as well.
+To further confirm that the templates also implicitly run as part of the same controller that handled the request, you could place e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means all the instance variables existing on the controller object are available in the templates as well.
 
 ## Template Languages
 
