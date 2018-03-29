@@ -115,7 +115,7 @@ Granite is Amber's native, nice, and effective ORM model where you mostly write 
 
 Supported migrations engine is [micrate](https://github.com/amberframework/micrate). (But any migrations engines can be used; more on that can be found below in [Custom Migrations Engine](#custom_migrations_engine).)
 
-Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration files which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". If you have complex SQL statements that contain semicolons then you also enclose them in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
+Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration files which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". If you have complex SQL statements that contain semicolons then you also enclose each in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
 
 Finally, if argument `--deps` is provided, Amber will automatically run `crystal deps` in the new project's directory after creation to download the shards required by the project.
 
