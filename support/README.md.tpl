@@ -114,7 +114,7 @@ To build the application in a more manual way, skip dependency checking, and con
 crystal build --no-debug --release --verbose -t -s -p -o bin/<app_name> src/<app_name>.cr
 ```
 
-As mentioned, for faster build speed, development versions are compiled without the `--release` flag. With the `--release` flag, the compilation takes noticeably longer, but the resulting binary has incredible performance.
+As mentioned, for faster build speed, development versions are compiled without the `--release` flag. With the `--release` flag the compilation takes noticeably longer, but the resulting binary has incredible performance.
 
 Thanks to Crystal's compiler implementation, only the parts actually used are added to the executable. Listing dependencies in `shard.yml` or even using `require`s in your program will generally not affect what is compiled in.
 
