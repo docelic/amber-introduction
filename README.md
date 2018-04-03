@@ -280,7 +280,7 @@ The configuration for pipes, pipelines, and routes is found in `config/routes.cr
 
 Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and controller methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed when the route matches, before the controller action is invoked.
 
-Routes are matched in the order of definition in `config/routes.cr` and the first route that matches is followed.
+Routes are matched in the order of definition in `config/routes.cr` and the first route that matches is used.
 
 Amber includes a command `amber routes` to display configured routes. By default, the routes table looks like the following:
 
