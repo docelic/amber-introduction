@@ -246,7 +246,9 @@ From the first line of the output we see that a "GET /" request will cause all p
 In the `config/routes.cr` code, this is simply achieved with the line:
 
 ```crystal
-get "/", HomeController, :index
+routes :web do
+  get "/", HomeController, :index
+end
 ```
 
 The return value of the controller method is returned as response body to the client.
