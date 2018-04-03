@@ -593,6 +593,9 @@ require "micrate"
 require "pg"
 
 Micrate::DB.connection_url = Amber.settings.database_url
+Micrate.logger = Amber.settings.logger.dup
+Micrate.logger.progname = "Micrate"
+
 Micrate::Cli.run
 ```
 
@@ -608,23 +611,7 @@ From there, running `crystal deps build micrate` would build `bin/micrate` which
 
 Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably in areas where they provide the same functionality.
 
-The setup with a standalone `bin/micrate` command should also be used if you want the migrations to run with different credentials or a different database URL than your regular Amber application.
-
-In that case, `src/micrate.cr` could be customized to look something like the following:
-
-```crystal
-#!/usr/bin/env crystal
-require "amber"
-require "micrate"
-require "pg"
-
-env_name = ENV["AMBER_ENV"]? || "development"
-suffix = env_name == "production" ? "" : "_#{env_name}"
-Micrate::DB.connection_url = "postgres://USERNAME:PASSWORD@localhost:5432/DBNAME#{suffix}"
-Micrate::Cli.run
-```
-
-In that case you would also probably use a combination of native database commands and `bin/micrate`, and avoid using `amber db`. That's  because `amber db` would run with Amber's (application's) regular credentials which you do not want.
+To have your database migrations run with different credentials than your regular Amber app, simply create new environments in `config/environments` and prefix your command lines with `AMBER_ENV=...`. For example, you could copy and modify `config/environments/development.yml` into `config/environments/development_admin.yml`, change the credentials as appropriate, and then run migrations as admin using `AMBER_ENV=development_admin ./bin/amber db migrate`.
 
 ## Custom Migrations Engine<a name="custom_migrations_engine"></a>
 
@@ -636,7 +623,7 @@ To use a different migrations engine, such as [migrate.cr](https://github.com/vl
 
 Amber uses Amber's native shard [citrine-18n](https://github.com/amberframework/citrine-i18n) to provide translation and localization. Even though the shard has been authored by the Amber Framework project, it is Amber-independent and can be used to initialize I18n and determine the visitor's preferred language in any application based on Crystal's HTTP::Server.
 
-That shard in turn depends on the shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide the actual translation and localization functionality. 
+That shard in turn depends on the shard [i18n.cr](https://github.com/TechMagister/i18n.cr) to provide the actual translation and localization functionality.
 
 The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
 
