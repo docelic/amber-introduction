@@ -28,7 +28,7 @@ This document is here to describe everything that Amber offers out of the box, s
 ```shell
 git clone https://github.com/amberframework/amber
 cd amber
-make # The result of 'make' is one file -- command line tool bin/amber
+make # The result of 'make' will be one file -- command line tool bin/amber
 
 #: To install the file, or to symlink the system-wide executable to current directory, run one of:
 make install # default PREFIX is /usr/local
