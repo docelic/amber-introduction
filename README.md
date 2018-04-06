@@ -63,7 +63,7 @@
 
 **Amber** is a web application framework written in [Crystal](http://www.crystal-lang.org). Homepage can be found at [amberframework.org](https://amberframework.org/), docs at [Amber Docs](https://docs.amberframework.org), GitHub repository at [amberframework/amber](https://github.com/amberframework/amber), and the chat on [Gitter](https://gitter.im/amberframework/amber) or on the FreeNode IRC channel #amber.
 
-Amber is inspired by Kemal, Rails, Phoenix, and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit some concepts from Rails that are good.)
+Amber is inspired by Kemal, Rails, Phoenix, and other frameworks. It is simple to get used to, and much more intuitive than frameworks like Rails. (But it does inherit many concepts from Rails that are good.)
 
 This document is here to describe everything that Amber offers out of the box, sorted in a logical order and easy to consult repeatedly over time. The Crystal level is not described; it is expected that the readers coming here have a formed understanding of [Crystal and its features](https://crystal-lang.org/docs/overview/).
 
@@ -107,11 +107,11 @@ Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default),
 Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (But any languages can be used; more on that can be found below in [Template Languages](#template_languages).)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like, very similar to Ruby ERB, and also mediocre when compared to slang, but it may be the best choice for your application if you intend to use some HTML site template (e.g. from [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts the bulk of HTML pages into slang will relatively good accuracy.)
+ECR is HTML-like, very similar to Ruby ERB, and also much less efficient than slang, but it may be the best choice for your application if you intend to use some HTML site template (e.g. from [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts the bulk of HTML pages into slang will relatively good accuracy.)
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
-Granite is Amber's native, nice, and effective ORM model where you mostly write your own SQL. For example, all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`. But it also has belongs/has relations, and some other little things. (If you have by chance known and loved [Class::DBI](http://search.cpan.org/~tmtm/Class-DBI-v3.0.17/lib/Class/DBI.pm) for Perl, it might remind you of it in some ways.)
+Granite is Amber's native, nice, and effective ORM model where you mostly write your own SQL. For example, all search queries typically look like `YourModel.all("WHERE field1 = ? AND field2 = ?", [value1, value2])`. But it also has belongs/has relations, and some other little things.
 
 Supported migrations engine is [micrate](https://github.com/amberframework/micrate). (But any migrations engines can be used; more on that can be found below in [Custom Migrations Engine](#custom_migrations_engine).)
 
@@ -133,6 +133,9 @@ To run the app, you could use a couple different approaches:
 ```shell
 # For development, clean and simple - compiles and runs your app:
 crystal src/<app_name>.cr
+
+# Compiles and runs app in 'production' environment:
+AMBER_ENV=production crystal src/<app_name>.cr
 
 # For development, clean and simple - compiles and runs your app, but
 # also watches for changes in files and rebuilds/re-runs automatically:
@@ -174,7 +177,7 @@ There are some issues with the `libgc` library here and there. In my case the so
 
 Often times, it is very useful to enter an interactive console (think of IRB shell) with all application classes initialized etc. In Ruby this would be done with IRB or with a command like `rails console`.
 
-Due to its nature, Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
+Crystal does not have a free-form [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), but you can save and execute scripts in the context of the application. One way to do it is via command `amber x [filename]`. This command will allow you to type or edit the contents, and then execute the script.
 
 Another, possibly more flexible way to do it is via standalone REPL-like tools [cry](https://github.com/elorest/cry) or [icr](https://github.com/crystal-community/icr). `cry` began as an experiment and a predecessor to `amber x`, but now offers additional functionality such as repeatedly editing and running the script if `cry -r` is invoked.
 
@@ -256,7 +259,7 @@ And then try the database commands from the beginning of this section.
 
 Please note that for the database connection to succeed, everything must be set up correctly &mdash; hostname, port, username, password, and database name must be valid, the database server must be accessible, and the database must actually exist unless you are invoking `amber db create` to create it. In case of *any error in any of these requirements*, the error message will be terse and just say "Connection unsuccessful: <database_url>". The solution is simple, though - simply use the printed database_url to manually attempt a connection to the database with the same parameters, and the problem will most likely quickly reveal itself.
 
-(If you are sure that the username and password are correct, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command to create it.)
+(If you are sure that the username and password are correct and that the database server is accessible, then the most common problem is that the database does not exist yet, so you should run `amber db create` as the first command to create it.)
 
 Please note that the environment files for non-production environment are given in plain text. Environment file for the production environment is encrypted for additional security and can be seen or edited by invoking `amber encrypt`.
 
@@ -286,15 +289,6 @@ Amber includes a command `amber routes` to display configured routes. By default
 
 ```shell
 $ amber routes
-
-
-╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
-║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | HomeController            | index  | web      |       | /           ║
-╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
-║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
-╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 
 
 ```
