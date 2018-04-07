@@ -563,9 +563,9 @@ targets:
 
 From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please run `bin/micrate -h` to see an overview of its commands.
 
-Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably in areas where they provide the same functionality.
+Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably.
 
-To have your database migrations run with different credentials than your regular Amber app, simply create new environments in `config/environments` and prefix your command lines with `AMBER_ENV=...`. For example, you could copy and modify `config/environments/development.yml` into `config/environments/development_admin.yml`, change the credentials as appropriate, and then run migrations as admin using `AMBER_ENV=development_admin ./bin/amber db migrate`.
+To have your database migrations run with different credentials than your regular Amber app, simply create new environments in `config/environments/` and prefix your command lines with `AMBER_ENV=...`. For example, you could copy and modify `config/environments/development.yml` into `config/environments/development_admin.yml`, change the credentials as appropriate, and then run migrations as admin using `AMBER_ENV=development_admin ./bin/amber db migrate`.
 
 ## Custom Migrations Engine
 
@@ -582,7 +582,7 @@ That shard in turn depends on the shard [i18n.cr](https://github.com/TechMagiste
 The internationalization functionality in Amber is enabled by default. Its setup, initialization, and use basically consist of the following:
 
 1. Initializer file `config/initializers/i18n.cr` where basic I18n settings are defined and `I18n.init` is invoked
-1. Locale files in `src/locales/` and subdirectories which contain the settings for both translation and localization
+1. Locale files in `src/locales/` and subdirectories where settings for both translation and localization are contained
 1. Pipe named `Citrine::I18n::Handler` which is included in `config/routes.cr` and which detects the preferred language for every request based on the value of the request's HTTP header "Accept-Language"
 1. Controller helpers named `t()` and `l()` which provide shorthand access for methods `::I18n.translate` and `::I18n.localize`
 
