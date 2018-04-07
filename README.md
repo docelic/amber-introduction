@@ -291,7 +291,7 @@ All routes belong to a certain pipeline (like "web", "api", or similar). When a 
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes commands `amber routes` and `amber pipelines` to display route and pipeline configurations. By default, the outputs look like the following:
+Amber includes commands `amber routes` and `amber pipelines` to display route and pipeline configurations. By default, the output for routes looks like the following:
 
 ```shell
 $ amber routes
@@ -304,21 +304,6 @@ $ amber routes
 ╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
 ║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
 ╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
-
-
-```
-
-```shell
-$ amber pipelines
-
-
-╔════════╗
-║ Pipe   ║
-╠────────╣
-║ web    ║
-╠────────╣
-║ static ║
-╚════════╝
 
 
 ```
