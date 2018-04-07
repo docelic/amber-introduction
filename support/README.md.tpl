@@ -810,7 +810,7 @@ The content of this controller and the methods it gets from including other modu
 
 # Extensions
 
-Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. Here's a listing of the current ones:
+Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. They are useful in general, but particularly so when writing param validation rules. Here's the listing of currently available extensions:
 
 For String:
 
