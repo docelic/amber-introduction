@@ -422,7 +422,7 @@ First, because the copying does not work for data other than basic types (e.g. s
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
-Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). The feature request to make rendering engines includable/choosable at will was refused by the Amber project, so if you are bothered that the default `render` macro is present in your application even though you do not use it, simply comment the line `include Helpers::Render` in Amber's [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
+Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). The pull request [#610](https://github.com/amberframework/amber/pull/610) to make rendering engines includable/choosable at will was refused by the Amber project, so if you are bothered that the default `render` macro is present in your application even though you do not use it, simply comment the line `include Helpers::Render` in Amber's [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
 Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
 
