@@ -291,7 +291,7 @@ All routes belong to a certain pipeline (like "web", "api", or similar). When a 
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes commands `amber routes` and `amber pipelines` to display the relevant information. By default, the outputs look like the following:
+Amber includes commands `amber routes` and `amber pipelines` to display route and pipeline configurations. By default, the outputs look like the following:
 
 ```shell
 $ amber routes
@@ -312,31 +312,13 @@ $ amber routes
 $ amber pipelines
 
 
-╔════════╦═════════════════════════════╗
-║ Pipe   | Plug                        ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::PoweredByAmber ║
-╠────────┼─────────────────────────────╣
-║ web    | Citrine::I18n::Handler      ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::Error          ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::Logger         ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::Session        ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::Flash          ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::CSRF           ║
-╠────────┼─────────────────────────────╣
-║ web    | Amber::Pipe::Reload         ║
-╠────────┼─────────────────────────────╣
-║ static | Amber::Pipe::PoweredByAmber ║
-╠────────┼─────────────────────────────╣
-║ static | Amber::Pipe::Error          ║
-╠────────┼─────────────────────────────╣
-║ static | Amber::Pipe::Static         ║
-╚════════╩═════════════════════════════╝
+╔════════╗
+║ Pipe   ║
+╠────────╣
+║ web    ║
+╠────────╣
+║ static ║
+╚════════╝
 
 
 ```
