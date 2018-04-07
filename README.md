@@ -50,7 +50,7 @@
 1. [Extensions](#extensions)
 1. [Advanced Topics](#advanced_topics)
 	1. [Shards](#shards)
-	1. [Useful Classes and Methods](#useful_classes_and_methods)
+	1. [Environments](#environments)
 1. [Support Routines](#support_routines)
 	1. [Starting the Server](#starting_the_server)
 	1. [Serving Requests](#serving_requests)
@@ -1061,11 +1061,9 @@ require "weak_ref"               CRYSTAL  Weak Reference class allowing referenc
 
 Only the parts that are used end up in the compiled project.
 
-## Useful Classes and Methods<a name="useful_classes_and_methods"></a>
+## Environments<a name="environments"></a>
 
-This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
-
-After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module automatically includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
 ```
 Amber.settings         # Singleton object, contains current settings
@@ -1073,7 +1071,7 @@ Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Env (environment) object (development, production, test)
 ```
 
-[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) (`amber.env`) also provides basic methods for querying the current environment:
 ```crystal
     def initialize(@env : String = ENV[AMBER_ENV]? || "development")
     def in?(env_list : Array(EnvType))

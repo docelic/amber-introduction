@@ -836,11 +836,9 @@ Amber and all of its components depend on the following shards:
 
 Only the parts that are used end up in the compiled project.
 
-## Useful Classes and Methods
+## Environments
 
-This section provides an overview of various contexts where classes and modules come into play and the methods they make available:
-
-After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
+After "[amber](https://github.com/amberframework/amber/blob/master/src/amber.cr)" shard is loaded, `Amber` module automatically includes [Amber::Environment](https://github.com/amberframework/amber/blob/master/src/amber/environment.cr) which adds the following methods:
 
 ```
 Amber.settings         # Singleton object, contains current settings
@@ -848,7 +846,7 @@ Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Env (environment) object (development, production, test)
 ```
 
-[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) provides basic methods for querying the current environment:
+[Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) (`amber.env`) also provides basic methods for querying the current environment:
 ```crystal
 [[[grep 'def ' amber/src/amber/environment/env.cr]]]
 ```
