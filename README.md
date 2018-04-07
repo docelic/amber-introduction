@@ -269,7 +269,9 @@ In very simple frameworks it could suffice to directly map incoming requests to 
 
 More elaborate application frameworks like Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Crystal-based applications they all refer to the same thing &mdash; classes that `include` the module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`.
+These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, they all refer to the same thing &mdash; classes that `include` the module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`.
+
+The "context" object persists for the duration of the request. It is passed as argument to every pipe when pipes are run. Apart from containing request and response data, this object is also where data that should be shared/carried between pipes should be saved. Amber extends the default [HTTP::Server::Context](https://crystal-lang.org/api/0.24.2/HTTP/Server/Context.html) class with many additional fields and methods as can be seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr) and [src/amber/extensions/http.cr](https://github.com/amberframework/amber/blob/master/src/amber/extensions/http.cr).
 
 Handlers or pipes are not limited in what they can do. It is normal that they sometimes stop execution and return an error, or fulfil the request on their own without even passing the request through to the controller. Examples of such pipes are [CSRF](https://github.com/amberframework/amber/blob/master/src/amber/pipes/csrf.cr) which stops execution if CSRF token is incorrect, or [Static](https://github.com/amberframework/amber/blob/master/src/amber/pipes/static.cr) which autonomously handles delivery of static files.
 
@@ -289,6 +291,15 @@ Amber includes a command `amber routes` to display configured routes. By default
 
 ```shell
 $ amber routes
+
+
+╔══════╦═══════════════════════════╦════════╦══════════╦═══════╦═════════════╗
+║ Verb | Controller                | Action | Pipeline | Scope | URI Pattern ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | HomeController            | index  | web      |       | /           ║
+╠──────┼───────────────────────────┼────────┼──────────┼───────┼─────────────╣
+║ get  | Amber::Controller::Static | index  | static   |       | /*          ║
+╚══════╩═══════════════════════════╩════════╩══════════╩═══════╩═════════════╝
 
 
 ```
