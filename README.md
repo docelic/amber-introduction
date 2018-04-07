@@ -1071,6 +1071,8 @@ Amber.logger           # Alias for Amber.settings.logger
 Amber.env, Amber.env=  # Env (environment) object (development, production, test)
 ```
 
+The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and are then overriden by any settings in `config/application.cr`'s `Amber::Server.configure` block.
+
 [Env](https://github.com/amberframework/amber/blob/master/src/amber/environment/env.cr) (`amber.env`) also provides basic methods for querying the current environment:
 ```crystal
     def initialize(@env : String = ENV[AMBER_ENV]? || "development")
@@ -1080,8 +1082,6 @@ Amber.env, Amber.env=  # Env (environment) object (development, production, test
     def ==(env2 : EnvType)
 
 ```
-
-The list of all available application settings is in [Amber::Environment::Settings](https://github.com/amberframework/amber/blob/master/src/amber/environment/settings.cr). These settings are loaded from the application's `config/environment/<name>.yml` file and then overriden by any settings in `config/application.cr`'s `Amber::Server.configure` block.
 
 # Support Routines<a name="support_routines"></a>
 
