@@ -269,9 +269,9 @@ In very simple frameworks it could suffice to directly map incoming requests to 
 
 More elaborate application frameworks like Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Amber applications they all refer to the same thing &mdash; classes that `include` the module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`.
+These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Amber applications they all refer to the same thing &mdash; classes that `include` Crystal's module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`. (So in Amber, this functionality is based on Crystal's HTTP server's built-in support for handlers.)
 
-The request and response object that pipes need in order to run and do something meaningful is passed as the first argument to every pipe, and is by convention named "context".
+The request and response object that pipes need in order to run and do anything meaningful is passed as the first argument to every pipe, and is by convention named "context".
 
 Context persists for the duration of the request and is the place where data that should be shared/carried between pipes should be saved. Amber extends the default [HTTP::Server::Context](https://crystal-lang.org/api/0.24.2/HTTP/Server/Context.html) class with many additional fields and methods as can be seen in [router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr) and [extensions/http.cr](https://github.com/amberframework/amber/blob/master/src/amber/extensions/http.cr).
 
