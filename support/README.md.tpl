@@ -268,7 +268,7 @@ As another example, the following definition would cause a POST request to "/reg
 post "/registration", RegistrationController, :create
 ```
 
-By convention, standard HTTP verbs (GET/HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `create`, `edit`, `update`, and `destroy`. However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
+By convention, standard HTTP verbs (GET/HEAD, POST, PUT/PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `create`, `update`, and `destroy`. However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
 
 Websocket routes are supported too.
 
