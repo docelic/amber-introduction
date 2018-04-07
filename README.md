@@ -279,15 +279,17 @@ Handlers or pipes are not limited in what they can do. It is normal that they so
 
 Using pipes promotes code reuse and is a nice way to plug various standard or custom functionality in the request serving process without requiring developers to duplicate code or include certain parts of code in every controller action.
 
-In Amber, the pipes that may need to run for a request are grouped in so-called "pipelines". When a request comes in, all pipes in the pipeline associated with the route that matched are executed, and as the last step the pipe "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)" is invoked. This is currently non-configurable &mdash; the controller pipe is always automatically added and executed as the last pipe in the associated pipeline unless the execution stops in one of the earlier pipes.
-
-The configuration for pipes, pipelines, and routes is found in `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
+Additionally, in Amber there exists a concept of "pipelines". Pipelines are logical groups of pipes. The discussion about them continues in the next section.
 
 # Routes, Controller Methods, and Responses<a name="routes__controller_methods__and_responses"></a>
 
-Routes serve two purposes. First, they are basically a more-detailed configuration for the Controller pipe &mdash; they connect incoming requests (HTTP methods and paths) to specific controllers and controller methods on the application side. Second, by defining routes under a particular pipeline block, that pipeline will be executed when the route matches, before the controller action is invoked.
+Before getting back to pipes and pipelines, let's explain the concept of routes.
 
-Routes are matched in the order of definition in `config/routes.cr` and the first route that matches is used.
+Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches is executed.
+
+All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, the execution basically comes down to executing all the pipes in the associated pipeline. The last pipe in every pipeline is the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe that will actually instantiate the appropriate controller class and call the appropriate method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the associated pipeline. It is executed unless the processing stops in one of the earlier pipes.
+
+The configuration for pipes, pipelines, and routes is found in `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
 Amber includes a command `amber routes` to display configured routes. By default, the routes table looks like the following:
 
