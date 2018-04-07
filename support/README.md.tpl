@@ -317,7 +317,7 @@ Most of these actions correspond to the respective HTTP methods; `websocket` def
     macro resources(resource, controller, only = nil, except = nil)
 ```
 
-Unless `resources` is confined with arguments `only` or `except`, it will automatically route `get`, `post`, `put`/`patch`, and `delete` HTTP methods to methods `index`, `show, `new`, `edit`, `create`, `update`, and `destroy` on the controller.
+Unless `resources` is confined with arguments `only` or `except`, it will automatically route `get`, `post`, `put`/`patch`, and `delete` HTTP methods to methods `index`, `show`, `new`, `edit`, `create`, `update`, and `destroy` on the controller.
 
 Please note that it is not currently possible to define a different behavior for GET and HEAD HTTP methods on the same path. If a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
 
