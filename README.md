@@ -551,7 +551,7 @@ $ vi src/controllers/page_controller.cr
 
 def about
   # "return" can be omitted here. It is included for clarity.
-  return render "about.ecr"
+  render "about.ecr"
 end
 ```
 
@@ -574,7 +574,7 @@ And that is it! The request for `/page/about` will reach the router, the router 
 
 As mentioned, in Amber, templates are compiled and rendered directly in the context of the methods that call `render()`. Those are typically the controller methods themselves, and it means you generally do not need instance variables for passing the information from controllers to views.
 
-Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on a hypothetical "/about" page. The controller method and the corresponding view template would look like this:
+Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on our "About" page created in the previous step. The controller method and the corresponding view template would look like this:
 
 ```shell
 $ vi src/controllers/page_controller.cr
