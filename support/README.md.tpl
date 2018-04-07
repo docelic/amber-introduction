@@ -219,9 +219,9 @@ In very simple frameworks it could suffice to directly map incoming requests to 
 
 More elaborate application frameworks like Amber provide many more features and flexibility, and allow pluggable components to be inserted and executed in the chosen order before the actual controller method is invoked to handle the request.
 
-These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Amber applications they all refer to the same thing &mdash; classes that `include` Crystal's module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`. (So in Amber, this functionality is based on Crystal's HTTP server's built-in support for handlers.)
+These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Amber applications they all refer to the same thing &mdash; classes that `include` Crystal's module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`. (So in Amber, this functionality is based on Crystal's HTTP server's built-in support for handlers/pipes.)
 
-The request and response object that pipes need in order to run and do anything meaningful is passed as the first argument to every pipe, and is by convention named "context".
+The request and response data that pipes need in order to run and do anything meaningful is passed as the first argument to every pipe, and is by convention named "context".
 
 Context persists for the duration of the request and is the place where data that should be shared/carried between pipes should be saved. Amber extends the default [HTTP::Server::Context](https://crystal-lang.org/api/0.24.2/HTTP/Server/Context.html) class with many additional fields and methods as can be seen in [router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr) and [extensions/http.cr](https://github.com/amberframework/amber/blob/master/src/amber/extensions/http.cr).
 
@@ -235,18 +235,24 @@ Additionally, in Amber there exists a concept of "pipelines". Pipelines are logi
 
 Before expanding the information on pipes and pipelines, let's explain the concept of routes.
 
-Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches is followed.
+Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches wins.
 
-All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, the execution basically comes down to executing all pipes in the associated pipeline. The last pipe in every pipeline is implicitly the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe that instantiates the appropriate controller class and call the appropriate method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the associated pipeline. It is executed unless the processing is stopped in one of the earlier pipes.
+All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, the execution basically comes down to executing all pipes in the associated pipeline. The last pipe in every pipeline is implicitly the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe that instantiates the appropriate controller class and call the appropriate method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the pipeline and it is executed unless processing stops in one of the earlier pipes.
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes the command `amber routes` to display configured routes. By default, the routes table looks like the following:
+Amber includes commands `amber routes` and `amber pipes` to display the relevant information. By default, the outputs look like the following:
 
 ```shell
 $ amber routes
 
 [[[cd app && amber routes --no-color]]]
+```
+
+```shell
+$ amber pipes
+
+[[[cd app && amber pipes --no-color]]]
 ```
 
 From the first line of the output we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then
