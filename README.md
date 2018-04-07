@@ -751,7 +751,7 @@ The JS resources are bundled to `main.bundle.js` and CSS resources are bundled t
 
 [Webpack](https://webpack.js.org/) is used for asset management.
 
-To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. You add both JS and CSS includes into `main.js` because webpack only processes import statements in .js files. So you must add the "import" lines to a .js file, and as a result, this will produce a JS bundle that contains both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
+To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. You add both JS and CSS includes into `main.js` because webpack only processes import statements in .js files. So you must add the CSS import lines to a .js file, and as a result, this will produce a JS bundle that contains both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
 
 The base/common configuration for all this is in `config/webpack/common.js`.
 
@@ -795,7 +795,7 @@ You might also want to copy some of the files from their original location to `p
     "copy-webpack-plugin": "^4.1.1",
 ```
 
-The following at the top of `config/webpack/common.js`:
+To do so you need following at the top of `config/webpack/common.js`:
 
 ```
 const CopyWebpackPlugin = require('copy-webpack-plugin');
@@ -823,7 +823,7 @@ In general it seems it shouldn't be much more complex than replacing the command
 
 # Amber::Controller::Base<a name="amber__controller__base"></a>
 
-This is the base controller from which all other controllers inherit. Source file is in [src/amber/controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
+This is the base controller from which all other controllers inherit. Source file is in [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
 On every request, the appropriate controller is instantiated and its initialize() runs. Since this is the base controller, this code runs on every request so you can understand what is available in the context of every controller.
 
@@ -879,7 +879,7 @@ end
 
 ```
 
-[Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) provides these methods:
+[Helpers::CSRF](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/csrf.cr) module provides:
 
 ```crystal
     def csrf_token
@@ -887,7 +887,7 @@ end
     def csrf_metatag
 ```
 
-[Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) provides:
+[Helpers::Redirect](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/redirect.cr) module provides:
 
 ```crystal
     def redirect_to(location : String, **args)
@@ -896,7 +896,7 @@ end
     def redirect_back(**args)
 ```
 
-[Helpers::Render](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/render.cr) provides:
+[Helpers::Render](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/render.cr) module provides:
 
 ```crystal
     LAYOUT = "application.slang"
@@ -905,7 +905,7 @@ end
 
 [Helpers::Responders](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr) helps control what final status code, body, and content-type will be returned to the client.
 
-[Helpers::Route](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/route.cr) provides:
+[Helpers::Route](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/route.cr) module provides:
 
 ```crystal
     def action_name
@@ -914,7 +914,7 @@ end
     def controller_name
 ```
 
-[Callbacks](https://github.com/amberframework/amber/blob/master/src/amber/dsl/callbacks.cr) provide:
+[Callbacks](https://github.com/amberframework/amber/blob/master/src/amber/dsl/callbacks.cr) module provides:
 
 ```crystal
     macro before_action
@@ -1148,7 +1148,7 @@ Amber's app serving model is based on Crystal's built-in, underlying functionali
 	 [HTTP::Server](https://crystal-lang.org/api/0.24.1/HTTP/Server.html)
 2. On every incoming request, a "handler" is invoked. As supported by Crystal, handler can be a simple Proc or an instance of [HTTP::Handler](https://crystal-lang.org/api/0.24.1/HTTP/Handler.html). HTTP::Handlers have a concept of "next" and multiple ones can be connected in a row. In Amber, these individual handlers are called "pipes" and currently two of them are pre-defined: the first and last pipe. The first pipe is called "Pipeline" (Amber::Pipe::Pipeline); it determines which pipeline the request is meant for, and runs the next pipe in that pipeline. The last pipeline is called "Controller" (Amber::Pipe::Controller); its duty is to consult the routing table and call the appropriate controller and method in response to a request
 3. In the pipeline, every Pipe (Amber::Pipe::*, ultimately subclass of Handler) is invoked, with one argument. That argument is
-	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+	 by convention called "context" and it is an instance of `HTTP::Server::Context`, which has two built-in methods &mdash; `request` and `response`, to access the request and response parts respectively. On top of that, Amber adds various other methods and variables, such as `router`, `flash`, `cookies`, `session`, `content`, `route`, and others as seen in [router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 4. Please note that calling the chain of pipes is not automatic; every pipe needs to call `call_next(context)` at the appropriate point in its execution to call the next pipe in a row. It is not necessary to check whether the next pipe exists, because currently `Amber::Pipe::Controller` is always implicitly added as the last pipe, so at least one does exist. State between pipes is not passed via variables but via modifying `context` and the data contained in it
 
 After that, pipelines, pipes, routes, and other Amber-specific parts come into play.
@@ -1162,7 +1162,7 @@ So, in detail, from the beginning:
 			1. `if request.is_a?(HTTP::Request::BadRequest); response.respond_with_error("Bad Request", 400)`
 			1. `response.version = request.version`
 			1. `response.headers["Connection"] = "keep-alive" if request.keep_alive?`
-			1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [src/amber/router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
+			1. `context = Context.new(request, response)` - this context is already extended with Amber's extensions in [router/context.cr](https://github.com/amberframework/amber/blob/master/src/amber/router/context.cr)
 			1. `@handler.call(context)` - `Amber::Pipe::Pipeline.call()` is called
 				1. `raise ...error... if context.invalid_route?` - route validity is checked early
 				1. `if context.websocket?; context.process_websocket_request` - if websocket, parse as such
