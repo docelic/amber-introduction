@@ -672,7 +672,7 @@ def about
 end
 ```
 
-Supported format types are `html`, `json`, `xml`, and `text`. For all the available methods and arguments, please see [src/amber/controller/helpers/responders.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr).
+Supported format types are `html`, `json`, `xml`, and `text`. For all the available methods and arguments, please see [controller/helpers/responders.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/helpers/responders.cr).
 
 ## Error Responses<a name="error_responses"></a>
 
