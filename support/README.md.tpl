@@ -325,11 +325,11 @@ Please note that it is not currently possible to define a different behavior for
 
 Information about views can be summarized in the following bullet points:
 
-- Views in Amber are located under toplevel directory `src/views/`
+- Views in an Amber project are located under the toplevel directory `src/views/`
 - Views are typically rendered using `render()`
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
 - `render("index.slang")` will look for a view named `src/views/<controller_name>/index.slang`
-- `render("./abs/or/rel/path.slang")` will look for that specific template
+- `render("./abs/or/rel/path.slang")` will look for a template in that specific path
 - If we are not rendering a partial, by default the template will be wrapped in a layout
 - If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
 - There is no unnecessary magic applied to template names &mdash; names specified are the names that will be looked up on disk
@@ -337,31 +337,10 @@ Information about views can be summarized in the following bullet points:
 - To render a partial, use `render( partial: "_name.ext")`
 - Templates are read from disk and compiled into the application at compile time. This makes them fast to access and also read-only which is a useful side-benefit
 
-The `render` macro is usually invoked at the end of the controller method. This makes its return value be the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the clients as response body.
+The `render` macro is usually invoked at the end of the controller method. This makes its return value be the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the client as response body.
 
-It is also important to know that `render` is a macro and views are rendered directly (in-place) as part of the controller method.
-This results in a very interesting property &mdash; since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just below:
-
-## Variables in Views
-
-As mentioned, in Amber, templates are compiled and rendered directly in the context of the methods that call `render()`. Those are typically the controller methods themselves, and it means you generally do not need instance variables for passing the information from controllers to views.
-
-Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on a hypothetical "/about" page. The controller method and the corresponding view template would look like this:
-
-```shell
-$ vi src/controllers/page_controller.cr
-
-def about
-  time = Time.now
-  render "about.ecr"
-end
-
-$ vi src/views/page/about.ecr
-
-Hello, World! The time is now <%= time %>.
-```
-
-To further confirm that the templates also implicitly run as part of the same controller that handled the request, you could place e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means all the instance variables existing on the controller object are available in the templates as well.
+It is also important to know that `render` is a macro and that views are rendered directly (in-place) as part of the controller method.
+This results in a very interesting property &mdash; since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just a little bit below under [Variables in Views](#variables_in_views).
 
 ## Template Languages
 
@@ -527,6 +506,27 @@ Hello, World!
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
 And that is it! The request for `/about` will reach the router, the router will invoke `PageController::about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, and the result of rendering will be a full page with content `Hello, World!` in the body. That result will be the return value from the controller method, and as such it will be returned to the client as response body.
+
+# Variables in Views
+
+As mentioned, in Amber, templates are compiled and rendered directly in the context of the methods that call `render()`. Those are typically the controller methods themselves, and it means you generally do not need instance variables for passing the information from controllers to views.
+
+Any variable you define in the controller method, instance or local, is directly visible in the template. For example, let's add the date and time and display them on a hypothetical "/about" page. The controller method and the corresponding view template would look like this:
+
+```shell
+$ vi src/controllers/page_controller.cr
+
+def about
+  time = Time.now
+  render "about.ecr"
+end
+
+$ vi src/views/page/about.ecr
+
+Hello, World! The time is now <%= time %>.
+```
+
+To further confirm that the templates also implicitly run as part of the same controller that handled the request, you could place e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means all the instance variables existing on the controller object are available in the templates as well.
 
 # More on Database Commands
 
