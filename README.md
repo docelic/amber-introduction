@@ -971,7 +971,7 @@ For Number:
 
 # Advanced Topics<a name="advanced_topics"></a>
 
-What follows is a collection of topics or notes which may or may not be of interest to you.
+What follows is a collection of advanced topics which can be read or skipped on an individual basis.
 
 ## Shards<a name="shards"></a>
 
