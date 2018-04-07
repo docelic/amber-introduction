@@ -855,7 +855,7 @@ The list of all available application settings is in [Amber::Environment::Settin
 
 # Support Routines
 
-In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready made routines.
+In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready-made routines.
 
 Currently, the following can be found there:
 
@@ -866,9 +866,10 @@ file_encryptor.cr     - Support for storing/reading encrypted versions of files
 message_encryptor.cr
 message_verifier.cr
 
-locale_formats.cr     - Very basic locate data for various, manually-added locales
+locale_formats.cr     - Very basic locate data for various manually-added locales
 
 mime_types.cr         - List of MIME types and helper methods for working with them:
+
                         def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
                         def self.zip_types(path)
                         def self.format(accepts)
