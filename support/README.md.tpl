@@ -340,7 +340,7 @@ Information about views can be summarized in the following bullet points:
 The `render` macro is usually invoked at the end of the controller method. This makes its return value be the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the client as response body.
 
 It is also important to know that `render` is a macro and that views are rendered directly (in-place) as part of the controller method.
-This results in a very interesting property &mdash; since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail just a little bit below under [Variables in Views](#variables_in_views).
+This results in a very interesting property &mdash; since `render` executes directly in the controller method, it sees all local variables and view data does not have to be passed via instance variables. This particular aspect is explained in more detail further below under [Variables in Views](#variables_in_views).
 
 ## Template Languages
 
