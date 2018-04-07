@@ -853,7 +853,7 @@ The list of all available application settings is in [Amber::Environment::Settin
 [[[grep 'def ' amber/src/amber/environment/env.cr]]]
 ```
 
-# Support Routines
+## Support Routines
 
 In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready-made routines.
 

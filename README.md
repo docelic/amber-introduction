@@ -51,7 +51,7 @@
 1. [Advanced Topics](#advanced_topics)
 	1. [Shards](#shards)
 	1. [Environments](#environments)
-1. [Support Routines](#support_routines)
+	1. [Support Routines](#support_routines)
 	1. [Starting the Server](#starting_the_server)
 	1. [Serving Requests](#serving_requests)
 	1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
@@ -1083,7 +1083,7 @@ The list of all available application settings is in [Amber::Environment::Settin
 
 ```
 
-# Support Routines<a name="support_routines"></a>
+## Support Routines<a name="support_routines"></a>
 
 In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready-made routines.
 
