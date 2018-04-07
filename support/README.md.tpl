@@ -853,30 +853,6 @@ The list of all available application settings is in [Amber::Environment::Settin
 [[[grep 'def ' amber/src/amber/environment/env.cr]]]
 ```
 
-## Support Routines
-
-In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready-made routines.
-
-Currently, the following can be found there:
-
-```
-client_reload.cr      - Support for reloading developer's browser
-
-file_encryptor.cr     - Support for storing/reading encrypted versions of files
-message_encryptor.cr
-message_verifier.cr
-
-locale_formats.cr     - Very basic locate data for various manually-added locales
-
-mime_types.cr         - List of MIME types and helper methods for working with them:
-
-                        def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
-                        def self.zip_types(path)
-                        def self.format(accepts)
-                        def self.default
-                        def self.get_request_format(request)
-```
-
 ## Starting the Server
 
 It is important to explain exactly what happens from the time you run the application til Amber starts serving user requests:
@@ -939,6 +915,30 @@ So, in detail, from the beginning:
 					1. `call_next(context)` - each pipe calls call_next(context) somewhere during its execution, and all pipes are executed
 						1. `context.process_request` - the always-last pipe (Amber::Pipe::Controller) calls `process_request` to dispatch the action to controller. After that last pipe, the stack of call_next()s is "unwound" back to the starting position
 					1. `context.finalize_response` - minor final adjustments to response are made (headers are added, and response body is printed unless action was HEAD)
+
+## Support Routines
+
+In [support/](https://github.com/amberframework/amber/tree/master/src/amber/support) directory there is a number of various support files that provide additional, ready-made routines.
+
+Currently, the following can be found there:
+
+```
+client_reload.cr      - Support for reloading developer's browser
+
+file_encryptor.cr     - Support for storing/reading encrypted versions of files
+message_encryptor.cr
+message_verifier.cr
+
+locale_formats.cr     - Very basic locate data for various manually-added locales
+
+mime_types.cr         - List of MIME types and helper methods for working with them:
+
+                        def self.mime_type(format, fallback = DEFAULT_MIME_TYPE)
+                        def self.zip_types(path)
+                        def self.format(accepts)
+                        def self.default
+                        def self.get_request_format(request)
+```
 
 ## Amber behind a Load Balancer | Reverse Proxy | ADC
 
