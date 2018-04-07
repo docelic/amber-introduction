@@ -283,15 +283,15 @@ Additionally, in Amber there exists a concept of "pipelines". Pipelines are logi
 
 # Routes, Controller Methods, and Responses<a name="routes__controller_methods__and_responses"></a>
 
-Before getting back to pipes and pipelines, let's explain the concept of routes.
+Before expanding the information on pipes and pipelines, let's explain the concept of routes.
 
-Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches is executed.
+Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches is followed.
 
-All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, the execution basically comes down to executing all the pipes in the associated pipeline. The last pipe in every pipeline is the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe that will actually instantiate the appropriate controller class and call the appropriate method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the associated pipeline. It is executed unless the processing stops in one of the earlier pipes.
+All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, the execution basically comes down to executing all pipes in the associated pipeline. The last pipe in every pipeline is implicitly the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe that instantiates the appropriate controller class and call the appropriate method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the associated pipeline. It is executed unless the processing is stopped in one of the earlier pipes.
 
-The configuration for pipes, pipelines, and routes is found in `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
+The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes a command `amber routes` to display configured routes. By default, the routes table looks like the following:
+Amber includes the command `amber routes` to display configured routes. By default, the routes table looks like the following:
 
 ```shell
 $ amber routes
@@ -327,7 +327,7 @@ As another example, the following definition would cause a POST request to "/reg
 post "/registration", RegistrationController, :create
 ```
 
-By convention, standard HTTP verbs (GET, HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `new`, `create`, `edit`, `update`, and `destroy`. However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
+By convention, standard HTTP verbs (GET/HEAD, POST, PUT, PATCH, and DELETE) should be routed to standard-named methods on the controllers &mdash; `show`, `create`, `edit`, `update`, and `destroy`. However, there is nothing preventing you from routing URLs to any methods you want in the controllers, such as we've seen with `index` above.
 
 Websocket routes are supported too.
 
@@ -364,7 +364,7 @@ Amber::Server.configure do |app|
 end
 ```
 
-Within "routes", the following commands are available:
+Within "routes" blocks the following commands are available:
 
 ```crystal
 get, post, put, patch, delete, options, head, trace, connect, websocket, resources
@@ -376,13 +376,9 @@ Most of these actions correspond to the respective HTTP methods; `websocket` def
     macro resources(resource, controller, only = nil, except = nil)
 ```
 
-So unless `resources` is confined with arguments `only` or `except`, it will automatically define `get`, `post`, `put`, `patch`, and `delete` routes for your resource and route them to the following methods in the controller:
+Unless `resources` is confined with arguments `only` or `except`, it will automatically route `get`, `post`, `put`/`patch`, and `delete` HTTP methods to methods `index`, `show, `new`, `edit`, `create`, `update`, and `destroy` on the controller.
 
-```crystal
-index, new, create, show, edit, update, destroy
-```
-
-Please note that it is not currently possible to define a different behavior for HEAD and GET methods on the same path. If a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
+Please note that it is not currently possible to define a different behavior for GET and HEAD HTTP methods on the same path. If a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
 
 # Views<a name="views"></a>
 
