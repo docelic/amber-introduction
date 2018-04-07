@@ -308,7 +308,7 @@ end
 Within "routes" blocks the following commands are available:
 
 ```crystal
-get, post, put, patch, delete, options, head, trace, connect, websocket, resources
+get, post, put (or patch), delete, options, head, trace, connect, websocket, resources
 ```
 
 Most of these actions correspond to the respective HTTP methods; `websocket` defines websocker routes; and `resources` is a macro defined as:
@@ -317,7 +317,7 @@ Most of these actions correspond to the respective HTTP methods; `websocket` def
     macro resources(resource, controller, only = nil, except = nil)
 ```
 
-Unless `resources` is confined with arguments `only` or `except`, it will automatically route `get`, `post`, `put`/`patch`, and `delete` HTTP methods to methods `index`, `show`, `new`, `edit`, `create`, `update`, and `destroy` on the controller.
+Unless `resources` is confined with arguments `only` or `except`, it will automatically route `get`, `post`, `put/patch`, and `delete` HTTP methods to methods `index`, `show`, `new`, `edit`, `create`, `update`, and `destroy` on the controller.
 
 Please note that it is not currently possible to define a different behavior for GET and HEAD HTTP methods on the same path. If a GET is defined, it will also automatically add the matching HEAD route. Specifying HEAD route manually would then result in two HEAD routes existing for the same path and trigger `Amber::Exceptions::DuplicateRouteError`.
 
@@ -363,7 +363,9 @@ First, because the copying does not work for data other than basic types (e.g. s
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
-Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
+Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). The feature request to make rendering engines includable/choosable at will was refused by the Amber project, so if you are bothered that the default `render` macro is present in your application even though you do not use it, simply comment the line `include Helpers::Render` in Amber's [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
+
+Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
 
 Altogether, a working example for rendering Liquid templates in Amber would look like the following:
 
