@@ -348,7 +348,7 @@ In the introduction we've mentioned that Amber supports two template languages &
 
 That's because Amber ships with a minimal working layout (a total of 3 files) in those languages, but there is nothing preventing you from using any other languages if you have your own templates or want to convert existing ones.
 
-Amber's default rendering model is based on [Kilt](https://github.com/jeromegn/kilt), so all languages supported by Kilt should be usable out of the box. Amber does not make assumptions about the template language used; the view file's extension will determine which parser will be invoked (e.g. ".ecr" for ecr, ".slang" for slang).
+Amber's default rendering engine is [Kilt](https://github.com/jeromegn/kilt), so all languages supported by Kilt should be usable out of the box. Amber does not make assumptions about the template language used; the view file's extension will determine which parser will be invoked (e.g. ".ecr" for ecr, ".slang" for slang).
 
 ### Liquid Template Language
 
@@ -363,7 +363,7 @@ First, because the copying does not work for data other than basic types (e.g. s
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
-Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` directly. Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
+Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
 
 Altogether, a working example for rendering Liquid templates in Amber would look like the following:
 
