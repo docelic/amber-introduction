@@ -365,7 +365,7 @@ Also, Amber's `render` macro does not accept extra arguments, so a custom contex
 
 Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). The pull request [#610](https://github.com/amberframework/amber/pull/610) to make rendering engines includable/choosable at will was refused by the Amber project, so if you are bothered that the default `render` macro is present in your application even though you do not use it, simply comment the line `include Helpers::Render` in Amber's [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
-Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter which is used to access `HTTP::Server::Context` object.
+Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter that is used to access `HTTP::Server::Context` object.
 
 Altogether, a working example for rendering Liquid templates in Amber would look like the following:
 
@@ -450,7 +450,7 @@ def initialize(@context : HTTP::Server::Context)
 end
 ```
 
-In other words, `params` object is initialized using raw params passed with the request (i.e. `context.params`). From there, it is important to know that `params` object contains 4 important variables:
+In other words, `params` object is initialized using raw params passed with the request (i.e. `context.params`). From there, it is important to know that `params` object contains 4 important variables (getters):
 
 1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there also affect `context.params`
 1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`
@@ -458,6 +458,8 @@ In other words, `params` object is initialized using raw params passed with the 
 1. `params.errors` - this is a list of all eventual errors that have ocurred during validation with `valid?` or `validate!`. This list is re-initialized on every call to `valid?` or `validate!`
 
 And this is basically all there is to it. From here you should have a complete understanding how to work with params validation in Amber.
+
+(TODO: Add info on model validations)
 
 # Static Pages
 
