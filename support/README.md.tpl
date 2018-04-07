@@ -241,7 +241,7 @@ All routes belong to a certain pipeline (like "web", "api", or similar). When a 
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes commands `amber routes` and `amber pipes` to display the relevant information. By default, the outputs look like the following:
+Amber includes commands `amber routes` and `amber pipelines` to display the relevant information. By default, the outputs look like the following:
 
 ```shell
 $ amber routes
@@ -250,9 +250,9 @@ $ amber routes
 ```
 
 ```shell
-$ amber pipes
+$ amber pipelines
 
-[[[cd app && amber pipes --no-color]]]
+[[[cd app && amber pipelines --no-color]]]
 ```
 
 From the first line of the output we see that a "GET /" request will cause all pipes in the pipeline "web" to be executed, and then

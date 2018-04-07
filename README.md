@@ -291,7 +291,7 @@ All routes belong to a certain pipeline (like "web", "api", or similar). When a 
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
-Amber includes commands `amber routes` and `amber pipes` to display the relevant information. By default, the outputs look like the following:
+Amber includes commands `amber routes` and `amber pipelines` to display the relevant information. By default, the outputs look like the following:
 
 ```shell
 $ amber routes
@@ -309,55 +309,35 @@ $ amber routes
 ```
 
 ```shell
-$ amber pipes
+$ amber pipelines
 
 
-Amber - Command Line Interface
+╔════════╦═════════════════════════════╗
+║ Pipe   | Plug                        ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::PoweredByAmber ║
+╠────────┼─────────────────────────────╣
+║ web    | Citrine::I18n::Handler      ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::Error          ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::Logger         ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::Session        ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::Flash          ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::CSRF           ║
+╠────────┼─────────────────────────────╣
+║ web    | Amber::Pipe::Reload         ║
+╠────────┼─────────────────────────────╣
+║ static | Amber::Pipe::PoweredByAmber ║
+╠────────┼─────────────────────────────╣
+║ static | Amber::Pipe::Error          ║
+╠────────┼─────────────────────────────╣
+║ static | Amber::Pipe::Static         ║
+╚════════╩═════════════════════════════╝
 
-  The `amber new` command creates a new Amber application with a default
-  directory structure and configuration at the path you specify.
-
-  You can specify extra command-line arguments to be used every time
-  `amber new` runs in the .amber.yml configuration file in your project
-  root directory
-
-  Note that the arguments specified in the .amber.yml file does not affect the
-  defaults values shown above in this help message.
-
-  Usage:
-  amber new [app_name] -d [pg | mysql | sqlite] -t [slang | ecr] -m [granite, crecto] --deps
-
-Subcommands:
-  d          alias for deploy
-  database   # Performs database migrations and maintenance tasks
-  db         alias for database
-  deploy     # Provisions server and deploys project.
-  e          alias for encrypt
-  encrypt    # Encrypts environment YAML file. [env | -e --editor | --noedit]
-  exec       # Executes Crystal code within the application scope
-  g          alias for generate
-  generate   # Generate Amber classes
-  n          alias for new
-  new        # Generates a new Amber project
-  pipelines
-  routes     # Prints all defined application routes
-  w          alias for watch
-  watch      # Starts amber development server and rebuilds on file changes
-  x          alias for exec
-
-Options:
-  -d, --database  # Preconfigure for selected database. Options: pg | mysql | sqlite
-                  (default: pg)
-  -m, --model     # Preconfigure for selected model. Options: granite | crecto
-                  (default: granite)
-  -t, --template  # Preconfigure for selected template engine. Options: slang | ecr
-                  (default: slang)
-  -h, --help      # Describe available commands and usages
-  -v, --version   # Prints Amber version
-
-Example:
-  amber new ~/Code/Projects/weblog
-  This generates a skeletal Amber installation in ~/Code/Projects/weblog.
 
 ```
 
