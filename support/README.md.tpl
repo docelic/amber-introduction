@@ -824,17 +824,17 @@ For Number:
 [[[grep 'def ' amber/src/amber/extensions/number.cr]]]
 ```
 
-# Shards
+# Advanced Topics
+
+What follows is a collection of topics or notes which may or may not be of interest to you.
+
+## Shards
 
 Amber and all of its components depend on the following shards:
 
 [[[cat shards.txt]]]
 
 Only the parts that are used end up in the compiled project.
-
-# Advanced Topics
-
-What follows is a collection of topics or notes which may or may not be of interest to you.
 
 ## Useful Classes and Methods
 

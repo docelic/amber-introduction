@@ -48,8 +48,8 @@
 	1. [Asset Management Alternatives](#asset_management_alternatives)
 1. [Amber::Controller::Base](#amber__controller__base)
 1. [Extensions](#extensions)
-1. [Shards](#shards)
 1. [Advanced Topics](#advanced_topics)
+	1. [Shards](#shards)
 	1. [Useful Classes and Methods](#useful_classes_and_methods)
 1. [Support Routines](#support_routines)
 	1. [Starting the Server](#starting_the_server)
@@ -969,7 +969,11 @@ For Number:
 
 ```
 
-# Shards<a name="shards"></a>
+# Advanced Topics<a name="advanced_topics"></a>
+
+What follows is a collection of topics or notes which may or may not be of interest to you.
+
+## Shards<a name="shards"></a>
 
 Amber and all of its components depend on the following shards:
 
@@ -1056,10 +1060,6 @@ require "weak_ref"               CRYSTAL  Weak Reference class allowing referenc
 
 
 Only the parts that are used end up in the compiled project.
-
-# Advanced Topics<a name="advanced_topics"></a>
-
-What follows is a collection of topics or notes which may or may not be of interest to you.
 
 ## Useful Classes and Methods<a name="useful_classes_and_methods"></a>
 
