@@ -373,10 +373,10 @@ class HomeController < ApplicationController
     ctx = Liquid::Context.new
     ctx.set "process", { "pid" => Process.pid }
     
-    # This will default to src/views/[controller]/index.liquid
+    # This would default to src/views/[controller]/index.liquid
     Kilt.render "index.liquid", ctx
     
-    # This will render specific path relative to app base directory
+    # This would render specific path relative to app base directory
     Kilt.render "src/views/myview.liquid", ctx
   end
 end
@@ -386,7 +386,7 @@ end
 
 Amber logger (based on standard Crystal's class `Logger`) is initialized as soon as `require "amber"` is called, as part of reading the settings and initializing the environment.
 
-The variable containing the logger is `Amber.settings.logger` and, for convenience, it is also available as `Amber.logger`. In the context of a Controller, logger is also available as simply `logger`.
+The variable containing the logger is `Amber.settings.logger`. For convenience, it is also available as `Amber.logger`. In the context of a Controller, it is also available as simply `logger`.
 
 Controllers and views execute in the same class (the class of the controller), so calling the following anywhere in the controller or views will produce the expected log line:
 
@@ -403,7 +403,7 @@ The second, optional parameter passed to the log method will affect the displaye
 logger.warn "Starting up", "MySystem"
 ```
 
-Will result in the log line:
+would result in the log line:
 
 ```
 03:17:04 MySystem   | (WARN) Starting up
