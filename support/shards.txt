@@ -31,6 +31,7 @@ require "crustache"              EXTERNAL Template language, {{Mustache}} for Cr
 require "ecr"                    CRYSTAL  Template language, Embedded Crystal (ECR)
 require "kilt"                   EXTERNAL Generic template interface
 require "kilt/slang"             EXTERNAL Kilt support for Slang template language
+require "liquid"                 EXTERNAL Template language, used by Amber for recipe templates
 require "slang"                  EXTERNAL Template language, inspired by Slim
 require "temel"                  EXTERNAL Template language, extensible Markup DSL
 
@@ -77,4 +78,5 @@ require "tempfile"               CRYSTAL  Managing temporary files
 require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
 require "uuid"                   
 require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
+require "zip"                    EXTERNAL Zip compression library, used for fetching zipped recipes
 ```
