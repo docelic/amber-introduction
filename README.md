@@ -42,6 +42,7 @@
 		1. [Manual Error Responses](#manual_error_responses)
 		1. [Error Responses via Error Pipe](#error_responses_via_error_pipe)
 1. [Assets Pipeline](#assets_pipeline)
+	1. [Adding jQuery and jQuery UI](#adding_jquery_and_jquery_ui)
 	1. [Resource Aliases](#resource_aliases)
 	1. [CSS Optimization / Minification](#css_optimization___minification)
 	1. [File Copying](#file_copying)
@@ -754,6 +755,38 @@ The JS resources are bundled to `main.bundle.js` and CSS resources are bundled t
 To include additional .js or .css/.scss files you would generally add `import "../../file/path";` statements to `src/assets/javascripts/main.js`. You add both JS and CSS includes into `main.js` because webpack only processes import statements in .js files. So you must add the CSS import lines to a .js file, and as a result, this will produce a JS bundle that contains both JS and CSS data in it. Then, webpack's plugin named ExtractTextPlugin (part of default configuration) is used to extract CSS parts into their own bundle.
 
 The base/common configuration for all this is in `config/webpack/common.js`.
+
+## Adding jQuery and jQuery UI<a name="adding_jquery_and_jquery_ui"></a>
+
+As an example, we can add the jQuery and jQuery UI libraries to an Amber project.
+
+The procedure would be as follows:
+
+```bash
+cd src/assets/javascripts
+
+# Download jQuery
+wget https://code.jquery.com/jquery-3.3.1.js
+
+# Then download jQuery UI from http://jqueryui.com/download/ to the same/current directory
+# And unpack it:
+unzip jquery-ui-1.12.1.custom.zip
+
+# Then edit main.js and add the import lines:
+import './jquery-3.3.1.min.js'
+import './jquery-ui-1.12.1.custom/jquery-ui.css'
+import './jquery-ui-1.12.1.custom/jquery-ui.js'
+import './jquery-ui-1.12.1.custom/jquery-ui.structure.css'
+import './jquery-ui-1.12.1.custom/jquery-ui.theme.css'
+
+# And finally, edit ../../../config/webpack/common.js to add jquery resource alias:
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, '../../src/assets/javascripts/jquery-3.3.1.min.js')
+    }
+```
+
+And that's it. At the next application build (e.g. with `amber watch`) all the mentioned resources and images will be compiled, placed to `public/dist/`, and included in the CSS/JS files.
 
 ## Resource Aliases<a name="resource_aliases"></a>
 

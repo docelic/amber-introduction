@@ -688,6 +688,38 @@ To include additional .js or .css/.scss files you would generally add `import ".
 
 The base/common configuration for all this is in `config/webpack/common.js`.
 
+## Adding jQuery and jQuery UI
+
+As an example, we can add the jQuery and jQuery UI libraries to an Amber project.
+
+The procedure would be as follows:
+
+```bash
+cd src/assets/javascripts
+
+#: Download jQuery
+wget https://code.jquery.com/jquery-3.3.1.js
+
+#: Then download jQuery UI from http://jqueryui.com/download/ to the same/current directory
+#: And unpack it:
+unzip jquery-ui-1.12.1.custom.zip
+
+#: Then edit main.js and add the import lines:
+import './jquery-3.3.1.min.js'
+import './jquery-ui-1.12.1.custom/jquery-ui.css'
+import './jquery-ui-1.12.1.custom/jquery-ui.js'
+import './jquery-ui-1.12.1.custom/jquery-ui.structure.css'
+import './jquery-ui-1.12.1.custom/jquery-ui.theme.css'
+
+#: And finally, edit ../../../config/webpack/common.js to add jquery resource alias:
+  resolve: {
+    alias: {
+      jquery: path.resolve(__dirname, '../../src/assets/javascripts/jquery-3.3.1.min.js')
+    }
+```
+
+And that's it. At the next application build (e.g. with `amber watch`) all the mentioned resources and images will be compiled, placed to `public/dist/`, and included in the CSS/JS files.
+
 ## Resource Aliases
 
 Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. For example, you would add the following to the "resolve" section in `config/webpack/common.js`:
