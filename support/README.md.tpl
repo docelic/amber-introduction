@@ -703,7 +703,7 @@ cd src/assets/javascripts
 wget https://code.jquery.com/jquery-3.3.1.js
 
 #: Then download jQuery UI from http://jqueryui.com/download/ to the same/current directory
-#: And unpack it:
+#: and unpack it:
 unzip jquery-ui-1.12.1.custom.zip
 
 #: Then edit main.js and add the import lines:
