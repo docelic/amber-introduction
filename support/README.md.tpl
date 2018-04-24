@@ -692,6 +692,8 @@ The base/common configuration for all this is in `config/webpack/common.js`.
 
 As an example, we can add the jQuery and jQuery UI libraries to an Amber project.
 
+Please note that we are going to unpack the jQuery UI zip file directly into `src/assets/javascripts/` even though it contains some CSS and images. This is done because splitting the different asset types out to individual directories would be harder to do and maintain over time (e.g. paths in jQuery UI CSS files pointing to "images/" would no longer work, and updating the version later would be more complex).
+
 The procedure would be as follows:
 
 ```bash
@@ -714,6 +716,7 @@ import './jquery-ui-1.12.1.custom/jquery-ui.theme.css'
 #: And finally, edit ../../../config/webpack/common.js to add jquery resource alias:
   resolve: {
     alias: {
+			amber: path.resolve(__dirname, '../../lib/amber/assets/js/amber.js'),
       jquery: path.resolve(__dirname, '../../src/assets/javascripts/jquery-3.3.1.min.js')
     }
 ```
