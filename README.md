@@ -784,7 +784,7 @@ import './jquery-ui-1.12.1.custom/jquery-ui.theme.css'
 # And finally, edit ../../../config/webpack/common.js to add jquery resource alias:
   resolve: {
     alias: {
-			amber: path.resolve(__dirname, '../../lib/amber/assets/js/amber.js'),
+      amber: path.resolve(__dirname, '../../lib/amber/assets/js/amber.js'),
       jquery: path.resolve(__dirname, '../../src/assets/javascripts/jquery-3.3.1.min.js')
     }
 ```
@@ -793,13 +793,24 @@ And that's it. At the next application build (e.g. with `amber watch`) all the m
 
 ## Resource Aliases<a name="resource_aliases"></a>
 
-Sometimes, the code or libraries you include will in turn require libraries by generic name, e.g. "jquery". Since the files on disk are named in a different way, you would use webpack's configuration to instruct it how to resolve those paths to real locations. For example, you would add the following to the "resolve" section in `config/webpack/common.js`:
+Sometimes, the code or libraries you include will in turn require other libraries by their generic name, e.g. "jquery". Since a file named "jquery" does not actually exist on disk (or at least not in the location that is searched), this could result in an error such as:
+
+```
+ERROR in ./src/assets/javascripts/jquery-ui-1.12.1.custom/jquery-ui.js
+Module not found: Error: Can't resolve 'jquery' in '.../src/assets/javascripts/jquery-ui-1.12.1.custom'
+ @ ./src/assets/javascripts/jquery-ui-1.12.1.custom/jquery-ui.js 5:0-26
+  @ ./src/assets/javascripts/main.js
+```
+
+The solution is to add resource aliases to webpack's configuration which will instruct it where to find the real files if/when they are referenced by their alias.
+
+For example, to resolve "jquery", you would add the following to the "resolve" section in `config/webpack/common.js`:
 
 ```
 ...
   resolve: {
     alias: {
-      jquery: path.resolve(__dirname, '../../vendor/mylibs/jquery-3.2.1.min.js'),
+      jquery: path.resolve(__dirname, '../../src/assets/javascripts/jquery-3.3.1.min.js')
     }
   }
 ...
