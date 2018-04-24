@@ -694,7 +694,7 @@ As an example, we can add the jQuery and jQuery UI libraries to an Amber project
 
 Please note that we are going to unpack the jQuery UI zip file directly into `src/assets/javascripts/` even though it contains some CSS and images. This is done because splitting the different asset types out to individual directories would be harder to do and maintain over time (e.g. paths in jQuery UI CSS files pointing to "images/" would no longer work, and updating the version later would be more complex).
 
-The procedure would be as follows:
+The whole procedure would be as follows:
 
 ```bash
 cd src/assets/javascripts
