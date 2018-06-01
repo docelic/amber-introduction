@@ -9,6 +9,7 @@ require "http/client"            CRYSTAL  HTTP Client
 require "http/headers"           CRYSTAL  HTTP Headers
 require "http/params"            CRYSTAL  Collection of HTTP parameters and their values
 require "http/server"            CRYSTAL  HTTP Server
+require "http/server/handler"    CRYSTAL  HTTP Server's support for "handlers" (middleware)
 require "quartz_mailer"          AMBER    Sending and receiving emails
 require "email"                  EXTERNAL Simple email sending library
 require "radix"                  EXTERNAL Radix Tree implementation
