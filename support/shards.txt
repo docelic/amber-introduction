@@ -67,10 +67,10 @@ require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Cry
 require "crypto/subtle"          CRYSTAL
 require "file_utils"             CRYSTAL  Supporting functions for files and directories
 require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
-require "inflector"
+require "inflector"              EXTERNAL Inflector for Crystal (a port of Ruby's ActiveSupport::Inflector)
 require "process"                CRYSTAL  Supporting functions for working with system processes
 require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
-require "selenium"
+require "selenium"               EXTERNAL Selenium Webdriver client
 require "socket"                 CRYSTAL  Supporting functions for working with sockets
 require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
 require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
@@ -78,7 +78,7 @@ require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" styl
 require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
 require "tempfile"               CRYSTAL  Managing temporary files
 require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
-require "uuid"
+require "uuid"                   CRYSTAL  Functions related to Universally unique identifiers (UUIDs)
 require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
 require "zip"                    EXTERNAL Zip compression library, used for fetching zipped recipes
 ```
