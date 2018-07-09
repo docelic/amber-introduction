@@ -545,7 +545,7 @@ routes :web, "/page" do
 end
 ```
 
-Then, we edit the controller and actually add method about(). This method can just directly return a string in response, or it can render a view. In any case, the final return value will be returned as the response body to the client, as usual.
+Then, we edit the controller and actually add method about(). This method can just directly return a string in response, or it can render a view. In any case, the return value from the method will be returned as the response body to the client, as usual.
 
 ```shell
 $ vi src/controllers/page_controller.cr
@@ -571,7 +571,7 @@ Hello, World!
 
 Because we have called render() without additional arguments, the template will default to being rendered within the default application layout, `views/layouts/application.cr`.
 
-And that is it! The request for `/page/about` will reach the router, the router will invoke `PageController::about()`, the method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, and that result will be returned to the client as response body.
+And that is it! The request for `/page/about` will reach the router, the router will invoke `PageController.new.about()`, that method will render template `src/views/page/about.ecr` in the context of layout `views/layouts/application.cr`, the result of rendering will be a full page with content `Hello, World!` in the body, and that result will be returned to the client as response body.
 
 # Variables in Views<a name="variables_in_views"></a>
 
@@ -592,7 +592,7 @@ $ vi src/views/page/about.ecr
 Hello, World! The time is now <%= time %>.
 ```
 
-To further confirm that the templates also implicitly run as part of the same controller that handled the request, you could place e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means all the instance variables existing on the controller object are available in the templates as well.
+To further confirm that the templates also implicitly run in the same controller objectthat handled the request, you could place e.g. "<%= self.class %> in the above example; the response would be "PageController". So in addition to seeing the method's local variables, it means that all instance variables and methods existing on the controller object are readily available in the templates as well.
 
 # More on Database Commands<a name="more_on_database_commands"></a>
 
