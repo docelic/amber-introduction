@@ -221,7 +221,7 @@ More elaborate application frameworks like Amber provide many more features and 
 
 These components are in general terminology called "middleware". Crystal calls them "handlers", and Amber calls them "pipes". In any case, in Amber applications they all refer to the same thing &mdash; classes that `include` Crystal's module [HTTP::Handler](https://crystal-lang.org/api/0.24.2/HTTP/Handler.html) and that implement method `def call(context)`. (So in Amber, this functionality is based on Crystal's HTTP server's built-in support for handlers/pipes.)
 
-Pipes work in such a way that invoking the pipes is not automatic, but each pipe must explicitly invoke `call_next(context)` to call the next pipe in a row. This is actually desirable because it makes it possible to call the next pipe at exactly the right place in the code where you want it &mdash; at the beginning, in the middle, or at the end of your current pipe's code.
+Pipes work in such a way that invoking the pipes is not automatic, but each pipe must explicitly invoke `call_next(context)` to call the next pipe in a row. This is actually desirable because it makes it possible to call the next pipe at exactly the right place in the code where you want it and if you want it &mdash; at the beginning, in the middle, or at the end of your current pipe's code, or not at all.
 
 The request and response data that pipes need in order to run and do anything meaningful is passed as the first argument to every pipe, and is by convention named "context".
 
@@ -237,9 +237,9 @@ Additionally, in Amber there exists a concept of "pipelines". Pipelines are logi
 
 Before expanding the information on pipes and pipelines, let's explain the concept of routes.
 
-Routes connect incoming requests (HTTP methods and paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches wins.
+Routes connect incoming requests (HTTP methods and URL paths) to specific controllers and controller methods in your application. Routes are checked in the order they are defined and the first route that matches wins.
 
-All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, Amber simply executes all pipes in the pipeline under which that route has been defined. The last pipe in every pipeline is implicitly the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe which goes back to the route's configuration and actually instantiates the controller class that was specified in the route and calls the specified method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the pipeline and it is executed unless processing stops in one of the earlier pipes.
+All routes belong to a certain pipeline (like "web", "api", or similar). When a route matches, Amber simply executes all pipes in the pipeline under which that route has been defined. The last pipe in every pipeline is implicitly the pipe named "[Controller](https://github.com/amberframework/amber/blob/master/src/amber/pipes/controller.cr)". That's the pipe which actually looks into the original route, instantiates the specified controller, and calls the specified method in it. Please note that this is currently non-configurable &mdash; the controller pipe is always automatically added as the last pipe in the pipeline and it is executed unless processing stops in one of the earlier pipes.
 
 The configuration for pipes, pipelines, and routes is found in the file `config/routes.cr`. This file invokes the same `configure` block that `config/application.cr` does, but since routes configuration is important and can also be lengthy and complex, Amber keeps it in a separate file.
 
