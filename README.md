@@ -243,7 +243,7 @@ amber db version
 ```
 
 Before these commands will work, you will need to configure database
-credentials:
+credentials as follows:
 
 First, create a user to access the database. For PostgreSQL, this is done by invoking something like:
 
