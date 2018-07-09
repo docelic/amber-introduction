@@ -4,12 +4,12 @@ readme_SOURCES=$(shell find -maxdepth 1 -type f)
 
 amber:
 	git clone https://github.com/amberframework/amber
-	cd amber && crystal deps
+	cd amber && shards
 	cd amber && make
 
 app: amber
 	amber/bin/amber new app
-	cd app && crystal deps
+	cd app && shards
 
 .PHONY: diffs
 diffs:

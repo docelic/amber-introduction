@@ -29,7 +29,7 @@ my %terms= (
   'selenium-webdriver-crystal'  =>  'ysbaddaden/selenium-webdriver-crystal - Selenium Webdriver client',
 );
 
-our @shards= `cd amber && crystal deps list | tail -n +2 | awk '{ print \$2 }' | sort |uniq`;
+our @shards= `cd amber && shards list | tail -n +2 | awk '{ print \$2 }' | sort |uniq`;
 
 my $tpl= slurp 'README.md.tpl';
 
