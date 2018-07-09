@@ -867,7 +867,6 @@ And as usual, you need to run `npm install` for the plugin to be installed (save
 Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
-```
 
 # Advanced Topics<a name="advanced_topics"></a>
 
