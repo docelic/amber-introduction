@@ -47,9 +47,9 @@
 	1. [CSS Optimization / Minification](#css_optimization___minification)
 	1. [File Copying](#file_copying)
 	1. [Asset Management Alternatives](#asset_management_alternatives)
-1. [Amber::Controller::Base](#amber__controller__base)
-1. [Extensions](#extensions)
 1. [Advanced Topics](#advanced_topics)
+	1. [Amber::Controller::Base](#amber__controller__base)
+	1. [Extensions](#extensions)
 	1. [Shards](#shards)
 	1. [Environments](#environments)
 	1. [Starting the Server](#starting_the_server)
@@ -598,7 +598,7 @@ To further confirm that the templates also implicitly run in the same controller
 
 ## Micrate<a name="micrate"></a>
 
-As already mentioned, Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
+Amber relies on the shard "[micrate](https://github.com/amberframework/micrate)" to perform migrations. The command `amber db` uses "micrate" unconditionally. However, some of all the possible database operations are only available through `amber db` and some are only available through invoking `micrate` directly. Therefore, it is best to prepare the application for using both `amber db` and `micrate`.
 
 Micrate is primarily a library so a small piece of custom code is required to provide the minimal `micrate` executable for a project. This is done by placing the following in `src/micrate.cr` (the example is for PostgreSQL but could be trivially adapted to MySQL or SQLite):
 
@@ -625,7 +625,7 @@ targets:
 
 From there, running `shards build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please run `bin/micrate -h` to see an overview of its commands.
 
-Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably.
+Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and interchangeably.
 
 To have your database migrations run with different credentials than your regular Amber app, simply create new environments in `config/environments/` and prefix your command lines with `AMBER_ENV=...`. For example, you could copy and modify `config/environments/development.yml` into `config/environments/development_admin.yml`, change the credentials as appropriate, and then run migrations as admin using `AMBER_ENV=development_admin ./bin/amber db migrate`.
 
@@ -867,8 +867,13 @@ And as usual, you need to run `npm install` for the plugin to be installed (save
 Maybe it would be useful to replace Webpack with e.g. [Parcel](https://parceljs.org/). (Finding a non-js/non-node/non-npm application for this purpose would be even better; please let me know if you know one.)
 
 In general it seems it shouldn't be much more complex than replacing the command to run and development dependencies in project's `package.json` file.
+```
 
-# Amber::Controller::Base<a name="amber__controller__base"></a>
+# Advanced Topics<a name="advanced_topics"></a>
+
+What follows is a collection of advanced topics which can be read or skipped on an individual basis.
+
+## Amber::Controller::Base<a name="amber__controller__base"></a>
 
 This is the base controller from which all other controllers inherit. Source file is in [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
@@ -968,7 +973,7 @@ end
     macro after_action
 ```
 
-# Extensions<a name="extensions"></a>
+## Extensions<a name="extensions"></a>
 
 Amber adds some very convenient extensions to the existing String and Number classes. The extensions are in the [extensions/](https://github.com/amberframework/amber/tree/master/src/amber/extensions) directory. They are useful in general, but particularly so when writing param validation rules. Here's the listing of currently available extensions:
 
@@ -1014,11 +1019,6 @@ For Number:
       def between?(range)
       def gteq?(num)
 
-```
-
-# Advanced Topics<a name="advanced_topics"></a>
-
-What follows is a collection of advanced topics which can be read or skipped on an individual basis.
 
 ## Shards<a name="shards"></a>
 
