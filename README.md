@@ -437,10 +437,10 @@ class HomeController < ApplicationController
     ctx = Liquid::Context.new
     ctx.set "process", { "pid" => Process.pid }
 
-    # This would default to src/views/[controller]/index.liquid
+    # The following would render src/views/[controller]/index.liquid
     Kilt.render "index.liquid", ctx
 
-    # This would render specific path relative to app base directory
+    # The following would render specified path, relative to app base directory
     Kilt.render "src/views/myview.liquid", ctx
   end
 end
