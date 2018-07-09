@@ -1018,6 +1018,7 @@ For Number:
       def between?(range)
       def gteq?(num)
 
+```
 
 ## Shards<a name="shards"></a>
 

@@ -872,6 +872,7 @@ For Number:
 
 ```crystal
 [[[grep 'def ' amber/src/amber/extensions/number.cr]]]
+```
 
 ## Shards
 
