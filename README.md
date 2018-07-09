@@ -95,7 +95,7 @@ targets:
 
 ```
 
-Thanks to it, running `crystal deps build amber` will compile local Amber found in `lib/amber/` and place the executable into the project's local file `bin/amber`.
+Thanks to it, running `shards build amber` will compile local Amber found in `lib/amber/` and place the executable into the project's local file `bin/amber`.
 
 # Creating New Amber App<a name="creating_new_amber_app"></a>
 
@@ -118,13 +118,13 @@ Supported migrations engine is [micrate](https://github.com/amberframework/micra
 
 Micrate is very simple and you basically write raw SQL in your migrations. There are just two keywords in the migration files which give instructions whether the SQLs that follow pertain to migrating up or down. These keywords are "-- +micrate Up" and "-- +micrate Down". If you have complex SQL statements that contain semicolons then you also enclose each in "-- +micrate StatementBegin" and "-- +micrate StatementEnd".
 
-Finally, if argument `--deps` is provided, Amber will automatically run `crystal deps` in the new project's directory after creation to download the shards required by the project.
+Finally, if argument `--deps` is provided, Amber will automatically run `shards` in the new project's directory after creation to download the shards required by the project.
 
 Please note that shards-related commands use the directory `.shards/` as local staging area before the contents are fully ready to replace shards in `lib/`.
 
 # Running the App<a name="running_the_app"></a>
 
-The app can be started as soon as you have created it and ran `crystal deps` in the app directory.
+The app can be started as soon as you have created it and ran `shards` in the app directory.
 (It is not necessary to run deps if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
 Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is just compiled, executed, and then discarded.
@@ -151,7 +151,7 @@ To build the application in a simple and effective way, you would run the follow
 
 ```shell
 # For production, compiles app with optimizations and places it in bin/<app_name>.
-crystal deps build <app_name> --production
+shards build <app_name> --production
 ```
 
 To build the application in a more manual way, skip dependency checking, and control more of the options, you would run:
@@ -250,8 +250,8 @@ First, create a user to access the database. For PostgreSQL, this is done by inv
 ```shell
 $ sudo su - postgres
 $ createuser -dElPRS myuser
-Enter password for new role: 
-Enter it again: 
+Enter password for new role:
+Enter it again:
 ```
 
 Then, edit `config/environments/development.yml` and configure "database_url:" to match your settings. If nothing else, the part that says "postgres:@" should be replaced with "yourusername:yourpassword@".
@@ -436,10 +436,10 @@ class HomeController < ApplicationController
   def index
     ctx = Liquid::Context.new
     ctx.set "process", { "pid" => Process.pid }
-    
+
     # This would default to src/views/[controller]/index.liquid
     Kilt.render "index.liquid", ctx
-    
+
     # This would render specific path relative to app base directory
     Kilt.render "src/views/myview.liquid", ctx
   end
@@ -623,7 +623,7 @@ targets:
     main: src/micrate.cr
 ```
 
-From there, running `crystal deps build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please run `bin/micrate -h` to see an overview of its commands.
+From there, running `shards build micrate` would build `bin/micrate` which you could use as an executable to access micrate's functionality directly. Please run `bin/micrate -h` to see an overview of its commands.
 
 Please note that the described procedure sets up `bin/micrate` and `amber db` in a compatible way so these commands can be used cooperatively and/or interchangeably.
 
