@@ -19,6 +19,7 @@ require "teeplate"               AMBER    Rendering multiple template files
 require "big"                    EXTERNAL BigRational for numeric. Retains precision, requires LibGMP
 require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
 require "db"                     CRYSTAL  Common DB API
+require "pool/connection"        CRYSTAL  Part of Crystal's common DB API
 require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
 require "micrate"                EXTERNAL Database migration tool
 require "mysql"                  CRYSTAL  MySQL connector
@@ -63,13 +64,13 @@ require "callback"               EXTERNAL Defining and invoking callbacks
 require "compiled_license"       EXTERNAL Compile in LICENSE files from project and dependencies
 require "compiler/crystal/syntax/*" CRYSTAL Crystal syntax parser
 require "crypto/bcrypt/password" CRYSTAL  Generating, reading, and verifying Crypto::Bcrypt hashes
-require "crypto/subtle"          CRYSTAL  
+require "crypto/subtle"          CRYSTAL
 require "file_utils"             CRYSTAL  Supporting functions for files and directories
 require "i18n"                   EXTERNAL Underlying I18N shard for Crystal
-require "inflector"              
+require "inflector"
 require "process"                CRYSTAL  Supporting functions for working with system processes
 require "random/secure"          CRYSTAL  Generating random numbers from a secure source provided by system
-require "selenium"               
+require "selenium"
 require "socket"                 CRYSTAL  Supporting functions for working with sockets
 require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
 require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
@@ -77,7 +78,7 @@ require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" styl
 require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
 require "tempfile"               CRYSTAL  Managing temporary files
 require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
-require "uuid"                   
+require "uuid"
 require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
 require "zip"                    EXTERNAL Zip compression library, used for fetching zipped recipes
 ```
