@@ -392,11 +392,11 @@ Information about views can be summarized in the following bullet points:
 - The first argument given to `render()` is the template name (e.g. `render("index.slang")`)
 - `render("index.slang")` will look for a view named `src/views/<controller_name>/index.slang`
 - `render("./abs/or/rel/path.slang")` will look for a template in that specific path
-- If we are not rendering a partial, by default the template will be wrapped in a layout
-- If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
 - There is no unnecessary magic applied to template names &mdash; names specified are the names that will be looked up on disk
-- Partials begin with "\_" by convention, but that is not required. If they are named with "\_", then the "\_" must be mentioned as part of the name
+- If you are not rendering a partial, by default the template will be wrapped in a layout
+- If the layout name isn't specified, the default layout will be `views/layouts/application.slang`
 - To render a partial, use `render( partial: "_name.ext")`
+- Partials begin with "\_" by convention, but that is not required. If they are named with "\_", then the "\_" must be mentioned as part of the name
 - Templates are read from disk and compiled into the application at compile time. This makes them fast to access and also read-only which is a useful side-benefit
 
 The `render` macro is usually invoked at the end of the controller method. This makes its return value be the return value of the controller method as a whole, and as already mentioned, the controller method's return value is returned to the client as response body.
