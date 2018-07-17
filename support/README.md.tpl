@@ -361,7 +361,7 @@ Please note, however, that Liquid as a template language comes with non-typical 
 As such, Amber's principle of rendering the templates directly inside controller methods (and thus making all local variables automatically available in views) cannot be used because Liquid's context is separate and local variables are not there.
 
 Also, Liquid's implementation by default tries to be helpful and it automatically creates a new context. It copies all instance variables (@ivars) from the current object into the newly created context, which again cannot be used with Amber for two reasons.
-First, because the copying does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that should not or can not be serialized, so simply saying `render("index.liquid")` would result in a compile-time error in Crystal even if the template itself was empty.
+First, because the copying does not work for data other than basic types (e.g. saying `@process = Process` does not make `{{ process.pid }}` usable in a Liquid template). Second, because Amber's controllers already contain various instance variables that should not or can not be serialized, so even simply saying `render("index.liquid")` would result in a compile-time error in Crystal even if the template itself was empty.
 
 Also, Amber's `render` macro does not accept extra arguments, so a custom context can't be passed to Kilt and from there to Liquid.
 
