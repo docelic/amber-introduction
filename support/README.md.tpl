@@ -367,7 +367,7 @@ Also, Amber's `render` macro does not accept extra arguments, so a custom contex
 
 Therefore, the best approach to work with Liquid in Amber is to create a custom context, populate it with desired values, and then invoke `Kilt.render` macro directly (without using Amber's `render` macro). The pull request [#610](https://github.com/amberframework/amber/pull/610) to make rendering engines includable/choosable at will was refused by the Amber project, so if you are bothered that the default `render` macro is present in your application even though you do not use it, simply comment the line `include Helpers::Render` in Amber's [controller/base.cr](https://github.com/amberframework/amber/blob/master/src/amber/controller/base.cr).
 
-Please also keep in mind not to name Liquid's context "context" because that would take precedence over the `context` getter that is used to access `HTTP::Server::Context` object.
+Please also keep in mind not to use the name "context" for the variable that will hold Liquid's context, because that would take precedence over the `context` getter that already exists on the controllers and is used to access `HTTP::Server::Context` object.
 
 So, altogether, a working example for rendering Liquid templates in Amber would look like the following:
 
