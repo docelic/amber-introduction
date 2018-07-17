@@ -369,7 +369,7 @@ Therefore, the best approach to work with Liquid in Amber is to create a custom 
 
 Please also keep in mind not to use the name "context" for the variable that will hold Liquid's context, because that would take precedence over the `context` getter that already exists on the controllers and is used to access `HTTP::Server::Context` object.
 
-So, altogether, a working example for rendering Liquid templates in Amber would look like the following:
+So, altogether, a working example for rendering Liquid templates in Amber would look like the following (showing the complete controller code for clarity):
 
 ```
 class HomeController < ApplicationController
