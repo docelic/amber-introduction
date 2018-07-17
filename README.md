@@ -341,12 +341,12 @@ It gives you the following top-level commands/blocks:
 ```
 # Define a pipeline
 pipeline :name do
-  ...
+  # ... list of pipes ...
 end
 
 # Group a set of routes
 routes :pipeline_name, "/optional_path_prefix" do
-  ...
+  # ... list of routes ...
 end
 ```
 
