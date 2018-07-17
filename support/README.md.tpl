@@ -313,7 +313,7 @@ Within "routes" blocks the following commands are available:
 get, post, put (or patch), delete, options, head, trace, connect, websocket, resources
 ```
 
-Most of these actions correspond to the respective HTTP methods; `websocket` defines websocker routes; and `resources` is a macro defined as:
+Most of these actions correspond to the respective HTTP methods; `websocket` defines websocket routes; and `resources` is a macro defined as:
 
 ```crystal
     macro resources(resource, controller, only = nil, except = nil)
