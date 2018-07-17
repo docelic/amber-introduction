@@ -414,7 +414,7 @@ Amber's default rendering engine is [Kilt](https://github.com/jeromegn/kilt), so
 
 ### Liquid Template Language<a name="liquid_template_language"></a>
 
-The original [Kilt](https://github.com/jeromegn/kilt) repository [now has support](https://github.com/jeromegn/kilt/commit/bfd630f35c3d8392106ea984bc94bb6a8c21cb76) for the Liquid template language.
+The original [Kilt](https://github.com/jeromegn/kilt) repository now has support for the Liquid template language.
 
 Please note, however, that Liquid as a template language comes with non-typical requirements &mdash; primarily, it requires a separate store ("context") for user data which is to be available in templates, and also it does not allow arbitrary functions, objects, object methods, and data types to be used in its templates.
 
