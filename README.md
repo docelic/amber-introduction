@@ -1063,7 +1063,7 @@ require "liquid"                 EXTERNAL Template language, used by Amber for r
 require "slang"                  EXTERNAL Template language, inspired by Slim
 require "temel"                  EXTERNAL Template language, extensible Markup DSL
 
-------- Command Line, Logs, And Output --------------------------------------------------------------------
+------- Command Line, Logs, and Output --------------------------------------------------------------------
 require "cli"                    EXTERNAL Support for building command-line interface applications
 require "colorize"               CRYSTAL  Changing colors and text decorations
 require "logger"                 CRYSTAL  Simple but sophisticated logging utility
