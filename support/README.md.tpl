@@ -442,7 +442,7 @@ end
 
 With this foundation in place, let's take a step back to explain the underlying principles and also expand the full description:
 
-As you might know, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls `new` on it), and because all controllers inherit from `ApplicationController` (which in turn inherits from `Amber::Controller:Base`), the following code is executed as part of initialize:
+As already mentioned above, for every incoming request, Amber uses data from `config/routes.cr` to determine which controller and method in it should handle the request. Then it instantiates that controller (calls `new` on it), and because all controllers inherit from `ApplicationController` (which in turn inherits from `Amber::Controller:Base`), the following code is executed as part of initialize:
 
 ```crystal
 protected getter params : Amber::Validators::Params
@@ -452,7 +452,7 @@ def initialize(@context : HTTP::Server::Context)
 end
 ```
 
-In other words, `params` object is initialized using raw params passed with the request (i.e. `context.params`). From there, it is important to know that `params` object contains 4 important variables (getters):
+In other words, `params` object is initialized using raw params passed with the user's request (i.e. `context.params`). From there, it is important to know that `params` object contains 4 important variables (getters):
 
 1. `params.raw_params` - this is a reference to hash `context.params` created during initialize, and all methods invoked on `params` directly (such as `[]`, `[]?`, `[]=`, `add`, `delete`, `each`, `fetch`, etc.) are forwarded to this object. Please note that this is a reference and not a copy, so all modifications made there also affect `context.params`
 1. `params.rules` - this is initially an empty list of validation rules. It is filled in as validation rules are defined using `params.validation {...}`
