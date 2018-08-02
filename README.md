@@ -124,6 +124,8 @@ Please note that shards-related commands use the directory `.shards/` as local s
 
 # Running the App<a name="running_the_app"></a>
 
+Before building or running Amber applications, you should install the following system packages: `libevent-dev libgc-dev libxml2-dev libssl-dev libyaml-dev libcrypto++-dev libsqlite3-dev`. Doing that will install these commonly used header files.
+
 The app can be started as soon as you have created it and ran `shards` in the app directory.
 (It is not necessary to run `shards` if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
@@ -146,8 +148,6 @@ amber watch
 Amber apps by default use a feature called "port reuse" available in newer Linux kernels. If you get an error "setsockopt: Protocol not available" upon running the app, it means your kernel does not support it. Please edit `config/environments/development.yml` and set "port_reuse" to false.
 
 # Building the App and Build Troubleshooting<a name="building_the_app_and_build_troubleshooting"></a>
-
-Before trying to run or build Amber applications, you should install the following system packages to minimize the chance of some often used header files not being present on the system: `libevent-dev libgc-dev libxml2-dev libssl-dev libyaml-dev libcrypto++-dev libsqlite3-dev`.
 
 To build the application in a simple and effective way, you would run the following to produce executable file `bin/<app_name>`:
 
