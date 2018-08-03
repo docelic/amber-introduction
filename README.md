@@ -108,7 +108,7 @@ Supported databases are [PostgreSQL](https://www.postgresql.org/) (pg, default),
 Supported template languages are [slang](https://github.com/jeromegn/slang) (default) and [ecr](https://crystal-lang.org/api/0.21.1/ECR.html). (But any languages can be used; more on that can be found below in [Template Languages](#template_languages).)
 
 Slang is extremely elegant, but very different from the traditional perception of HTML.
-ECR is HTML-like, very similar to Ruby ERB, and also much less efficient than slang, but it may be the best choice for your application if you intend to use some HTML site template (e.g. from [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts the bulk of HTML pages into slang will relatively good accuracy.)
+ECR is HTML-like, very similar to Ruby ERB, and also much less efficient than slang, but it may be the best choice for your application if you intend to use some HTML site template (e.g. from [themeforest](https://themeforest.net/)) whose pages are in HTML + CSS or SCSS. (Or you could also try [html2slang](https://github.com/docelic/html2slang/) which converts the bulk of HTML pages into slang with relatively good accuracy.)
 
 Supported ORM models are [granite](https://github.com/amberframework/granite-orm) (default) and [crecto](https://github.com/Crecto/crecto).
 
