@@ -127,7 +127,7 @@ Crystal caches partial results of the compilation (*.o files etc.) under `~/.cac
 
 Sometimes building the app will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
 
-The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause and solution will be determined easily. Usually some libraries or headers will be missing, such as those mentioned above in [Running the App](#running_the_app).
+The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause and solution will be determined easily. Usually some library or header files will be missing, such as those mentioned above in [Running the App](#running_the_app).
 
 There are some issues with the `libgc` library here and there. In my case the solution was to reinstall system's package `libgc-dev`.
 
@@ -908,7 +908,7 @@ It is important to explain exactly what happens from the time you run the applic
 1. `crystal src/<app_name>.cr` - you or a script starts Amber
 	1. `require "../config/*"` - as the first thing, `config/*` is required. Inclusion is in alphabetical order. Crystal only looks for *.cr files and only files in config/ are loaded (no subdirectories)
 		1. `require "../config/application.cr"` - this is usually the first file in `config/`
-			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including in subdirectories. Inclusion is always current-dir first, then depth
+			1. `require "./initializers/**"` - loads all initializers. There is only one initializer file by default, named `initializer/database.cr`. Here we have a double star ("**") meaning inclusion of all files including in subdirectories. Inclusion order is always "current directory first, then subdirectories"
 			1. `require "amber"` - Amber itself is loaded
 				1. Loading Amber makes `Amber::Server` class available
 				1. `include Amber::Environment` - already in this stage, environment is determined and settings are loaded from yml file (e.g. from `config/environments/development.yml`. Settings are later available as `settings`
