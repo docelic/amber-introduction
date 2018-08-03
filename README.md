@@ -126,7 +126,7 @@ Please note that shards-related commands use the directory `.shards/` as local s
 
 Before building or running Amber applications, you should install the following system packages: `libevent-dev libgc-dev libxml2-dev libssl-dev libyaml-dev libcrypto++-dev libsqlite3-dev`. These packages will make sure that you do not run into missing header files as soon as you try to run the application.
 
-The app can be started as soon as you have created it and ran `shards` in the app directory.
+Other than that, the app can be started as soon as you have created it and ran `shards` in the app directory.
 (It is not necessary to run `shards` if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
 Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is just compiled, executed, and then discarded.
