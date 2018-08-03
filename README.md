@@ -172,7 +172,7 @@ Crystal caches partial results of the compilation (*.o files etc.) under `~/.cac
 
 Sometimes building the app will fail on the C level because of missing header files or libraries. If Crystal doesn't print the actual C error, it will at least print the compiler line that caused it.
 
-The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause and solution will be determined easily. Usually some libraries or headers will be missing, such as those mentioned above in (Running the App)[#running_the_app].
+The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause and solution will be determined easily. Usually some libraries or headers will be missing, such as those mentioned above in [Running the App](#running_the_app).
 
 There are some issues with the `libgc` library here and there. In my case the solution was to reinstall system's package `libgc-dev`.
 
