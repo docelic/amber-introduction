@@ -79,7 +79,7 @@ Please note that shards-related commands use the directory `.shards/` as local s
 
 # Running the App
 
-Before building or running Amber applications, you should install the following system packages: `libevent-dev libgc-dev libxml2-dev libssl-dev libyaml-dev libcrypto++-dev libsqlite3-dev`. Doing that will install these commonly used header files.
+Before building or running Amber applications, you should install the following system packages: `libevent-dev libgc-dev libxml2-dev libssl-dev libyaml-dev libcrypto++-dev libsqlite3-dev`. These packages will make sure that you do not run into missing header files as soon as you try to run the application.
 
 The app can be started as soon as you have created it and ran `shards` in the app directory.
 (It is not necessary to run `shards` if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
