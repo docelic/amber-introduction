@@ -129,7 +129,7 @@ Before building or running Amber applications, you should install the following 
 Other than that, the app can be started as soon as you have created it and ran `shards` in the app directory.
 (It is not necessary to run `shards` if you have invoked `amber new` with the argument `--deps`; in that case Amber did it for you.)
 
-Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is just compiled, executed, and then discarded.
+Please note that the application is always compiled, regardless of whether one is using the Crystal command 'run' (the default) or 'build'. It is just that in run mode, the resulting binary is typically compiled without optimizations (to improve build speed) and is not saved to a file, but is compiled, executed, and then discarded.
 
 To run the app, you could use a couple different approaches:
 
