@@ -129,7 +129,7 @@ Sometimes building the app will fail on the C level because of missing header fi
 
 The best way to see the actual error from there is to copy-paste the command printed and run it manually in the terminal. The error will be shown and from there the cause and solution will be determined easily. Usually some library or header files will be missing, such as those mentioned above in [Running the App](#running_the_app).
 
-There are some issues with the `libgc` library here and there. In my case the solution was to reinstall system's package `libgc-dev`.
+There are some issues with the `libgc` library here and there. Sometimes it helps to reinstall the system's package `libgc-dev`.
 
 # REPL
 
