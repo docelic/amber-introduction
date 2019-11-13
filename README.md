@@ -56,8 +56,6 @@
 	1. [Serving Requests](#serving_requests)
 	1. [Support Routines](#support_routines)
 	1. [Amber behind a Load Balancer | Reverse Proxy | ADC](#amber_behind_a_load_balancer___reverse_proxy___adc)
-1. [Ecommerce with Amber](#ecommerce_with_amber)
-1. [Conclusion](#conclusion)
 
 
 # Introduction<a name="introduction"></a>
@@ -741,7 +739,7 @@ In an Amber project, raw assets are in `src/assets/`:
 app/src/assets/
 app/src/assets/fonts
 app/src/assets/images
-app/src/assets/images/logo.png
+app/src/assets/images/logo.svg
 app/src/assets/javascripts
 app/src/assets/javascripts/main.js
 app/src/assets/stylesheets
@@ -1040,12 +1038,10 @@ require "http/server"            CRYSTAL  HTTP Server
 require "http/server/handler"    CRYSTAL  HTTP Server's support for "handlers" (middleware)
 require "quartz_mailer"          AMBER    Sending and receiving emails
 require "email"                  EXTERNAL Simple email sending library
-require "radix"                  EXTERNAL Radix Tree implementation
 require "teeplate"               AMBER    Rendering multiple template files
 
 ------- Databases and ORM Models --------------------------------------------------------------------------
 require "big"                    EXTERNAL BigRational for numeric. Retains precision, requires LibGMP
-require "crecto"                 EXTERNAL Database wrapper for Crystal, inspired by Ecto
 require "db"                     CRYSTAL  Common DB API
 require "pool/connection"        CRYSTAL  Part of Crystal's common DB API
 require "granite_orm/adapter/<%- @database %>" AMBER Granite's DB-specific adapter
@@ -1086,7 +1082,6 @@ require "zlib"                   CRYSTAL  Reading/writing Zlib compressed data a
 
 ------- Supporting Functionality --------------------------------------------------------------------------
 require "base64"                 CRYSTAL  Encoding and decoding of binary data using base64 representation
-require "benchmark"              CRYSTAL  Benchmark routines for benchmarking Crystal code
 require "bit_array"              CRYSTAL  Array data structure that compactly stores bits
 require "callback"               EXTERNAL Defining and invoking callbacks
 require "compiled_license"       EXTERNAL Compile in LICENSE files from project and dependencies
@@ -1104,11 +1099,14 @@ require "socket/tcp_socket"      CRYSTAL  Supporting functions for TCP sockets
 require "socket/unix_socket"     CRYSTAL  Supporting functions for UNIX sockets
 require "string_inflection/kebab"EXTERNAL Singular/plurals words in "kebab" style ("foo-bar")
 require "string_inflection/snake"EXTERNAL Singular/plurals words in "snake" style ("foo_bar")
-require "tempfile"               CRYSTAL  Managing temporary files
 require "uri"                    CRYSTAL  Creating and parsing URI references as defined by RFC 3986
 require "uuid"                   CRYSTAL  Functions related to Universally unique identifiers (UUIDs)
 require "weak_ref"               CRYSTAL  Weak Reference class allowing referenced objects to be GC-ed
 require "zip"                    EXTERNAL Zip compression library, used for fetching zipped recipes
+
+require "ecr"
+require "markd"
+require "exception_page"
 ```
 
 
@@ -1285,15 +1283,3 @@ And we can modify one of the views to display the user IP address. Assuming you 
 ```
     a.list-group-item.list-group-item-action href="#" = "IP Address: " + ((ip = context.client_ip) ? ip.address : "Unknown")
 ```
-
-# Ecommerce with Amber<a name="ecommerce_with_amber"></a>
-
-I am working on [Jet](https://github.com/jetcommerce/jet), an ecommerce solution for Amber.
-
-# Conclusion<a name="conclusion"></a>
-
-We hope you have enjoyed this hands-on introduction to Amber!
-
-Feel free to provide any feedback on content or additional areas you
-would like to see covered in this guide. Thanks!
-
